@@ -1,0 +1,15 @@
+package cn.baiweigang.qtaf.dispatch.testcase;
+
+
+/**
+ * 数据文件类型的测试用例 
+ * 
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ *
+ */
+public class DataFileCase extends SuperCase{
+	public   DataFileCase() {
+		super();
+	}
+	//逻辑处理 输出xml配置文件
+}
