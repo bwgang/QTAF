@@ -21,9 +21,21 @@ public class SftpExecUtil {
 	private  static Channel channel = null;
     private  LogUtil log=LogUtil.getLogger(SftpExecUtil.class);//日志记录
 
+    /**
+     * 主机host
+     */
     public  String SshHost = "";
+    /**
+     * 端口
+     */
     public  String SshPort = "";
+    /**
+     * 用户名
+     */
     public  String SshUserName = "";
+    /**
+     * 密码
+     */
     public  String SshPassword = "";
     
     private Session getSession() {
@@ -77,13 +89,18 @@ public class SftpExecUtil {
 		} 
     }
     
+    /**
+     * 关闭连接
+     */
     public  void closeChannelOnly()  {
         if (channel != null) {
             channel.disconnect();
             channel=null;
         }
     }
-    
+    /**
+     * 关闭连接
+     */
     public  void closeChannel()  {
         if (channel != null) {
             channel.disconnect();
@@ -98,7 +115,7 @@ public class SftpExecUtil {
     /**
      * 返回执行命令的内容
      * @param command
-     * @return
+     * @return String
      */
     public  String execStr(String command) {		
 		Channel channel=getChannel();	

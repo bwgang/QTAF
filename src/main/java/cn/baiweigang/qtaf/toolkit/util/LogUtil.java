@@ -9,7 +9,7 @@ import cn.baiweigang.qtaf.toolkit.TkConf;
 
 /**
  * 自定义日志
- *
+ *	@author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
  */
 public class LogUtil {
 	private Logger log ;
@@ -22,22 +22,48 @@ public class LogUtil {
 		log = Logger.getLogger(clazz);
 	}
 	
+	/**
+	 * 
+	 * @param name
+	 * @return LogUtil
+	 */
 	public static LogUtil getLogger(String name){
 		return new LogUtil(name);
 	}
+	/**
+	 * 
+	 * @param clazz
+	 * @return LogUtil
+	 */
 	public static LogUtil getLogger(Class<?> clazz){
 		return new LogUtil(clazz);
 	}
 	
+	/**
+	 * error级别日志
+	 * @param message
+	 */
 	public void error(Object message){
 		log.error(message);
 	}
+	/**
+	 * info 级别日志
+	 * @param message
+	 */
 	public void info(Object message){
 		log.info(message);
 	}
+	/**
+	 * debug级别日志
+	 * @param message
+	 */
 	public void debug(Object message){
 		log.debug(message);
 	}
+	/**
+	 * warn级别日志
+	 * @param message
+	 */
 	public void warn(Object message){
 		log.error(message);
 	}

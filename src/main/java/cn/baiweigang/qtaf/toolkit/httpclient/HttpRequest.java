@@ -55,7 +55,7 @@ public class HttpRequest {
 	}
 
 	/**
-	 * 设置编码
+	 * 构造函数 设置编码
 	 * @param charset
 	 */
 	public HttpRequest(String charset) {
@@ -80,7 +80,7 @@ public class HttpRequest {
      * 根据header url发起get请求
      * @param headers
      * @param url
-     * @return
+     * @return ResponseInfo
      */
 	public ResponseInfo get(Map<String, String> headers, String url) {
 		ResponseInfo resInfo = new ResponseInfo();
@@ -97,7 +97,7 @@ public class HttpRequest {
 	/**
 	 * 根据url发起get请求
 	 * @param url
-	 * @return
+	 * @return ResponseInfo
 	 */
 	public ResponseInfo get(String url) {
 		return get(null, url);
@@ -111,7 +111,7 @@ public class HttpRequest {
      * @param headers
      * @param url
      * @param params
-     * @return
+     * @return ResponseInfo
      */
     public ResponseInfo post(TreeMap<String,String> headers, String url, TreeMap<String,Object> params) {  
         httpPost = new HttpPost(url);  
@@ -124,7 +124,7 @@ public class HttpRequest {
      * @param headers
      * @param url
      * @param str
-     * @return
+     * @return ResponseInfo
      */
 	public ResponseInfo post(TreeMap<String, String> headers, String url, String str) {
 		ResponseInfo resInfo = new ResponseInfo();
@@ -137,66 +137,12 @@ public class HttpRequest {
 		httpPost=setHttpPostHeaderAndParams(httpPost, headers, null);
 		return post(httpPost, str);
 	}
-
-	//--对外postFile处理方法,此部分测试有问题，后续再处理 先注释掉
-	/**
-	 * 
-	 * @param url
-	 * @param filepath
-	 * @return
-	 */
-//	public ResponseInfo postFile(String url, String fileName,String filePath) {
-//		httpPost = new HttpPost(url);
-//		return postFile(httpPost,fileName,filePath);
-//	}
-	
-    /**
-     * 设置发送请求的header,url,params,filePath,发送上传文件请求
-     * @param headers
-     * @param url
-     * @param params
-     * @param filepath
-     * @return
-     */
-//    public ResponseInfo postFile(Map<String,String> headers, String url, Map<String,Object> params,String fileName,String filePath) {  
-//        httpPost = new HttpPost(url);  
-//        httpPost = this.setHttpPostHeaderAndParams(httpPost, headers, params);   
-//        return postFile(httpPost,fileName,filePath); 
-//    } 
-
-    /**
-     * 设置发送请求的httpPost,file,发送上传文件请求
-     * @param httppost
-     * @param file
-     * @return
-     */
-//    private ResponseInfo postFile(HttpPost httppost, File file) {  
-//        FileBody fileBody = new FileBody(file); 
-//        MultipartEntity reqEntity = new MultipartEntity(null,"-N_HMRRyq7B1XxX6fWqLCUbGVkSZ3Q",null);  
-//        reqEntity.addPart(file.getName(), fileBody);  
-//        httppost.setEntity(reqEntity);  
-//        return post(httppost);
-//    }
-    
-    /**
-     * 设置发送请求的header,url,param,file,发送上传文件请求
-     * @param headers
-     * @param url
-     * @param params
-     * @param file
-     * @return
-     */
-//    public ResponseInfo postFile(Map<String,String> headers, String url, Map<String,Object> params,File file){
-//    	httpPost = new HttpPost(url);
-//    	httpPost = this.setHttpPostHeaderAndParams(httpPost, headers, params);
-//    	return postFile(httpPost, file);
-//    }
    
 	/**
 	 * get方式下载文件，以字符串方式显示 
 	 * @param headers
 	 * @param url
-	 * @return
+	 * @return String
 	 */
 	public String getFile(Map<String, String> headers, String url,String enCoding) {
 		if (StringUtil.IsNullOrEmpty(enCoding)) enCoding="UTF-8";
@@ -211,6 +157,13 @@ public class HttpRequest {
 		}
 	}
 
+	/**
+	 * get方式下载文件 返回字节
+	 * @param headers
+	 * @param url
+	 * @param file
+	 * @return byte[]
+	 */
 	public byte[] getFile(Map<String, String> headers,String url, File file) {
 		httpGet = new HttpGet(url);
 		httpGet = setHttpGetHeader(httpGet, headers);
@@ -230,10 +183,17 @@ public class HttpRequest {
 		return bs;
 	}
 	
+	/**
+	 * 关闭连接
+	 */
 	public void close() {
 		httpClient.getConnectionManager().shutdown();
 	}
 
+	/**
+	 * 设置编码
+	 * @param charset
+	 */
 	public void setCharset(String charset) {
 		if (null != charset && charset.length() > 0) {
 			this.charset = charset;
@@ -243,7 +203,7 @@ public class HttpRequest {
 	//私有方法
 	/**
 	 * 默认的header信息
-	 * @return
+	 * @return Map<String, String>
 	 */
 	private Map<String, String> getCommonHeader() {
 		Map<String, String> headers = new TreeMap<String, String>();
@@ -261,7 +221,7 @@ public class HttpRequest {
 	 * 设置header信息 会覆盖默认的Header
 	 * @param httpget
 	 * @param headers
-	 * @return
+	 * @return HttpGet
 	 */
 	private HttpGet setHttpGetHeader(HttpGet httpGet,Map<String, String> headers) {
 		Map<String, String>  headersTmp=new TreeMap<String, String> ();
@@ -308,7 +268,7 @@ public class HttpRequest {
      * @param httppost
      * @param headers
      * @param params
-     * @return
+     * @return HttpPost
      */
 	private HttpPost setHttpPostHeaderAndParams(HttpPost httpPost,Map<String, String> headers, Map<String,Object> params) {
 		Map<String, String> headersTmp = new TreeMap<String, String>();
@@ -369,7 +329,7 @@ public class HttpRequest {
 	/**
      * 发起Post请求
      * @param httppost
-     * @return
+     * @return ResponseInfo
      */
 	private ResponseInfo post(HttpPost httppost) {
 		HttpResponse response;
@@ -395,7 +355,7 @@ public class HttpRequest {
      * 封装发送请求的httpPost,str信息
      * @param httppost
      * @param str
-     * @return
+     * @return ResponseInfo
      */
     private ResponseInfo post(HttpPost httppost, String str) {
 		StringEntity reqEntity;
@@ -409,19 +369,11 @@ public class HttpRequest {
 		return post(httppost);
 	}
     
-    //-----PostFile
-//    private ResponseInfo postFile(HttpPost httpPost, String fileName,String filePath) {
-//		FileBody fileBody = new FileBody(new File(filePath));
-//		MultipartEntity reqEntity = new MultipartEntity();
-//		reqEntity.addPart(fileName, fileBody);
-//		httpPost.setEntity(reqEntity);
-//		return post(httpPost);
-//	}
     
     /**
 	 * 从响应结果中获取Header信息，返回map表
 	 * @param res
-	 * @return
+	 * @return Map<String, String>
 	 */
 	private Map<String, String> getResHeader(HttpResponse res) {
 		Map<String,String> headerRes = new TreeMap<String,String>();
@@ -437,7 +389,7 @@ public class HttpRequest {
 	/**
 	 * 从响应中获取body信息
 	 * @param res
-	 * @return
+	 * @return String
 	 */
 	@SuppressWarnings("deprecation")
 	private String getResBody(HttpResponse res) {

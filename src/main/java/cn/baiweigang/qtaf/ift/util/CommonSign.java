@@ -65,7 +65,7 @@ public class CommonSign {
 					+ secret_key;
 		}
 		log.info("签名计算串：" + expSign);
-		return CommUtils.getPhpMD5(expSign);
+		return CommUtils.getMD5Gbk(expSign);
 	}
 
 	/**

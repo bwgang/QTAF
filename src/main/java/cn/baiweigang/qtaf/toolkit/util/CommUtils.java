@@ -14,94 +14,63 @@ import java.util.Date;
 import java.util.Random;
 import java.util.TreeMap;
 
-
-
-
 /**
- * 
- *
+ *  通用工具包
+ *	@author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
  */
 public class CommUtils {
 
 	private static LogUtil log = LogUtil.getLogger(CommUtils.class);// 日志记录
 
 	/**
-	 * 将指定字节作MD5加密
-	 * 
-	 * @param source
-	 */
-	private static String getMD5(byte[] source) {
-		String s = null;
-		char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-				'a', 'b', 'c', 'd', 'e', 'f' };// 用来将字节转换成16进制表示的字符
-		try {
-			java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
-			md.update(source);
-			byte tmp[] = md.digest();// MD5 的计算结果是一个 128 位的长整数，
-			// 用字节表示就是 16 个字节
-			char str[] = new char[16 * 2];// 每个字节用 16 进制表示的话，使用两个字符， 所以表示成 16
-			// 进制需要 32 个字符
-			int k = 0;// 表示转换结果中对应的字符位置
-			for (int i = 0; i < 16; i++) {// 从第一个字节开始，对 MD5 的每一个字节// 转换成 16
-				// 进制字符的转换
-				byte byte0 = tmp[i];// 取第 i 个字节
-				str[k++] = hexDigits[byte0 >>> 4 & 0xf];// 取字节中高 4 位的数字转换,// >>>
-				// 为逻辑右移，将符号位一起右移
-				str[k++] = hexDigits[byte0 & 0xf];// 取字节中低 4 位的数字转换
-
-			}
-			s = new String(str);// 换后的结果转换为字符串
-
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		return s;
-	}
-
-	/**
 	 * 将指定字符串作MD5加密
-	 * 
 	 * @param source
+	 * @param enCoding
+	 * @return String 计算异常返回null
 	 */
 	public static String getMD5(String source,String enCoding) {
 		byte[] sourceByte = null;
 		try {
 			sourceByte = source.getBytes(enCoding);
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			log.error("按编码："+enCoding+"解析为字节异常");
+			log.error(e.getMessage());
+			return null;
 		}
 		return getMD5(sourceByte);
 	}
 
 	/**
 	 * 将指定字符串中的中文按GBK编码进行md5加密
-	 * 
 	 * @param source
-	 * @return
+	 * @return String
 	 */
-	public static String getPhpMD5(String source) {
+	public static String getMD5Gbk(String source) {
 		return getMD5(source,"GBK");
 	}
 
 	/**
-	 * 对文件进行md5加密
-	 * 
+	 * 计算文件的md5值 
 	 * @param filepath
-	 * @return
-	 * @throws IOException
+	 * @return String  异常返回null
 	 */
-	public static String fileMD5(String filepath) throws IOException {
-		String filemd5 = "";
-		byte[] bytes = getBytesFromFile(filepath);
-		filemd5 = getMD5(bytes);
-		return filemd5;
+	public static String fileMD5(String filepath){
+		byte[] bytes = null;
+		try {
+			bytes = getBytesFromFile(filepath);
+		} catch (IOException e) {
+			log.error("读取文件异常："+filepath);
+			log.error(e.getMessage());
+			return null;
+		}
+		return getMD5(bytes);
 	}
 
-	
 	/**
 	 * urlencode指定字符串,编码格式为GBK
 	 * 
 	 * @param strmes
+	 * @return String 转码异常返回null
 	 */
 	public static String urlEncode(String strmes) {
 		return urlEncode(strmes, "GBK");
@@ -111,7 +80,7 @@ public class CommUtils {
 	 * urlencode指定字符串，需指定编码
 	 * @param strmes
 	 * @param enCoding
-	 * @return
+	 * @return String 转码异常返回null
 	 */
 	public static String urlEncode(String strmes, String enCoding) {
 		String EncodeRes;
@@ -130,6 +99,7 @@ public class CommUtils {
 	 * urldecode指定字符串，使用GBK编码
 	 * 
 	 * @param strmes
+	 * @return  String 转码异常返回null
 	 */
 	public static String urlDecode(String strmes) {
 		return urlDecode(strmes,"GBK");
@@ -140,7 +110,7 @@ public class CommUtils {
 	 * urldecode指定字符串，指定编码
 	 * @param strmes
 	 * @param encoding
-	 * @return
+	 * @return String 转码异常返回null
 	 */
 	public static String urlDecode(String strmes, String encoding) {
 		String decodeRes;
@@ -158,6 +128,7 @@ public class CommUtils {
 	 * urlRawDecode指定字符串 如果字符中有空格则对空格不作decode
 	 * 使用编码为GBK
 	 * @param strmes
+	 * @return String 转码异常返回null
 	 */
 	public static String urlRawDecode(String strmes) {
 		String decodeRes;
@@ -176,6 +147,7 @@ public class CommUtils {
 	/**
 	 * 生成随机数
 	 * @param length 指定字符串长度
+	 * @return String
 	 */
 	public static String getRandomStr(int length) {
 		Random randGen = null;
@@ -202,6 +174,7 @@ public class CommUtils {
 	/**
 	 * 生成随机数(只有数字)
 	 * @param length 指定字符串长度
+	 * @return String
 	 */
 	public static String getNumRandomStr(int length) {
 		Random randGen = null;
@@ -232,7 +205,7 @@ public class CommUtils {
 	 * @param query 源参数字符串
 	 * @param split1 键值对之间的分隔符（例：&）
 	 * @param split2 key与value之间的分隔符（例：=）
-	 * @return map
+	 * @return TreeMap<String, String>
 	 */
 	public static TreeMap<String, String> parseQuery(String query, char split1,char split2) {
 		if (!StringUtil.IsNullOrEmpty(query) && query.indexOf(split2) > 0) {
@@ -265,6 +238,11 @@ public class CommUtils {
 		return null;
 	}
 
+	/**
+	 * 获取Sha1值
+	 * @param byteText
+	 * @return String 异常返回null
+	 */
 	public static String getSha1(byte[] byteText) {
 		java.security.MessageDigest md = null;
 		try {
@@ -273,36 +251,41 @@ public class CommUtils {
 			byte[] sha1 = md.digest();
 			return byte2hex(sha1);
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 			return null;
 		}
 	}
 
-	private static String byte2hex(byte[] b) {// 二行制转字符串
-		String hs = "";
-		String stmp = "";
-		for (int n = 0; n < b.length; n++) {
-			stmp = (java.lang.Integer.toHexString(b[n] & 0XFF));
-			if (stmp.length() == 1)
-				hs = hs + "0" + stmp;
-			else
-				hs = hs + stmp;
-		}
-		return hs.toLowerCase();
-	}
+	
+	/**
+	 * 获取文件的hash值
+	 * @param fileName
+	 * @param hashType
+	 * @return String 异常返回null
+	 */
 
-	public static String getHash(String fileName, String hashType)throws Exception {
-		InputStream fis;
-		fis = new FileInputStream(fileName);
-		byte[] buffer = new byte[1024];
-		MessageDigest md5 = MessageDigest.getInstance(hashType);
-		int numRead = 0;
-		while ((numRead = fis.read(buffer)) > 0) {
-			md5.update(buffer, 0, numRead);
+	public static String getHash(String fileName, String hashType){
+		
+		try {
+			InputStream fis = new FileInputStream(fileName);
+			byte[] buffer = new byte[1024];
+			MessageDigest md5 = MessageDigest.getInstance(hashType);
+			int numRead = 0;
+			while ((numRead = fis.read(buffer)) > 0) {
+				md5.update(buffer, 0, numRead);
+			}
+			fis.close();
+			return toHexString(md5.digest());
+		} catch (NoSuchAlgorithmException | IOException e) {
+			log.error(e.getMessage());
+			return null;
 		}
-		fis.close();
-		return toHexString(md5.digest());
 	}
+	/**
+	 * 获取十六进制字符串
+	 * @param b
+	 * @return String
+	 */
 
 	public static String toHexString(byte[] b) {
 		char[] hexChar = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9','a', 'b', 'c', 'd', 'e', 'f' };
@@ -338,13 +321,22 @@ public class CommUtils {
 	}
 
 	/**当前线程休息miliSeconds毫秒*/
+	/**
+	 * 暂停
+	 * @param miliSeconds 毫秒
+	 */
 	public static void sleep(int miliSeconds){
 		try {
 			Thread.sleep(miliSeconds);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 	}
+	/**
+	 * 获取纯数字字符串
+	 * @param num
+	 * @return String
+	 */
 	
 	public static String getRandNum(int num) {
 		String res="";
@@ -360,7 +352,7 @@ public class CommUtils {
 	
 	/**
 	 * 说明：获取当前时间+指定位数随机数字，返回的格式为：yyyMMddHHmmss+rand
-	 * 
+	 * @param num
 	 * @return String yyyMMddHHmmss
 	 */
 	public static String getStrRandNum(int num) {
@@ -369,10 +361,6 @@ public class CommUtils {
 
 	
 	
-	/**
-	 * 二进制流读取分文件
-	 * @param filepath
-	 */
 	private static byte[] getBytesFromFile(String filepath) throws IOException {
 		File file = new File(filepath);
 		InputStream is = new FileInputStream(file);
@@ -387,5 +375,49 @@ public class CommUtils {
 		return bytes;
 	}
 	
+	/**
+	 * 将指定字节作MD5加密
+	 * @param source
+	 * @return String
+	 */
+	private static String getMD5(byte[] source) {
+		String s = null;
+		char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+				'a', 'b', 'c', 'd', 'e', 'f' };// 用来将字节转换成16进制表示的字符
+		try {
+			java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+			md.update(source);
+			byte tmp[] = md.digest();// MD5 的计算结果是一个 128 位的长整数，
+			// 用字节表示就是 16 个字节
+			char str[] = new char[16 * 2];// 每个字节用 16 进制表示的话，使用两个字符， 所以表示成 16
+			// 进制需要 32 个字符
+			int k = 0;// 表示转换结果中对应的字符位置
+			for (int i = 0; i < 16; i++) {// 从第一个字节开始，对 MD5 的每一个字节// 转换成 16
+				// 进制字符的转换
+				byte byte0 = tmp[i];// 取第 i 个字节
+				str[k++] = hexDigits[byte0 >>> 4 & 0xf];// 取字节中高 4 位的数字转换,// >>>
+				// 为逻辑右移，将符号位一起右移
+				str[k++] = hexDigits[byte0 & 0xf];// 取字节中低 4 位的数字转换
+
+			}
+			s = new String(str);// 换后的结果转换为字符串
+
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return s;
+	}
 	
+	private static String byte2hex(byte[] b) {// 二行制转字符串
+		String hs = "";
+		String stmp = "";
+		for (int n = 0; n < b.length; n++) {
+			stmp = (java.lang.Integer.toHexString(b[n] & 0XFF));
+			if (stmp.length() == 1)
+				hs = hs + "0" + stmp;
+			else
+				hs = hs + stmp;
+		}
+		return hs.toLowerCase();
+	}
 }

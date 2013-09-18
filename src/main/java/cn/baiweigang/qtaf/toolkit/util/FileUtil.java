@@ -211,7 +211,7 @@ public class FileUtil {
 	 * @param str
 	 * @param pathName
 	 * @param enCoding
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean writeString(String str,String pathName,String enCoding) {
 		byte[] b;
@@ -230,7 +230,7 @@ public class FileUtil {
 	 * @param strList
 	 * @param pathName
 	 * @param enCoding
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean writeString(List<String> strList,String pathName,String enCoding) {
 		if (null==strList ) {
@@ -440,7 +440,7 @@ public class FileUtil {
 	/**
 	 * 返回文件夹下指定扩展名的文件列表
 	 * @param folderPath
-	 * @param fileType
+	 * @param extensionName
 	 * @return List<String>
 	 */
 	public static List<String> getFilesFromFolder(String folderPath,String extensionName) {

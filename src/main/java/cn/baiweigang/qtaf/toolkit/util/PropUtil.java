@@ -77,11 +77,11 @@ public class PropUtil {
 		}return valuesList;
 	}
 	
-/**
- * 从配置文件中读取所有信息到map表中
- * @param properties
- * @return Map<String, String>
- */
+	/**
+	 * 从配置文件中读取所有信息到map表中
+	 * @param properties
+	 * @return Map<String, String>
+	 */
 	public static Map<String, String> getAllInfoToMap(Properties properties) {
 		Map<String, String> map=new TreeMap<String, String>();
 		try {
@@ -93,7 +93,7 @@ public class PropUtil {
 			    map.put(key, value);
 			}
 		} catch (Exception e) {
-			
+			log.error(e.getMessage());
 		}
 		return map;
 	}

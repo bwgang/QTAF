@@ -185,8 +185,8 @@ public class CompareResult {
 	 * @param expres预期结果字符串
 	 * @return Map<String, String> 返回整理后的预期结果
 	 */
-	private TreeMap<String, String> trimExpres(String expres) {
-		TreeMap<String, String> trimExpres = new TreeMap<String, String>();
+	private Map<String, String> trimExpres(String expres) {
+		Map<String, String> trimExpres = new TreeMap<String, String>();
 		trimExpres = CommUtils.parseQuery(expres, '&', '=');
 		if (null == trimExpres) {
 			trimExpres = new TreeMap<String, String>();
@@ -214,8 +214,8 @@ public class CompareResult {
 	 * @param responseRes 实际结果字符串
 	 * @return Map<String, String> ，返回整理后的实际结果
 	 */
-	private TreeMap<String, String> trimActres(String responseRes,int config) {
-		TreeMap<String, String> trimactres = new TreeMap<String, String>();
+	private Map<String, String> trimActres(String responseRes,int config) {
+		Map<String, String> trimactres = new TreeMap<String, String>();
 		Map<String, Object> map = new TreeMap<String,Object>();
 		JsonUtil json = new JsonUtil();
 		if (responseRes.contains("<?xml") && responseRes.indexOf("<?xml")<1) {//此处xml格式文本判断不严谨，有待优化

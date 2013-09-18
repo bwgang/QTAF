@@ -15,7 +15,7 @@ import net.sf.json.JSONObject;
 
 /**
  * 字符串相关处理工具类
- *@author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ *	@author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
  */
 public class StringUtil {
 	
@@ -23,7 +23,7 @@ public class StringUtil {
 	/**
 	 * 过滤指定的特殊字符
 	 * @param str
-	 * @return
+	 * @return String
 	 */
     public   static   String filterSpecialChar(String str)  {      
         // 清除掉所有特殊字符   
@@ -36,7 +36,7 @@ public class StringUtil {
     /**
      * 判断字符串是否空值或者空串，
      * @param str
-     * @return 非空且长度大于1时，返回false；
+     * @return boolean 非空且长度大于1时，返回false；
      */
     public static boolean IsNullOrEmpty(String str) {
 		if (null== str || str.length()<1) {
@@ -49,7 +49,7 @@ public class StringUtil {
     /**
 	 * 以指定标识分割字符串，
 	 * @param s
-	 * @return 当字符串或分割标识为null或空时，返回大小为0的List
+	 * @return List<String> 当字符串或分割标识为null或空时，返回大小为0的List
 	 */
 	public static List<String> getListFromString(String s,String flag) {
 		if (IsNullOrEmpty(s)) {
@@ -70,7 +70,7 @@ public class StringUtil {
 	 * 查找字符串中是否存在指定字符串中的任一字符
 	 * 
 	 * @param str
-	 * @return 如果存在任一个返回true，否则返回false
+	 * @return boolean 如果存在任一个返回true，否则返回false
 	 */
 	public static boolean check(String str,String sIllegal) {
 		int len = sIllegal.length();
@@ -86,7 +86,7 @@ public class StringUtil {
 	/**
 	 * 将带有htmlcode代码的字符转换成<>&'"
 	 * @param str
-	 * @return
+	 * @return String
 	 */
 	public static String htmlcodeToSpecialchars(String str) {
 		str = str.replaceAll("&amp;", "&");
@@ -102,7 +102,7 @@ public class StringUtil {
 	 * 把16进制转换成字节码
 	 * 
 	 * @param hex
-	 * @return
+	 * @return byte[]
 	 */
 	public static byte[] hex2byte(String hex) {
 		byte[] bts = new byte[hex.length() / 2];
@@ -116,7 +116,7 @@ public class StringUtil {
 	/**
 	 * 判断字符串中是否包含数字
 	 * @param src
-	 * @return 有数字时返回true 否则false
+	 * @return boolean 有数字时返回true 否则false
 	 */
 	public static boolean isNumeric(String src) {
 		Pattern numericPattern = Pattern.compile("^[0-9]+$");
@@ -135,7 +135,7 @@ public class StringUtil {
 	/**
 	 * 判断是否位数字,并可为空
 	 * @param src
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean isNumericAndCanNull(String src) {
 		Pattern numericPattern = Pattern.compile("^[0-9]+$");
@@ -154,7 +154,7 @@ public class StringUtil {
 	/**
 	 * 把json串中的uncode编码转换为字符串显示，转换失败返回原json串
 	 * @param jsonStr
-	 * @return
+	 * @return String
 	 */
 	public static String getStrFromJson(String jsonStr) {
 		try {
@@ -169,7 +169,7 @@ public class StringUtil {
 	/**
 	 * 把map表转换为json格式字符串，转换失败返回null
 	 * @param map
-	 * @return
+	 * @return String
 	 */
 	public static String getJsonStrFromMap(Map<String, String> map) {
 		JSONObject oneResult = new JSONObject();
@@ -187,7 +187,7 @@ public class StringUtil {
 	 * 返回map中指定key的value，如果异常返回""
 	 * @param map
 	 * @param key
-	 * @return
+	 * @return String
 	 */
 	public static String getValueFromMapByKey(Map<String, ?> map, String key) {
 		try {
@@ -201,7 +201,7 @@ public class StringUtil {
 	 * 返回map中指定key列表的map
 	 * @param map
 	 * @param list
-	 * @return
+	 * @return Map<String, String>
 	 */
 	public static Map<String, String> getMapFromMapByKeyList(Map<String, String> map, List<String> list) {
 		Map<String, String> mapTmp = new TreeMap<>();
@@ -220,7 +220,7 @@ public class StringUtil {
 	/**
 	 * 返回map表中key的列表
 	 * @param expMap
-	 * @return
+	 * @return List<String>
 	 */
 	public static List<String> getKeyListFromMap(Map<String, String> expMap) {
 		List<String> list = new ArrayList<>();
@@ -239,7 +239,7 @@ public class StringUtil {
 	 * @param str
 	 * @param start
 	 * @param end
-	 * @return
+	 * @return String
 	 */
 	public static String getValueFromStr(String str, String start, String end) {
 		try {
@@ -254,7 +254,7 @@ public class StringUtil {
 	 * 把字符串中的中文按指定编码urlEncode
 	 * @param value
 	 * @param encoding
-	 * @return
+	 * @return String
 	 */
 	public static String transForChinese(String value, String encoding) {
 		if (value.matches("[0-9a-zA-Z.]*")) {
@@ -268,7 +268,7 @@ public class StringUtil {
 	 * 把map表中字符串中的中文按指定编码urlEncode
 	 * @param map
 	 * @param encoding
-	 * @return
+	 * @return Map<String, String>
 	 */
 	public static Map<String, String> transForChinese(Map<String, String> map,String encoding) {
 		Map<String, String> mapTmp = map;
@@ -291,7 +291,7 @@ public class StringUtil {
 	/**
 	 * 把字符串按&和=标识转换为map表
 	 * @param str
-	 * @return
+	 * @return Map<String, String>
 	 */
 	public static Map<String, String> getMapFromString(String str) {
 		Map<String, String> map = new TreeMap<>();
@@ -314,7 +314,7 @@ public class StringUtil {
 	/**
 	 * 把map表转换为字符串，使用= 和&连接
 	 * @param map
-	 * @return
+	 * @return String
 	 */
 	public static String getStrFromMap(Map<String, String> map) {
 		String str = "";
@@ -336,7 +336,7 @@ public class StringUtil {
 	/**
 	 * 复制一份map表的副本
 	 * @param map
-	 * @return
+	 * @return Map<String, String>
 	 */
 	public static Map<String, String> cloneMap(Map<String, String> map) {
 		Map<String, String> clonemap = new TreeMap<>();
@@ -354,7 +354,7 @@ public class StringUtil {
 	/**
 	 * 把map转换为xml格式内容，其中中文不进行urlEncode转码
 	 * @param map
-	 * @return
+	 * @return String
 	 */
 	public static String getXmlFromMap(Map<String, String> map) {
 		String xmlbody = "";
@@ -371,7 +371,7 @@ public class StringUtil {
 	 * 把map转换为xml格式内容，其中中文按指定编码 urlEncode转码
 	 * @param map
 	 * @param encoding
-	 * @return
+	 * @return String
 	 */
 	public static String getXmlFromMap(Map<String, String> map, String encoding) {
 		String xmlbody = "";
@@ -390,6 +390,12 @@ public class StringUtil {
 		return xmlbody;
 	}
 	
+	/**
+	 * 重新编码
+	 * @param str
+	 * @param newCharset
+	 * @return String
+	 */
 	public static String changeCharset(String str, String newCharset)  {
 		  if (!IsNullOrEmpty(str)) {
 		        // 用默认字符编码解码字符串。
@@ -404,6 +410,13 @@ public class StringUtil {
 		     }
 		    return null;
 	}
+	/**
+	 * 重新编码
+	 * @param str
+	 * @param oldCharset
+	 * @param newCharset
+	 * @return String
+	 */
 	public static String changeCharset(String str, String oldCharset,String newCharset)  {
 		  if (!IsNullOrEmpty(str)) {
 		        try {
@@ -423,7 +436,7 @@ public class StringUtil {
 	/**
 	 * 判断字符串是否包含中文 如果包含则返回true
 	 * @param strName
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean isChinese(String strName) {
 		char[] ch = strName.toCharArray();
@@ -435,6 +448,7 @@ public class StringUtil {
 		}
 		return false;
 	}
+	
 	// 根据Unicode编码完美的判断中文汉字和符号
 	private static boolean isChinese(char c) {
 			Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);

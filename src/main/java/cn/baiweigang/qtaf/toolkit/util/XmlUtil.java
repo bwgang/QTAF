@@ -6,6 +6,7 @@ package cn.baiweigang.qtaf.toolkit.util;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
@@ -19,13 +20,18 @@ import org.dom4j.Element;
 
 /**
  * XML文件解析处理
- *
+ *	@author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
  */
 public class XmlUtil {
 	private static TreeMap<String, String> resultMap;
 	private static LogUtil log = LogUtil.getLogger(XmlUtil.class);// 日志记录
 	
-	public static TreeMap<String, String> fomatXMLToMap(String strXML) {
+	/**
+	 * xml文本串解析为Map表
+	 * @param strXML
+	 * @return Map<String, String>
+	 */
+	public static Map<String, String> fomatXMLToMap(String strXML) {
 		resultMap = new TreeMap<String, String>();
 		try {
 			Document doc = DocumentHelper.parseText(strXML);

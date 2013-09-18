@@ -20,10 +20,21 @@ public class SftpFileUtil {
 	private  static Session session = null;
 	private  static Channel channel = null;
     private  LogUtil log=LogUtil.getLogger(SftpFileUtil.class);//日志记录
-    
+    /**
+     * 主机host
+     */
     public String FTPHOST;
+    /**
+     * 端口
+     */
     public String PORT;
+    /**
+     * 用户名
+     */
     public String FTPUSERNAME;
+    /**
+     * 密码
+     */
     public String FTPPASSWORD;
 
     private  ChannelSftp getChannel()  {
@@ -44,7 +55,7 @@ public class SftpFileUtil {
 		} 
     }
 
- private  Session getSession()  {
+    private  Session getSession()  {
     	
     	if (null!=session) {
     		 return session;
@@ -79,28 +90,33 @@ public class SftpFileUtil {
 		} 
     }
     
- public  void closeChannelOnly()  {
-     if (channel != null) {
-     channel.disconnect();
-     channel=null;
- }
-   }
- 
-    public  void closeChannel()  {
-      if (channel != null) {
-      channel.disconnect();
-      channel=null;
-  }
-  if (session != null) {
-      session.disconnect();
-      session=null;
-  }
-    }
+    /**
+     * 关闭连接
+     */
+    public  void closeChannelOnly()  {
+	     if (channel != null) {
+	     channel.disconnect();
+	     channel=null;
+		 }
+	}
+    /**
+     * 关闭连接
+     */
+	public void closeChannel() {
+		if (channel != null) {
+			channel.disconnect();
+			channel = null;
+		}
+		if (session != null) {
+			session.disconnect();
+			session = null;
+		}
+	}
 
     /**
      * 删除服务器上的文件
      * @param filepath
-     * @return
+     * @return boolean
      */
     public  boolean delFile(String filepath) {
 		boolean flag=false;
@@ -123,7 +139,7 @@ public class SftpFileUtil {
     /**
      * 删除指定目录，此目录必须为空的目录
      * @param directory
-     * @return
+     * @return boolean
      */
     public  boolean delDir(String directory) {
   		boolean flag=false;
@@ -146,7 +162,7 @@ public class SftpFileUtil {
      * 文件重命名
      * @param oldpath
      * @param newpath
-     * @return
+     * @return boolean
      */
     public  boolean rename(String oldpath,String newpath) {
  		boolean flag=false;
@@ -171,7 +187,7 @@ public class SftpFileUtil {
      * 下载指定的文档内容，保存到指定位置，返回文件内容
      * @param filepath
      * @param savepath
-     * @return
+     * @return  String
      */
     public  String getFile(String filepath,String savepath) {
  		String strtmp=null;
@@ -198,7 +214,7 @@ public class SftpFileUtil {
     /**
      * 下载指定的文档内容，保返回文件内容
      * @param filepath
-     * @return
+     * @return String
      */
     public  String getFile(String filepath) { 		
  		return getFile(filepath, null); 	

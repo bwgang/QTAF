@@ -9,8 +9,8 @@ import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
 /**
- * 说明：解析Json字符串，解析后未map存储的键值对
- * 
+ * 说明：解析Json字符串，解析后为map存储的键值对
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
  *
  */
 public class JsonUtil {
@@ -23,17 +23,26 @@ public class JsonUtil {
 		this.oneResult = new TreeMap<String, Object>();
 	}
 
+	/**
+	 * 单层解析json字符串
+	 * @param str
+	 * @return Map<String, Object> 异常返回null
+	 */
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> getResult(String str) {
 		try {
 			this.oneResult = JSONObject.fromObject(str);
 		} catch (JSONException e) {
-			
 			this.oneResult=null;
 		}
 		return this.oneResult;
 	}
 
+	/**
+	 * 多层解析 json字符串
+	 * @param str
+	 * @return	Map<String, Object> 异常返回null
+	 */
 	public Map<String, Object> getAllResult(String str) {
 		try {
 			JSONObject tempJSON = JSONObject.fromObject(str);
