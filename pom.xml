@@ -1,10 +1,22 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
+  
+  <distributionManagement>
+    <repository>
+      <id>sonatype-nexus-staging</id>
+      <name>Nexus Staging Repository</name>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
+  
   <modelVersion>4.0.0</modelVersion>
-
   <groupId>cn.baiweigang</groupId>
   <artifactId>qtaf</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>qtaf</name>
@@ -18,8 +30,9 @@
     </license>
   </licenses>
   <scm>
-    <url>https://github.com/bwgang/QTAF</url>
-    <connection>https://github.com/bwgang/QTAF</connection>
+    <url>scm:svn:https://github.com/bwgang/QTAF/</url>
+    <developerConnection>scm:svn:https://github.com/bwgang/QTAF/</developerConnection>
+    <connection>https://github.com/bwgang/QTAF/</connection>
   </scm>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -64,16 +77,17 @@
         <resource>     
             <directory>src/main/java</directory>     
             <includes>     
-                <include>**/*.*</include >    
+                <include>**/*.*</include>    
             </includes>   
            <excludes>     
-                <exclude>**/*.java</exclude >    
+                <exclude>**/*.java</exclude>    
             </excludes>   
         </resource>     
     </resources> 
 	</build>
 
 <dependencies>
+	<!-- dispatch testng调度部分所需jar包 -->
   	<dependency>
   		<groupId>org.testng</groupId>
   		<artifactId>testng</artifactId>
@@ -88,6 +102,7 @@
   		<type>jar</type>
   		<scope>compile</scope>
   	</dependency>
+  	<!-- toolkit工具箱所需jar包 -->
   	<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
@@ -229,6 +244,7 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		<!-- 共用jar包 -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
