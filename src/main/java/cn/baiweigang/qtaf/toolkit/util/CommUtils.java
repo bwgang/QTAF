@@ -1,4 +1,4 @@
-package cn.baiweigang.qtaf.toolkit.string;
+package cn.baiweigang.qtaf.toolkit.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.Random;
 import java.util.TreeMap;
 
-import cn.baiweigang.qtaf.toolkit.log.Tklogger;
 
 
 
@@ -24,7 +23,7 @@ import cn.baiweigang.qtaf.toolkit.log.Tklogger;
  */
 public class CommUtils {
 
-	private static Tklogger log = Tklogger.getLogger(CommUtils.class);// 日志记录
+	private static LogUtil log = LogUtil.getLogger(CommUtils.class);// 日志记录
 
 	/**
 	 * 将指定字节作MD5加密
@@ -236,7 +235,7 @@ public class CommUtils {
 	 * @return map
 	 */
 	public static TreeMap<String, String> parseQuery(String query, char split1,char split2) {
-		if (!TkString.IsNullOrEmpty(query) && query.indexOf(split2) > 0) {
+		if (!StringUtil.IsNullOrEmpty(query) && query.indexOf(split2) > 0) {
 			TreeMap<String, String> result = new TreeMap<String, String>();
 			String name = null;
 			// 定义value值
@@ -258,7 +257,7 @@ public class CommUtils {
 					name = (name != null) ? (name + c) : "" + c;
 				}
 			}
-			if (!TkString.IsNullOrEmpty(name) && value != null) {
+			if (!StringUtil.IsNullOrEmpty(name) && value != null) {
 				result.put(name, value);
 			}
 			return result;

@@ -1,4 +1,4 @@
-package cn.baiweigang.qtaf.toolkit.file;
+package cn.baiweigang.qtaf.toolkit.util;
 
 
 import java.io.File;
@@ -8,7 +8,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Map;
 
-import cn.baiweigang.qtaf.toolkit.log.Tklogger;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
@@ -20,18 +19,18 @@ import freemarker.template.TemplateException;
  */
 public class FreeMakerUtil {
 	//日志记录
-	private static Tklogger log=Tklogger.getLogger(FreeMakerUtil.class);
+	private static LogUtil log=LogUtil.getLogger(FreeMakerUtil.class);
 
 	/**
 	 * 根据模板+数据 输出文件
 	 * @param templateFilePath 模板的绝对路径
 	 * @param data 数据
 	 * @param javaFilePath 输出的文件位置
-	 * @return
+	 * @return boolean
 	 */
 	public boolean CreateJavaFile(String templateFilePath,Map<String, Object> data,String javaFilePath) {
 		
-		if (!TkFile.isEmeyxist(templateFilePath)) {
+		if (!FileUtil.isEmeyxist(templateFilePath)) {
 			log.info("模板文件不存在："+templateFilePath);
 			return false;
 		}
@@ -47,12 +46,12 @@ public class FreeMakerUtil {
 //		}
 //		log.info("FreeMaker--39--"+data.size());
 //		PrintModelObject.P(data.get("clsInfo"));
-		if (!TkFile.createFile(javaFilePath)) {
+		if (!FileUtil.createFile(javaFilePath)) {
 			return false;
 		}
 		try {
-			String tmpPath=TkFile.getParentPath(templateFilePath);
-			String tmpName=TkFile.getFileName(templateFilePath);
+			String tmpPath=FileUtil.getParentPath(templateFilePath);
+			String tmpName=FileUtil.getFileName(templateFilePath);
 			
 			Configuration cfg =new Configuration();
 			cfg.setDirectoryForTemplateLoading(new File(tmpPath));

@@ -1,4 +1,4 @@
-package cn.baiweigang.qtaf.toolkit.file;
+package cn.baiweigang.qtaf.toolkit.util;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,25 +9,24 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.TreeMap;
 
-import cn.baiweigang.qtaf.toolkit.log.Tklogger;
 
 /**
  * Properties配置文件相关处理
  * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
  *
  */
-public class TkProperties {
-	private static Tklogger log= Tklogger.getLogger(TkProperties.class);
+public class PropUtil {
+	private static LogUtil log= LogUtil.getLogger(PropUtil.class);
 
 	/**
 	 * 获取指定位置的property文件中property文件信息
 	 * @param fullFilePath property文件的全路径信息
-	 * @return 属性文件的信息
+	 * @return Properties 属性文件的信息
 	 * */
 	public static Properties getPropertyInfo(String fullFilePath){
 		Properties properties=new Properties();
 		try {
-			properties.load(TkFile.readToFileInputStream(fullFilePath));
+			properties.load(FileUtil.readToFileInputStream(fullFilePath));
 		} catch (IOException e) {
 			properties=null;
 			log.error(e.getMessage());
@@ -38,7 +37,7 @@ public class TkProperties {
 	/**获得properties文件里面指定属性名字的属性值，如果不存在该属性或者该属性的值为""，抛出异常
 	 * @param properties 给定的properties文件
 	 * @param propertiesName 属性名字
-	 * @return 属性值
+	 * @return String 属性值
 	 *  */
 	public static String getValue(Properties properties,String propertiesName){
 		String value=properties.getProperty(propertiesName);
@@ -50,7 +49,7 @@ public class TkProperties {
 	 * @param properties 给定的properties文件
 	 * @param propertiesName 属性名字
 	 * @param defaultValue 在属性值不存在或者为""的时候的返回的默认值
-	 * @return 属性值
+	 * @return String 属性值
 	 *  */
 	public static String getValue(Properties properties,String propertiesName,String defaultValue){
 		String value=properties.getProperty(propertiesName);
@@ -62,8 +61,8 @@ public class TkProperties {
 	 * 属性值为""的不加入返回的列表，如果属性值不存在或者所有的值都为"",抛出异常
 	 * @param properties 给定的properties文件
 	 * @param propertiesName 属性名字
-	 * @return 属性值列表*/
-	public static List<String>getValueList(Properties properties,String propertiesName){
+	 * @return List<String> 属性值列表*/
+	public static List<String> getValueList(Properties properties,String propertiesName){
 		ArrayList<String>valuesList;
 		String values=getValue(properties, propertiesName);
 		valuesList=new ArrayList<String>(values.length());
@@ -81,7 +80,7 @@ public class TkProperties {
 /**
  * 从配置文件中读取所有信息到map表中
  * @param properties
- * @return
+ * @return Map<String, String>
  */
 	public static Map<String, String> getAllInfoToMap(Properties properties) {
 		Map<String, String> map=new TreeMap<String, String>();

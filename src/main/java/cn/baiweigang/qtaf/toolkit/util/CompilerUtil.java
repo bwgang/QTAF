@@ -1,4 +1,4 @@
-package cn.baiweigang.qtaf.toolkit.file;
+package cn.baiweigang.qtaf.toolkit.util;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,9 +14,6 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
-import cn.baiweigang.qtaf.toolkit.log.Tklogger;
-import cn.baiweigang.qtaf.toolkit.string.TkString;
-
 
 /**
  * 编译java文件为class
@@ -26,7 +23,7 @@ import cn.baiweigang.qtaf.toolkit.string.TkString;
 public class CompilerUtil {   
 	
 	//日志记录
-	private static Tklogger log=Tklogger.getLogger(CompilerUtil.class);
+	private static LogUtil log=LogUtil.getLogger(CompilerUtil.class);
 	
 	/**
 	 * 编译java文件为class
@@ -34,7 +31,7 @@ public class CompilerUtil {
 	 * @param distPath      项目class文件存放目录
 	 * @param libPath       jar包存放目录
 	 * @param jarFile       jar包存放目录(maven)
-	 * @return 编译成功返回true
+	 * @return boolean 编译成功返回true
 	 */
     public static boolean dynamicCompiler(String javaFilePath,String distPath,String libPath,String jarFile) {
     	DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();  
@@ -59,7 +56,7 @@ public class CompilerUtil {
      * @param sourceDir 项目源码目录  
      * @param distDir 编译后class类文件存放目录  
      * @param diagnostics 存放编译过程中的错误信息  
-     * @return  
+     * @return   boolean
      */  
     private static  boolean compiler(String encoding,String jars,String filePath, String distDir, DiagnosticCollector<JavaFileObject> diagnostics){    
         // 获取编译器实例   
@@ -69,12 +66,12 @@ public class CompilerUtil {
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);   
           
         //编译文件
-        if (TkString.IsNullOrEmpty(filePath)) {   
+        if (StringUtil.IsNullOrEmpty(filePath)) {   
         	log.info("待编译的文件或目录不存在");
             return false;   
         } 
         //输出目录
-        if (!TkFile.createDictory(distDir)) {   
+        if (!FileUtil.createDictory(distDir)) {   
         	log.info("输出目录创建失败");
             return false;   
         } 
@@ -111,13 +108,14 @@ public class CompilerUtil {
     /**
      * 查找该目录下的所有的java文件  
      * @param sourceFile  
+     * @return List<File>
      */  
     private static  List<File> getSourceFiles(File sourceFile){   
     	List<File> sourceFileList = new ArrayList<File>();
         if (sourceFile.exists() && sourceFileList != null) {//文件或者目录必须存在   
             if (sourceFile.isDirectory()) {// 若file对象为目录
             	 // 得到该目录下以.java结尾的所有文件   
-            	List<String> sourceFileListTmp=TkFile.getFilesFromFolder(sourceFile.getPath(),"java");
+            	List<String> sourceFileListTmp=FileUtil.getFilesFromFolder(sourceFile.getPath(),"java");
             	for (String filePath : sourceFileListTmp) {
             		sourceFileList.add(new File(filePath));
 				}
@@ -133,12 +131,12 @@ public class CompilerUtil {
     /**
      * 查找该目录下的所有的jar文件
      * @param libPath
-     * @return
+     * @return String
      */
     private static  String  getJarFiles(String libPath,String jarFile) {   
     	// 得到该目录下以.jar结尾的所有文件
     	String jarsPath="";
-    	List<String> jarFilePath = TkFile.getFilesFromFolder(libPath,"jar");
+    	List<String> jarFilePath = FileUtil.getFilesFromFolder(libPath,"jar");
     	for (String filePath : jarFilePath) {
     		jarsPath=jarsPath+filePath+";"; 
 		}
@@ -147,7 +145,7 @@ public class CompilerUtil {
     }   
     
     private static String getClassPath(String libPath,String classPath,String jarFile){
-    	if (TkFile.isEmeyxist(classPath)) {
+    	if (FileUtil.isEmeyxist(classPath)) {
 			return getJarFiles(libPath,jarFile)+classPath;
 		}else{
 			log.info("classPath不存在："+classPath);

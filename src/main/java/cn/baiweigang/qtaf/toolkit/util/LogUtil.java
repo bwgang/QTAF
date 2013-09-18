@@ -1,4 +1,4 @@
-package cn.baiweigang.qtaf.toolkit.log;
+package cn.baiweigang.qtaf.toolkit.util;
 
 import java.io.File;
 
@@ -11,22 +11,22 @@ import cn.baiweigang.qtaf.toolkit.TkConf;
  * 自定义日志
  *
  */
-public class Tklogger {
+public class LogUtil {
 	private Logger log ;
-	private Tklogger(String name) {
+	private LogUtil(String name) {
 		configLogProperties();
 		log = Logger.getLogger(name);
 	}
-	private Tklogger(Class<?> clazz){
+	private LogUtil(Class<?> clazz){
 		configLogProperties();
 		log = Logger.getLogger(clazz);
 	}
 	
-	public static Tklogger getLogger(String name){
-		return new Tklogger(name);
+	public static LogUtil getLogger(String name){
+		return new LogUtil(name);
 	}
-	public static Tklogger getLogger(Class<?> clazz){
-		return new Tklogger(clazz);
+	public static LogUtil getLogger(Class<?> clazz){
+		return new LogUtil(clazz);
 	}
 	
 	public void error(Object message){

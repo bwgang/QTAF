@@ -1,11 +1,9 @@
-package cn.baiweigang.qtaf.toolkit.sftp;
+package cn.baiweigang.qtaf.toolkit.util;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import cn.baiweigang.qtaf.toolkit.file.TkFile;
-import cn.baiweigang.qtaf.toolkit.log.Tklogger;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
@@ -17,11 +15,11 @@ import com.jcraft.jsch.Session;
  * 连接到CentOS服务器，执行命令
  *@author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
  */
-public class ConnSftpForExec {
+public class SftpExecUtil {
 
 	private  static Session session = null;
 	private  static Channel channel = null;
-    private  Tklogger log=Tklogger.getLogger(ConnSftpForExec.class);//日志记录
+    private  LogUtil log=LogUtil.getLogger(SftpExecUtil.class);//日志记录
 
     public  String SshHost = "";
     public  String SshPort = "";
@@ -111,7 +109,7 @@ public class ConnSftpForExec {
 			channel.setInputStream(null);
 			((ChannelExec)channel).setErrStream(System.err);
 			 channel.connect(); 			 
-			 res=TkFile.readInputStreamToString(in, "UTF-8");
+			 res=FileUtil.readInputStreamToString(in, "UTF-8");
 			 in=null;
 //			 log.info("命令："+command+"执行完毕\n");
 //			 log.info("命令执行结果为：\n"+res);

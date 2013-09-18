@@ -1,4 +1,4 @@
-package cn.baiweigang.qtaf.toolkit.string;
+package cn.baiweigang.qtaf.toolkit.util;
 
 
 import java.io.UnsupportedEncodingException;
@@ -12,15 +12,14 @@ import java.util.regex.Pattern;
 
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
-import cn.baiweigang.qtaf.toolkit.log.Tklogger;
 
 /**
  * 字符串相关处理工具类
  *@author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
  */
-public class TkString {
+public class StringUtil {
 	
-	private  static Tklogger log=Tklogger.getLogger(TkString.class);//记录日志
+	private  static LogUtil log=LogUtil.getLogger(StringUtil.class);//记录日志
 	/**
 	 * 过滤指定的特殊字符
 	 * @param str

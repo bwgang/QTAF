@@ -1,10 +1,8 @@
-package cn.baiweigang.qtaf.toolkit.sftp;
+package cn.baiweigang.qtaf.toolkit.util;
 
 import java.io.InputStream;
 import java.util.Properties;
 
-import cn.baiweigang.qtaf.toolkit.file.TkFile;
-import cn.baiweigang.qtaf.toolkit.log.Tklogger;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
@@ -17,11 +15,11 @@ import com.jcraft.jsch.SftpException;
  * 针对CentOS服务器的文件进行下载，重命名等操作
  *@author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
  */
-public class ConnSftpForFile {
+public class SftpFileUtil {
 
 	private  static Session session = null;
 	private  static Channel channel = null;
-    private  Tklogger log=Tklogger.getLogger(ConnSftpForFile.class);//日志记录
+    private  LogUtil log=LogUtil.getLogger(SftpFileUtil.class);//日志记录
     
     public String FTPHOST;
     public String PORT;
@@ -181,9 +179,9 @@ public class ConnSftpForFile {
  		ChannelSftp channel=getChannel();
  		try {
  			input=channel.get(filepath);
- 			strtmp=TkFile.readInputStreamToString(input, "UTF-8");
+ 			strtmp=FileUtil.readInputStreamToString(input, "UTF-8");
  			if (null!=savepath && savepath.length()>0) {
- 				TkFile.writeString(strtmp, savepath, "UTF-8");
+ 				FileUtil.writeString(strtmp, savepath, "UTF-8");
 			}
 // 			log.info("从文件"+filepath+"获取信息成功");
  		} catch (SftpException e) {

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cn.baiweigang.qtaf.toolkit.string;
+package cn.baiweigang.qtaf.toolkit.util;
 
 
 import java.util.Iterator;
@@ -15,16 +15,15 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
-import cn.baiweigang.qtaf.toolkit.log.Tklogger;
 
 
 /**
  * XML文件解析处理
  *
  */
-public class XMLToMap {
+public class XmlUtil {
 	private static TreeMap<String, String> resultMap;
-	private static Tklogger log = Tklogger.getLogger(XMLToMap.class);// 日志记录
+	private static LogUtil log = LogUtil.getLogger(XmlUtil.class);// 日志记录
 	
 	public static TreeMap<String, String> fomatXMLToMap(String strXML) {
 		resultMap = new TreeMap<String, String>();

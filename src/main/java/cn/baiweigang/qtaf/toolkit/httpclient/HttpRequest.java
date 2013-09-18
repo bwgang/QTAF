@@ -30,15 +30,15 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import cn.baiweigang.qtaf.toolkit.log.Tklogger;
-import cn.baiweigang.qtaf.toolkit.string.TkString;
+import cn.baiweigang.qtaf.toolkit.util.LogUtil;
+import cn.baiweigang.qtaf.toolkit.util.StringUtil;
 
 /**
  * 封装HttpClient 发送Get、Post等请求
  *
  */
 public class HttpRequest {
-	protected Tklogger log = Tklogger.getLogger(this.getClass());
+	protected LogUtil log = LogUtil.getLogger(this.getClass());
 	private String charset;
 	private HttpClient httpClient;
 	private HttpGet httpGet;
@@ -84,7 +84,7 @@ public class HttpRequest {
      */
 	public ResponseInfo get(Map<String, String> headers, String url) {
 		ResponseInfo resInfo = new ResponseInfo();
-		if(TkString.IsNullOrEmpty(url)){
+		if(StringUtil.IsNullOrEmpty(url)){
 			log.error("url为空");
 			resInfo.setResBodyInfo("url为空");
 			return resInfo;
@@ -128,7 +128,7 @@ public class HttpRequest {
      */
 	public ResponseInfo post(TreeMap<String, String> headers, String url, String str) {
 		ResponseInfo resInfo = new ResponseInfo();
-		if(TkString.IsNullOrEmpty(url)){
+		if(StringUtil.IsNullOrEmpty(url)){
 			log.error("url为空");
 			resInfo.setResBodyInfo("url为空");
 			return resInfo;
@@ -199,7 +199,7 @@ public class HttpRequest {
 	 * @return
 	 */
 	public String getFile(Map<String, String> headers, String url,String enCoding) {
-		if (TkString.IsNullOrEmpty(enCoding)) enCoding="UTF-8";
+		if (StringUtil.IsNullOrEmpty(enCoding)) enCoding="UTF-8";
 		httpGet = new HttpGet(url);
 		httpGet = setHttpGetHeader(httpGet, headers);
 		try {

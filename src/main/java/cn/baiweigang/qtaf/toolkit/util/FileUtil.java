@@ -1,5 +1,4 @@
-package cn.baiweigang.qtaf.toolkit.file;
-
+package cn.baiweigang.qtaf.toolkit.util;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,17 +12,14 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.baiweigang.qtaf.toolkit.log.Tklogger;
-import cn.baiweigang.qtaf.toolkit.string.TkString;
-
 
 /**
  * 对文件的底层操作，包括读、写，文件的及目录的创建、删除
  * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
  *
  */
-public class TkFile {
-	private static Tklogger log=Tklogger.getLogger(TkFile.class);//日志记录
+public class FileUtil {
+	private static LogUtil log=LogUtil.getLogger(FileUtil.class);//日志记录
 	private static List<String>filelist=new ArrayList<>();
 	
 	//文件的读写
@@ -33,7 +29,6 @@ public class TkFile {
 	 * @param pathName
 	 * @return FileInputStream
 	 */
-
 	public static FileInputStream readToFileInputStream(String pathName) {
 		try {
 			return new FileInputStream(pathName);
@@ -80,7 +75,7 @@ public class TkFile {
 	 *  读取字符流，指定编码
 	 * @param pathName
 	 * @param enCoding
-	 * @return
+	 * @return String
 	 */
 	public static String readToString(String pathName,String enCoding) {
 		BufferedReader buff=readToBufferedReader(pathName,enCoding);
@@ -102,7 +97,7 @@ public class TkFile {
 	 *  读取字符流，指定编码
 	 * @param input
 	 * @param enCoding
-	 * @return
+	 * @return String
 	 */
 	public static String readInputStreamToString(InputStream input,String enCoding) {
 		BufferedReader reader ;
@@ -154,7 +149,7 @@ public class TkFile {
 	/**
 	 * 创建到文件的输出流
 	 * @param pathName
-	 * @return
+	 * @return FileOutputStream
 	 */
 	public static  FileOutputStream getFileOutStream(String pathName) {
 		//先创建一空白文件
@@ -172,7 +167,7 @@ public class TkFile {
 	 * 按字节写文件
 	 * @param byteStream
 	 * @param pathName
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean writeByteArray(byte[] byteStream,String pathName) {
 		boolean flag=false;
@@ -195,7 +190,7 @@ public class TkFile {
 	 * 把字节流写入文件
 	 * @param inStream
 	 * @param pathName
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean writeStream(InputStream inStream,String pathName) {
 		byte[] temp;
@@ -210,25 +205,6 @@ public class TkFile {
 		}
 		
 	}
-	/**
-	 * 把字节流写入文件
-	 * @param inStream
-	 * @param pathName
-	 * @return
-	 */
-//	public static boolean writeStream(InputStream inStream,String pathName) {
-//		byte[] temp;
-//		try {
-//			temp=new byte[inStream.available()];
-//			inStream.read(temp);
-//			return writeByteArray(temp,pathName);
-//		} catch (Exception e) {
-//			log.error("写入文件失败1"+pathName);
-//			log.error(e.getMessage());
-//			return false;
-//		}
-//		
-//	}
 
 	/**
 	 * 把字符串按指定编码写入文件
@@ -275,16 +251,16 @@ public class TkFile {
 	/**
 	 * 说明：删除指定的文件
 	 * 
-	 * @param pathName    文件的完整绝对路径或者相对路径
-	 * @return boolean result 删除成功返回true，删除失败、指定路径不存在返回false
+	 * @param file    	文件的完整绝对路径或者相对路径
+	 * @return boolean 		删除成功返回true，删除失败、指定路径不存在返回false
 	 */
-	public static boolean delFile(File pathName) {
+	public static boolean delFile(File file) {
 		boolean flag = false;
-		if (pathName.isFile() == true) {
-			pathName.delete();
+		if (file.isFile() == true) {
+			file.delete();
 			flag = true;
 		}else{
-			log.error("文件："+pathName+" 不存在，或者不是文件类型");
+			log.error("文件："+file+" 不存在，或者不是文件类型");
 		}
 		return flag;
 	}
@@ -293,8 +269,8 @@ public class TkFile {
 	/**
 	 * 说明：删除指定的文件
 	 * 
-	 * @param pathName    文件的完整绝对路径或者相对路径
-	 * @return boolean result 删除成功返回true，删除失败、指定路径不存在返回false
+	 * @param pathName  文件的完整绝对路径或者相对路径
+	 * @return boolean 删除成功返回true，删除失败、指定路径不存在返回false
 	 */
 	public static boolean delFile(String pathName) {
 		File path = new File(pathName);
@@ -359,7 +335,7 @@ public class TkFile {
 	/**
 	 * 创建目录
 	 * @param folderPath
-	 * @return 创建成功或者已存在返回true，不存在且创建失败返回false
+	 * @return boolean 创建成功或者已存在返回true，不存在且创建失败返回false
 	 */
 	public static boolean createDictory(String folderPath){
 		if (null==folderPath) return false;
@@ -381,7 +357,7 @@ public class TkFile {
 	/**
 	 * 创建指定的文件，空白文件，如果上层目录不存在则会创建
 	 * @param pathName
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean createFile(String pathName){
 		File pathNameFile=new File(pathName);
@@ -404,7 +380,7 @@ public class TkFile {
 	/**
 	 * 判断文件或文件夹是否存在
 	 * @param path
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean isEmeyxist(String path){
 		return new File(path).exists();
@@ -413,7 +389,7 @@ public class TkFile {
 	/**
 	 * 返回文件扩展名
 	 * @param fileName
-	 * @return
+	 * @return String
 	 */
 	public static String getExtensionName(String fileName) {   
 		if ((fileName != null) && (fileName.length() > 0)) {   
@@ -427,17 +403,17 @@ public class TkFile {
 	/**
 	 * 返回指定文件夹下所有文件路径名
 	 * @param folderPath
-	 * @return
+	 * @return List<String>
 	 */
 	public static List<String> getFilesFromFolder(String folderPath) {
-		TkFile myfile=new TkFile();
+		FileUtil myfile=new FileUtil();
 		return myfile.getFilesOfFolder(folderPath);
 	}
 	
 	/**
 	 * 返回文件绝对路径内的上层目录
 	 * @param absolutePath
-	 * @return
+	 * @return String
 	 */
 	public static String getParentPath(String absolutePath) {
 		if (!isEmeyxist(absolutePath)) {
@@ -451,7 +427,7 @@ public class TkFile {
 	/**
 	 * 返回文件绝对路径内的文件名
 	 * @param absolutePath
-	 * @return
+	 * @return String
 	 */
 	public static String getFileName(String absolutePath) {
 		if (!isEmeyxist(absolutePath)) {
@@ -465,7 +441,7 @@ public class TkFile {
 	 * 返回文件夹下指定扩展名的文件列表
 	 * @param folderPath
 	 * @param fileType
-	 * @return
+	 * @return List<String>
 	 */
 	public static List<String> getFilesFromFolder(String folderPath,String extensionName) {
 		List<String>files=getFilesFromFolder(folderPath);
@@ -481,8 +457,10 @@ public class TkFile {
 		return tmpList;
 	}
 	
-	/**关闭stream，并且不抛出异常
-	 * @param stream 待关闭的输入流*/
+	/**
+	 * 关闭stream，并且不抛出异常
+	 * @param stream 待关闭的输入流
+	 */
 	public static void closeStreamIgnoreExpection(InputStream stream) {
 		try{
 			if(stream!=null){
@@ -497,10 +475,10 @@ public class TkFile {
 	 * 重命名文件，输入参数为完全路径名
 	 * @param oldPathName
 	 * @param newPathName
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean renameFile(String oldPathName, String newPathName) {
-		if (TkString.IsNullOrEmpty(oldPathName) || TkString.IsNullOrEmpty(newPathName))return false;
+		if (StringUtil.IsNullOrEmpty(oldPathName) || StringUtil.IsNullOrEmpty(newPathName))return false;
 		if (oldPathName.equals(newPathName))return false;
 			
 		// 新的文件名和以前文件名不同时,才有必要进行重命名
@@ -520,16 +498,22 @@ public class TkFile {
 	 * 拷贝单个文件 源和目的文件都为完全路径名
 	 * @param srcPathName
 	 * @param distPathName
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean  copyFile(String srcPathName,String distPathName) {
-		if (TkString.IsNullOrEmpty(srcPathName) || TkString.IsNullOrEmpty(srcPathName)) return false;
+		if (StringUtil.IsNullOrEmpty(srcPathName) || StringUtil.IsNullOrEmpty(srcPathName)) return false;
 		if (distPathName.equals(srcPathName)) 		return false;
 		return writeStream(readToFileInputStream(srcPathName), distPathName);
 	}
 	
+	/**
+	 * 拷贝文件夹
+	 * @param srcFolderPath
+	 * @param distFolderPath
+	 * @return boolean
+	 */
 	public static boolean copyFolder(String srcFolderPath,String distFolderPath) {
-		if (TkString.IsNullOrEmpty(srcFolderPath) || TkString.IsNullOrEmpty(distFolderPath)) return false;
+		if (StringUtil.IsNullOrEmpty(srcFolderPath) || StringUtil.IsNullOrEmpty(distFolderPath)) return false;
 		if (srcFolderPath.toLowerCase().equals(distFolderPath)) return false;
 		 // 新建目标目录
 		createDictory(distFolderPath);
@@ -558,7 +542,7 @@ public class TkFile {
 	/**
 	 * 从文件完全路径中，获取最后一个"/"或"\"的位置
 	 * @param filePathName
-	 * @return
+	 * @return int
 	 */
 	public static int getFileNameIndexFromPath(String filePathName){
 		if (filePathName.toLowerCase().lastIndexOf("/")>-1){
@@ -568,34 +552,16 @@ public class TkFile {
 		}
 	}
 
-	
-	/**
-	 * 判断文件或文件夹是否存在
-	 * @param filePathName
-	 * @return
-	 */
-//	public static boolean isExist(String filePathName) {
-//		if (isEmeyxist(filePathName)) return false;
-//		
-//		try {
-//			return new File(filePathName).exists();
-//		} catch (Exception e) {
-//			log.error("文件不存在："+filePathName);
-//			return false;
-//		}
-//	}
-	
-	
 	/**
 	 * 返回目录下所有文件列表
 	 * @param folderPath
-	 * @return
+	 * @return List<String>
 	 */
 	private  List<String> getFilesOfFolder(String folderPath) {
 		File dir = new File(folderPath); 
         File[] files = dir.listFiles(); 
         if (files == null) {
-        	log.info("此目录下未取得任何文件："+folderPath);
+//        	log.info("此目录下未取得任何文件："+folderPath);
             return null; 
         }
         
@@ -609,6 +575,5 @@ public class TkFile {
 		
 		return filelist;
 	}
-	
 	
 }

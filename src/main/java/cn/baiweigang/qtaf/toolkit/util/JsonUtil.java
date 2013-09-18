@@ -1,4 +1,4 @@
-package cn.baiweigang.qtaf.toolkit.string;
+package cn.baiweigang.qtaf.toolkit.util;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -13,13 +13,13 @@ import net.sf.json.JSONObject;
  * 
  *
  */
-public class JSONToMap {
+public class JsonUtil {
 	private Map<String, Object> oneResult;
 
 	/**
 	 * 说明：构造函数，初始化map表
 	 */
-	public JSONToMap() {
+	public JsonUtil() {
 		this.oneResult = new TreeMap<String, Object>();
 	}
 
