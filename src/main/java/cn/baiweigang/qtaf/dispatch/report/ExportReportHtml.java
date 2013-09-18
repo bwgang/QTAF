@@ -10,7 +10,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 
 import cn.baiweigang.qtaf.dispatch.DispatchConf;
-import cn.baiweigang.qtaf.dispatch.util.DisPatchFile;
+import cn.baiweigang.qtaf.toolkit.util.FileUtil;
 
 
 /**
@@ -22,13 +22,14 @@ public class ExportReportHtml {
 
 	/**
 	 * 根据TestNG结果输出的xml文件，优化生成html格式测试报告
-	 * @param tngOutFilePath  TestNG的结果xml文件路径
-	 * @param htmlReportPath html报告的目录
-	 * @param htmlReportTitle 测试报告标题
+	 * @param  tngOutFilePath  TestNG的结果xml文件路径
+	 * @param  htmlReportPath html报告的目录
+	 * @param  htmlReportTitle 测试报告标题
+	 * @return boolean 创建成功返回true
 	 */
 	public static boolean createHtmlReport(String tngOutFilePath,String htmlReportPath,String htmlReportTitle) {
-		if (!DisPatchFile.isEmeyxist(tngOutFilePath) ) return false;
-		if (!DisPatchFile.createDictory(htmlReportPath)) return false;
+		if (!FileUtil.isEmeyxist(tngOutFilePath) ) return false;
+		if (!FileUtil.createDictory(htmlReportPath)) return false;
 		 try {
 			 Source xml = new javax.xml.transform.stream.StreamSource(tngOutFilePath);
 			 Source xsl = new javax.xml.transform.stream.StreamSource(DispatchConf.TestNGXsltFile);
@@ -45,7 +46,6 @@ public class ExportReportHtml {
 			  transformer.transform(xml, out);
 			  return true;
 		} catch (Exception e) {
-			// TODO: handle exception
 			return false;
 		}
 	}

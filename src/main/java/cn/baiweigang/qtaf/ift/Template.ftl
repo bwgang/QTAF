@@ -6,7 +6,7 @@ import java.util.List;
 import cn.baiweigang.qtaf.ift.testcase.IftTestCase;
 import cn.baiweigang.qtaf.ift.testcase.format.FormatCase;
 import cn.baiweigang.qtaf.ift.core.IFtResultInfo;
-import cn.baiweigang.qtaf.ift.core.IftLog;
+import cn.baiweigang.qtaf.dispatch.log.TestngLog;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -69,7 +69,7 @@ public class ${javaInfo.javaFileName}  {
 		
 		//用例开始
 
-		IftLog.CaseStart("测试集："+temp+"--的用例："+testcase.getCaseMap().get("CaseID")+"--"+testcase.getCaseMap().get("TestPoint"));
+		TestngLog.CaseStart("测试集："+temp+"--的用例："+testcase.getCaseMap().get("CaseID")+"--"+testcase.getCaseMap().get("TestPoint"));
 		
 		//发起http请求，
 		iftResInfo=cau.${clsInfo.method}(testcase);
@@ -101,14 +101,14 @@ public class ${javaInfo.javaFileName}  {
 		arrres.add(result);
 		
 		//写入TestNG日志
-		IftLog.Log("此用例预期结果为："+expres);
-		IftLog.Log("此用例实际结果为："+actres);
-		IftLog.Log("此用例请求返回的完整字符串为："+response);
-		IftLog.Log("此用例发送的请求URL为："+httpurl);
-		IftLog.Log("执行结果为："+res);
+		TestngLog.Log("此用例预期结果为："+expres);
+		TestngLog.Log("此用例实际结果为："+actres);
+		TestngLog.Log("此用例请求返回的完整字符串为："+response);
+		TestngLog.Log("此用例发送的请求URL为："+httpurl);
+		TestngLog.Log("执行结果为："+res);
 
 		//用例结束
-		IftLog.CaseEnd("测试集："+temp+"--的用例："+testcase.getCaseMap().get("CaseID")+"--"+testcase.getCaseMap().get("TestPoint"));
+		TestngLog.CaseEnd("测试集："+temp+"--的用例："+testcase.getCaseMap().get("CaseID")+"--"+testcase.getCaseMap().get("TestPoint"));
 	 
 		//比较结果记入TestNG断言中
 		org.testng.Assert.assertTrue(res, "实际结果:"+actres+"  -预期结果:"+expres);
@@ -125,12 +125,12 @@ public class ${javaInfo.javaFileName}  {
 		cau.CreatReportExcel(REPORT_PATH,REPORT_EXCEL_NAME,REPORT_SHEET_NAME,arrres);
 
 		//记录到TestNG日志
-		IftLog.Log("所有用例执行完毕");
-		IftLog.Log("共验证检查点数为："+arrres.size());
+		TestngLog.Log("所有用例执行完毕");
+		TestngLog.Log("共验证检查点数为："+arrres.size());
 		
 		 //此测试套执行完毕记入TestNG日志
 		temp=Thread.currentThread().getStackTrace()[1].getClassName();
 		temp=temp.substring(temp.lastIndexOf(".")+1, temp.length());
-		IftLog.Log("********************测试套：【"+temp+"】执行完毕**************************");
+		TestngLog.Log("********************测试套：【"+temp+"】执行完毕**************************");
 	 }
 }

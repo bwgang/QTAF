@@ -2,8 +2,6 @@ package cn.baiweigang.qtaf.dispatch.run;
 
 import cn.baiweigang.qtaf.dispatch.report.TestReport;
 
-
-
 /**
  * 说明：封装用例执行 单例模式
  * 
@@ -33,7 +31,7 @@ public class TestngRunSingle {
 	
 	/**
 	 * 获取类的实例
-	 * @return
+	 * @return TestngRunSingle
 	 */
 	public synchronized  static TestngRunSingle getInstance() {
 	      if (single == null) {  
@@ -44,20 +42,24 @@ public class TestngRunSingle {
 	
 	/**
 	 * 设置任务信息
-	 * @param taskName
+	 * @param runInfo 任务配置信息
 	 */
 	public void setRunInfo(TestRunInfo runInfo) {
 		// 设置任务信息
 		this.runInfo=runInfo;
 	}
 	
+	/**
+	 * 获取当前任务运行标识
+	 * @return boolean
+	 */
 	public  boolean getFlag() {
 		return Flag;
 	}
 	
 	/**
 	 * 说明：执行任务返回测试报告信息
-	 * @return 
+	 * @return  TestReport
 	 */
 	public TestReport execTask() {
 		setFlag(true);
@@ -79,7 +81,7 @@ public class TestngRunSingle {
 	/**
 	 * 说明：执行测试过程
 	 * 
-	 * @return 
+	 * @return  boolean
 	 */
 	private boolean doTask() {
 		boolean res=false;

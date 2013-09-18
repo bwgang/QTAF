@@ -1,6 +1,5 @@
 package cn.baiweigang.qtaf.ift.util;
 
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -17,11 +16,9 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 
-import cn.baiweigang.qtaf.toolkit.file.TkExcel;
-import cn.baiweigang.qtaf.toolkit.file.TkFile;
-import cn.baiweigang.qtaf.toolkit.string.CommUtils;
-
-
+import cn.baiweigang.qtaf.toolkit.util.CommUtils;
+import cn.baiweigang.qtaf.toolkit.util.ExcelUtil;
+import cn.baiweigang.qtaf.toolkit.util.FileUtil;
 
 /**
  * 说明：输出Excel格式的测试报告
@@ -29,11 +26,12 @@ import cn.baiweigang.qtaf.toolkit.string.CommUtils;
  */
 public class ExportReportExcel {
 	
-//	private static Mylogger log=Mylogger.getLogger(ExportReportExcel.class);//记录日志
 	/**
-	 * 说明： 根据测试执行过程中的记录，生成Excel的测试报告
+	 * 根据测试执行过程中的记录，生成Excel的测试报告
+	 * @param excelreportpath
+	 * @param filename
 	 * @param arrres
-	 * @return
+	 * @return boolean
 	 */
 	public boolean CreatReportExcel(String excelreportpath,String filename,ArrayList<LinkedHashMap<String,String>> arrres) {
 		boolean flag=false;
@@ -42,9 +40,12 @@ public class ExportReportExcel {
 	}
 	
 	/**
-	 * 说明： 根据测试执行过程中的记录，生成Excel的测试报告
+	 * 根据测试执行过程中的记录，生成Excel的测试报告
+	 * @param excelreportpath
+	 * @param filename
+	 * @param sheetname
 	 * @param arrres
-	 * @return
+	 * @return boolean
 	 */
 	public boolean CreatReportExcel(String excelreportpath,String filename,String sheetname,List<LinkedHashMap<String,String>> arrres) {
 		boolean flag=false;
@@ -86,7 +87,7 @@ public class ExportReportExcel {
 	/**
 	 * 说明：解析出内容，按顺序存储到List中，每行为一字符数组
 	 * @param arrres
-	 * @return
+	 * @return List<String[]>
 	 */
 	private List<String[]> getContentFromMap(List<LinkedHashMap<String,String>> arrres) {
 		List<String[]> content=new LinkedList<String[]>();
@@ -106,22 +107,22 @@ public class ExportReportExcel {
 	}
 
 	//Excel报告格式定义
-private void writeExcel(List<String> title,List<String[]> datas,String sheetName,String excelName,String excelreportpath){
-		TkExcel excel = new TkExcel();	
-		String pathName=excelreportpath+"/"+excelName+".xlsx";
-		
-		if (!TkFile.isEmeyxist(pathName)) {//不存在时，新建空白工作簿
-			excel.createBlankExcel2007(pathName);
+	private void writeExcel(List<String> title,List<String[]> datas,String sheetName,String excelName,String excelreportpath){
+			ExcelUtil excel = new ExcelUtil();	
+			String pathName=excelreportpath+"/"+excelName+".xlsx";
+			
+			if (!FileUtil.isEmeyxist(pathName)) {//不存在时，新建空白工作簿
+				excel.createBlankExcel2007(pathName);
+			}
+			
+			//读取Excel文件
+			excel.setPathName(pathName);
+			XSSFWorkbook wb=(XSSFWorkbook) excel.getWb();
+			updateWbFromContent(wb,title,datas,sheetName);//测试结果写入工作簿
+			excel.writeExcel2007(wb, pathName);//写入文件
 		}
-		
-		//读取Excel文件
-		excel.setPathName(pathName);
-		XSSFWorkbook wb=(XSSFWorkbook) excel.getWb();
-		updateWbFromContent(wb,title,datas,sheetName);//测试结果写入工作簿
-		excel.writeExcel2007(wb, pathName);//写入文件
-	}
-
-private void updateWbFromContent(XSSFWorkbook wb,List<String> title, List<String[]> datas,
+	
+	private void updateWbFromContent(XSSFWorkbook wb,List<String> title, List<String[]> datas,
 		String sheetName) {
 	
 		XSSFSheet sheet;

@@ -6,8 +6,8 @@ import org.testng.xml.XmlClass;
 import org.testng.xml.XmlTest;
 
 import cn.baiweigang.qtaf.ift.IftConf;
-import cn.baiweigang.qtaf.toolkit.file.CompilerUtil;
-import cn.baiweigang.qtaf.toolkit.log.Tklogger;
+import cn.baiweigang.qtaf.toolkit.util.CompilerUtil;
+import cn.baiweigang.qtaf.toolkit.util.LogUtil;
 
 /**
  * 说明：封装TestNG的XmlTest，包括名称、执行线程数等参数设置
@@ -17,7 +17,7 @@ import cn.baiweigang.qtaf.toolkit.log.Tklogger;
  */
 public class TestngXmlTest {
 		
-	private static Tklogger log=Tklogger.getLogger(TestngXmlTest.class);//日志记录
+	private static LogUtil log=LogUtil.getLogger(TestngXmlTest.class);//日志记录
 	//默认测试集名称
 	private final static String XMLTEST_NAME="未命名_"+System.currentTimeMillis();
 
@@ -33,7 +33,7 @@ public class TestngXmlTest {
 
 	/**
 	 * 更新测试集的信息，更新前会清空原XmlTest信息，并同时更新对应用例集的信息，创建新的.java文件
-	 * @return 更新成功返回true，失败返回false
+	 * @return boolean 更新成功返回true，失败返回false
 	 */
 	public boolean updateTestToXmlTest() {
 		
@@ -67,7 +67,8 @@ public class TestngXmlTest {
 	
 	/**
 	 * 设置TestCaseSet
-	 * @return 
+	 * @param testcaseset
+	 * @return  boolean
 	 */
 	public boolean setTestCaseSet(TestCaseSet testcaseset) {
 		if (null==testcaseset) {
@@ -79,7 +80,7 @@ public class TestngXmlTest {
 	}
 	/**
 	 * 返回用例集
-	 * @return the testcaseset 
+	 * @return TestCaseSet 
 	 * 
 	 */
 	public TestCaseSet getTestcaseset() {
@@ -88,13 +89,13 @@ public class TestngXmlTest {
 	
 	/**
 	 * 返回TestNG的Test测试集
-	 * @return the xmltest
+	 * @return XmlTest
 	 */
 	public XmlTest getXmlTest() {		
 		return xmltest;		
 	}
 	/**
-	 * @return the xmltestname
+	 * @return String
 	 */
 	public String getXmltestname() {
 		return xmltestname;
@@ -102,6 +103,7 @@ public class TestngXmlTest {
 
 	/**
 	 * @param xmltestname the xmltestname to set
+	 * @return boolean
 	 */
 	public boolean setXmltestname(String xmltestname) {
 		if (null!=xmltestname && xmltestname.length()>0) {
@@ -115,7 +117,7 @@ public class TestngXmlTest {
 	//私有方法
 	/**
 	 * 更新设置后的分组和依赖信息到用例集,重新生成java文件
-	 * @return
+	 * @return boolean
 	 */
 	private boolean updateTestCaseSet() {
 		boolean flag=false;

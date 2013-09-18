@@ -7,9 +7,9 @@ import java.util.TreeMap;
 
 import cn.baiweigang.qtaf.dispatch.testcase.SuperCase;
 import cn.baiweigang.qtaf.ift.IftConf;
-import cn.baiweigang.qtaf.toolkit.log.Tklogger;
-import cn.baiweigang.qtaf.toolkit.string.CommUtils;
-import cn.baiweigang.qtaf.toolkit.string.TkString;
+import cn.baiweigang.qtaf.toolkit.util.CommUtils;
+import cn.baiweigang.qtaf.toolkit.util.LogUtil;
+import cn.baiweigang.qtaf.toolkit.util.StringUtil;
 
 
 /**
@@ -18,8 +18,8 @@ import cn.baiweigang.qtaf.toolkit.string.TkString;
  *
  */
 public class IftDataFileCase extends SuperCase{
-	Tklogger log =Tklogger.getLogger(IftDataFileCase.class);//日志记录
 	
+	private LogUtil log =LogUtil.getLogger(IftDataFileCase.class);//日志记录
 	//任务名称
 	private String taskName;//测试任务名称
 	//根据用例数据文件，创建java、xml文件相关配置信息
@@ -36,6 +36,9 @@ public class IftDataFileCase extends SuperCase{
 	private TestngXmlSuite xmlSuite;//用例自动生成用到的测试套
 	private List<Map<String, Object>> testCaseList;//用例集列表
 	
+	/**
+	 * 构造函数
+	 */
 	public   IftDataFileCase() {
 		super();
 		xmlFilePath = IftConf.IftPath+ "suites/data/";
@@ -55,7 +58,7 @@ public class IftDataFileCase extends SuperCase{
 	}
 
 	/**
-	 * 
+	 * 添加用例
 	 * @param casePath 用例路径 必填
 	 * @param sheetName Excel的sheet表名 可选
 	 * @param caseName  用例名称 必填
@@ -65,8 +68,8 @@ public class IftDataFileCase extends SuperCase{
 	public void addCase(String casePath, String sheetName, String caseName,
 			Class<?> cls,String method) {
 		String template = IftConf.TemplatePath;
-		if (TkString.IsNullOrEmpty(casePath) || TkString.IsNullOrEmpty(caseName)
-				|| TkString.IsNullOrEmpty(template)) {
+		if (StringUtil.IsNullOrEmpty(casePath) || StringUtil.IsNullOrEmpty(caseName)
+				|| StringUtil.IsNullOrEmpty(template)) {
 			return;
 		}//任一项空值或长度小于1时，不做处理
 		
@@ -82,9 +85,8 @@ public class IftDataFileCase extends SuperCase{
 	}
 	
 	/**
-	 * 
+	 * 添加用例
 	 * @param casePath 用例路径 必填
-	 * @param sheetName Excel的sheet表名 可选
 	 * @param caseName  用例名称 必填
 	 * @param cls		执行用例的类 必填
 	 * @param method    类中的方法 必填
@@ -104,6 +106,10 @@ public class IftDataFileCase extends SuperCase{
 		this.xmlFileName = xmlFileName;
 	}
 
+	/**
+	 * 设置任务名称
+	 * @param setTaskName
+	 */
 	public void setIftTaskName(String setTaskName) {
 		setTaskName(setTaskName);
 		setReportExcelName(taskName);
@@ -113,22 +119,24 @@ public class IftDataFileCase extends SuperCase{
 		this.htmlReportPath = this.allReportPath + "/html";
 	}
 
-	
+	/**
+	 * 设置Excel报告输出路径
+	 * @param excelReportPath
+	 */
 	public void setExcelReportPath(String excelReportPath) {
-		if (TkString.IsNullOrEmpty(excelReportPath)) return;
+		if (StringUtil.IsNullOrEmpty(excelReportPath)) return;
 		this.excelReportPath=excelReportPath;
 	}
 	
 	/**
-	 * 设置xmlPathNameList列表
-	 * @return
+	 * 创建java、xml文件 更新xmlPathNameList列表
+	 * @return boolean 设置成功返回true
 	 */
 	public boolean updateXmlFileList() {
 		//创建java、xml文件
 		boolean res = createJavaAndXmlFile();
 		
 		if (res) {
-//			log.info("添加测试套文件："+this.xmlSuite.getXmlFilePath()+this.xmlSuite.getXmlName());
 			xmlPathNameList.add(this.xmlSuite.getXmlFilePath()+this.xmlSuite.getXmlName());
 		}else{
 			log.info("生成java或xml文件失败，请检查日志记录");

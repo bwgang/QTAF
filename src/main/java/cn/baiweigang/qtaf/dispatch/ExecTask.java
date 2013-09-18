@@ -3,7 +3,7 @@ package cn.baiweigang.qtaf.dispatch;
 import cn.baiweigang.qtaf.dispatch.report.TestReport;
 import cn.baiweigang.qtaf.dispatch.run.TestRunInfo;
 import cn.baiweigang.qtaf.dispatch.run.TestngRunSingle;
-import cn.baiweigang.qtaf.dispatch.util.DispatchComm;
+import cn.baiweigang.qtaf.toolkit.util.CommUtils;
 
 
 /**
@@ -17,12 +17,18 @@ public class ExecTask {
 	private TestRunInfo runInfo;
 	private TestReport report;
 	
+	/**
+	 * 构造函数
+	 */
 	public ExecTask() {
 		DispatchConf.writeConf();//检查配置文件，不存在则写入
 		task    = TestngRunSingle.getInstance();
 		report  = new TestReport();
 	}
-	
+	/**
+	 * 任务执行
+	 * @return TestReport
+	 */
 	public TestReport Exec() {
 		setResNoAndMsg(-1,"未知错误");
 		//传入参数校验
@@ -31,7 +37,7 @@ public class ExecTask {
 			return report;
 		}
 		//执行用例之前清空用例执行相关目录(XML配置文件、TestNG输出目录)
-		DispatchComm.delTmpPath();
+		DispatchConf.delTmpPath();
 		Long startTimeMS=System.currentTimeMillis();
 		Long startTime=startTimeMS/1000;
 		int sumTime=0;//记录等待时长，单位秒
@@ -47,7 +53,7 @@ public class ExecTask {
 					return report;//执行完毕后返回测试报告信息
 				} catch (Exception e) {
 					//运行异常清空目录
-					DispatchComm.delTmpPath();
+					DispatchConf.delTmpPath();
 					setResNoAndMsg(-202,"后台运行任务出错，请检查日志信息");
 					return report;
 				}
@@ -59,10 +65,14 @@ public class ExecTask {
 			}
 			//等待10秒后再试试
 //			log.info("后台用例执行中。。。等待10秒后再尝试执行");
-			DispatchComm.sleep(10000);
+			CommUtils.sleep(10000);
 		}//死循环判断完毕			
 	}
 	
+	/**
+	 * 设置任务运行配置信息
+	 * @param runInfo
+	 */
 	public void setRunInfo(TestRunInfo runInfo) {
 		this.runInfo = runInfo;
 	}

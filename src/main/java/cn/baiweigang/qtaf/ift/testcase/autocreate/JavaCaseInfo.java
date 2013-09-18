@@ -4,8 +4,6 @@ import java.util.List;
 
 import cn.baiweigang.qtaf.ift.testcase.IftTestCase;
 
-
-
 /**
  * 生成java文件时需要的信息
  * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>

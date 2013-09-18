@@ -1,16 +1,12 @@
 package cn.baiweigang.qtaf.ift.testcase.format;
 
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import cn.baiweigang.qtaf.ift.IftConf;
 import cn.baiweigang.qtaf.ift.testcase.IftTestCase;
-import cn.baiweigang.qtaf.toolkit.file.TkFile;
-
-
-
+import cn.baiweigang.qtaf.toolkit.util.FileUtil;
 
 /**
  * 功能说明：格式化测试用例数据， 目前只支持读取excel格式数据，XML、数据库等后续扩展
@@ -28,7 +24,7 @@ public class FormatCase {
 	private String sheetName;
 	
 	/**
-	 * 
+	 * 构造函数
 	 */
 	public FormatCase() {
 		this.arrCase = new ArrayList<LinkedHashMap<String, String>>();
@@ -41,15 +37,15 @@ public class FormatCase {
 		this.sheetName = "";
 	}
 	
+	/**
+	 * 从数据文件中读取测试用例
+	 * @param casePath
+	 * @param sheetName
+	 */
 	public void FormatCaseFromObj(String casePath,String sheetName) {
-		// 当前不从数据库中读取用例，暂注掉
-		// if (CommUtils.IsExcelFile(casepath)) {
 		this.FormatCaseFromExcel(casePath,sheetName);
-		this.casesetName = casePath.substring(casePath.lastIndexOf("/") + 1,casePath.length() - TkFile.getExtensionName(casePath).length());
+		this.casesetName = casePath.substring(casePath.lastIndexOf("/") + 1,casePath.length() - FileUtil.getExtensionName(casePath).length());
 		this.sheetName=sheetName;
-		// }else{
-		// FormatCaseFromMysql(casepath);
-		// }
 	}
 
 	/**
@@ -69,7 +65,7 @@ public class FormatCase {
 		// 设置测试集名称,Excel中未存储，从判断传入的path为excel时设置
 		// casesetName=readcase();
 		// 获取用例数据
-		for (int j = IftConf.paramStartRow; j < readCase.readRowNum(); j++) {
+		for (int j = IftConf.paramStartRow; j < readCase.getRowNum(); j++) {
 			IftTestCase tempcase = new IftTestCase();
 			tempcase.setArgCount(getArgcount());
 			tempcase.setHttpMethod(getHttpMethod());
@@ -103,7 +99,6 @@ public class FormatCase {
 	 * 功能：格式化Excel格式的测试用例
 	 * 
 	 * @param   casefilepath  读取Sheet1表格
-	 * @return void
 	 */
 	public void FormatCaseFromExcel(String casefilepath) {
 		// 记录读取到的用例数据信息
@@ -114,11 +109,8 @@ public class FormatCase {
 	/**
 	 * 功能：格式化Excel格式的测试用例
 	 * 
-	 * @param String
-	 *            casefilepath
-	 * @param String
-	 *            casesheetname 如果为空,默认读取Sheet1
-	 * @return void
+	 * @param casefilepath
+	 * @param casesheetname 如果为空,默认读取Sheet1
 	 */
 	public void FormatCaseFromExcel(String casefilepath, String casesheetname) {
 		if (null==casesheetname | casesheetname.length()<1) {
@@ -131,7 +123,6 @@ public class FormatCase {
 	 * 功能：格式化Xml格式的测试用例
 	 * 
 	 * @param casefilepath
-	 * @return void
 	 */
 	public void FormatCaseFromXml(String casefilepath) {
 		

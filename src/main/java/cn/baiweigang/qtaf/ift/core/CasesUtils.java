@@ -1,6 +1,5 @@
 package cn.baiweigang.qtaf.ift.core;
 
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -14,10 +13,9 @@ import cn.baiweigang.qtaf.ift.testcase.IftTestCase;
 import cn.baiweigang.qtaf.ift.util.ExportReportExcel;
 import cn.baiweigang.qtaf.toolkit.httpclient.HttpRequest;
 import cn.baiweigang.qtaf.toolkit.httpclient.ResponseInfo;
-import cn.baiweigang.qtaf.toolkit.log.Tklogger;
-import cn.baiweigang.qtaf.toolkit.string.CommUtils;
-import cn.baiweigang.qtaf.toolkit.string.TkString;
-
+import cn.baiweigang.qtaf.toolkit.util.CommUtils;
+import cn.baiweigang.qtaf.toolkit.util.LogUtil;
+import cn.baiweigang.qtaf.toolkit.util.StringUtil;
 
 /**
  * 说明：用例执行的公共处理类，执行粒度是一个TestCase实例 即Excel用例文件中的一条用例，或Mysql数据库中的一条用例
@@ -29,15 +27,38 @@ import cn.baiweigang.qtaf.toolkit.string.TkString;
  * 
  */
 public class CasesUtils {
-	// 日志记录
-	protected static Tklogger log = Tklogger.getLogger(CasesUtils.class);// 日志记录
-	protected String getUrl;// get方法所需参数拼接后的字符串
-	protected String postUrl;// post方法所需参数拼接后的字符串
-	protected String httpUrl;// 发起请求的地址
-	protected TreeMap<String, String> headersMap;// header的参数值对
-	protected LinkedHashMap<String, String> urlParaMap;// httpurl的参数值对
-	protected LinkedHashMap<String, String> formParaMap;// post提交时form的参数值对
-	protected HttpRequest sendRequestCore;// 发送http请求
+	/**
+	 * 日志记录
+	 */
+	protected static LogUtil log = LogUtil.getLogger(CasesUtils.class);
+	/**
+	 * get方法所需参数拼接后的字符串
+	 */
+	protected String getUrl;
+	/**
+	 * post方法所需参数拼接后的字符串
+	 */
+	protected String postUrl;
+	/**
+	 * 发起请求的地址
+	 */
+	protected String httpUrl;
+	/**
+	 * header的参数值对
+	 */
+	protected TreeMap<String, String> headersMap;
+	/**
+	 * httpurl的参数值对
+	 */
+	protected LinkedHashMap<String, String> urlParaMap;
+	/**
+	 * post提交时form的参数值对
+	 */
+	protected LinkedHashMap<String, String> formParaMap;
+	/**
+	 * http请求执行类
+	 */
+	protected HttpRequest sendRequestCore;
 	
 	/**
 	 * 无参构造函数 说明：创建httpclient连接初始化
@@ -59,8 +80,8 @@ public class CasesUtils {
 	/**
 	 * 发起请求，目前只支持get和post两个方法，待扩展
 	 * 
-	 * @param testcase
-	 * @return
+	 * @param testCase
+	 * @return ResponseInfo
 	 */
 	public ResponseInfo execResquest(IftTestCase testCase) {
 		ResponseInfo resInfo=new ResponseInfo();
@@ -126,7 +147,7 @@ public class CasesUtils {
 	 * @param resInfo http请求后返回的信息
 	 * @param expRes 从用例中读取的预期结果
 	 * @param actRes 格式化后的实际结果 目前只支持json和xml格式
-	 * @return
+	 * @return IFtResultInfo
 	 */
 	public IFtResultInfo getIFtResultInfo(ResponseInfo resInfo,String expRes,String actRes) {
 		return getIFtResultInfo(resInfo, expRes,actRes, 1);
@@ -137,7 +158,7 @@ public class CasesUtils {
 	 * @param expRes 从用例中读取的预期结果
 	 * @param actRes 格式化后的实际结果 目前只支持json和xml格式
 	 * @param parseJson json的解析方式 默认为单层解析
-	 * @return
+	 * @return IFtResultInfo
 	 */
 	public IFtResultInfo getIFtResultInfo(ResponseInfo resInfo,String expRes,String actRes,int parseJson) {
 		IFtResultInfo iFtResultInfo =  new IFtResultInfo();
@@ -172,6 +193,8 @@ public class CasesUtils {
 
 	/**
 	 * 更新httpurl
+	 * @param testCase
+	 * @return boolean 更新成功返回true
 	 */
 	protected boolean updateHttpUrl(IftTestCase testCase) {
 		String httpUrlTmp = testCase.getUrl();
@@ -198,8 +221,8 @@ public class CasesUtils {
 
 	/**
 	 * 拼接get方法所需的字符串 中文按照enCoding字段指定编码进行urlEncode转码
-	 * 
-	 * @return
+	 * @param testCase
+	 * @return boolean 拼接成功返回true
 	 */
 	protected boolean updateUrlPara(IftTestCase testCase) {
 		this.urlParaMap = new LinkedHashMap<String, String>();
@@ -226,7 +249,7 @@ public class CasesUtils {
 				}
 			}
 			// 去掉最后一个&符号
-			if(!TkString.IsNullOrEmpty(urlTmp)){
+			if(!StringUtil.IsNullOrEmpty(urlTmp)){
 				urlTmp = urlTmp.substring(0, urlTmp.length() - 1);
 			}
 			this.getUrl = urlTmp;
@@ -236,8 +259,8 @@ public class CasesUtils {
 
 	/**
 	 * 拼接post方法所需的字符串 中文按照enCoding字段指定编码进行urlEncode转码
-	 * 
-	 * @return
+	 * @param testcase
+	 * @return boolean 拼接成功返回true
 	 */
 	protected boolean updateFormParaMap(IftTestCase testcase) {
 		this.formParaMap = new LinkedHashMap<String, String>();
@@ -264,7 +287,7 @@ public class CasesUtils {
 				}
 			}
 			// 去掉最后一个&符号
-			if(!TkString.IsNullOrEmpty(postTmp)){
+			if(!StringUtil.IsNullOrEmpty(postTmp)){
 				postTmp = postTmp.substring(0, postTmp.length() - 1);
 			}
 			this.postUrl = postTmp;
@@ -275,8 +298,8 @@ public class CasesUtils {
 	/**
 	 * 往headers中添加参数信息
 	 * 
-	 * @param 用例
-	 * @return
+	 * @param testcase
+	 * @return boolean 添加成功返回true
 	 */
 	protected boolean updateHeadersMap(IftTestCase testcase) {
 		if (null != testcase.getHeaderMap()) {
@@ -311,8 +334,8 @@ public class CasesUtils {
 	// 用例处理相关的公共方法
 	/**
 	 * 获取参与签名计算的键值对map表
-	 * @param testcase用例
-	 * @return 参与签名计算的键值对map表
+	 * @param testcase
+	 * @return TreeMap<String, String> 参与签名计算的键值对map表
 	 */
 	protected static TreeMap<String, String> getSignMap(IftTestCase testcase) {
 		TreeMap<String, String> signMap = new TreeMap<String, String>();
@@ -334,8 +357,11 @@ public class CasesUtils {
 
 	/**
 	 * 更新参与签名计算、url参数、form参数、header参数的List到用例中
-	 * @param 用例,url参数集,form参数集,header参数集
-	 * @return 更新后的用例
+	 * @param testcase
+	 * @param urlParaCheck
+	 * @param formParaCheck
+	 * @param headerParaCheck
+	 * @return  IftTestCase
 	 */
 	protected static IftTestCase updateAllToListForCase(IftTestCase testcase,String[] urlParaCheck, 
 			String[] formParaCheck,String[] headerParaCheck) {
@@ -400,11 +426,10 @@ public class CasesUtils {
 	}
 
 	/**
-	 * 更新计算后的签名值到用例中
-	 * 
-	 * @param 用例
-	 *            ，签名值
-	 * @return 用例
+	 * 更新计算后的签名值到用例中 
+	 * @param testCase
+	 * @param signValue
+	 * @return IftTestCase
 	 */
 	protected static IftTestCase updateSignValueForCase(IftTestCase testCase,String signValue) {
 		LinkedHashMap<String, String> caseMap = testCase.getCaseMap();
@@ -430,9 +455,9 @@ public class CasesUtils {
 
 	/**
 	 * 针对参数值中的特殊标识做处理 当前只针对标识为rand、timetamp、date时进行处理
-	 * 
-	 * @param 用例
-	 * @return 返回更新后的用例
+	 * @param testCase
+	 * @param randNum
+	 * @return IftTestCase
 	 */
 	protected static IftTestCase updateAllParaForCase(IftTestCase testCase,int randNum) {
 		LinkedHashMap<String, String> caseMap = testCase.getCaseMap();
@@ -470,8 +495,8 @@ public class CasesUtils {
 	/**
 	 * 针对cookie信息的处理 中文按照用例中指定编码进行urlEncode转码
 	 * 
-	 * @param 用例
-	 * @return 用例
+	 * @param testCase
+	 * @return IftTestCase
 	 */
 	protected static IftTestCase updateCookieForCase(IftTestCase testCase) {
 		String cookies = "";
@@ -502,7 +527,7 @@ public class CasesUtils {
 	 * @param excelName
 	 * @param sheetName
 	 * @param arrres
-	 * @return
+	 * @return boolean 输出成功返回true
 	 */
 	public boolean CreatReportExcel(String folder,String excelName,String sheetName,List<LinkedHashMap<String,String>> arrres) {
 		ExportReportExcel exportexcel = new ExportReportExcel();
@@ -514,7 +539,7 @@ public class CasesUtils {
 	 * @param header 
 	 * @param http url地址
 	 * @param posturl 参数键值对 格式key=value&key=value
-	 * @return
+	 * @return ResponseInfo
 	 */
 	public ResponseInfo ExecPostResquest(TreeMap<String, String> header,String http, String posturl) {
 		ResponseInfo resInfo=new ResponseInfo();
@@ -537,7 +562,7 @@ public class CasesUtils {
 	 * 发起Get请求
 	 * @param header
 	 * @param gethttpurl get请求的url 包括参数键值对 ...?key=value&key=value
-	 * @return
+	 * @return ResponseInfo
 	 */
 	public ResponseInfo ExecGetResquest(TreeMap<String, String> header,String gethttpurl) {
 		ResponseInfo resInfo=new ResponseInfo();

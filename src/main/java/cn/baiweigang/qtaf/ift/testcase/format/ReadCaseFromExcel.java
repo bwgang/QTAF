@@ -1,38 +1,41 @@
 package cn.baiweigang.qtaf.ift.testcase.format;
-
-
 import java.util.List;
-
 import cn.baiweigang.qtaf.ift.IftConf;
-import cn.baiweigang.qtaf.toolkit.file.TkExcel;
-
+import cn.baiweigang.qtaf.toolkit.util.ExcelUtil;
 
 /**
  * 功能说明：从excel表中读取用例数据文件
  * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
  */
 public class ReadCaseFromExcel {
-	private TkExcel excel;
+	private ExcelUtil excel;
 	private int rowNum;
-	
 	private String url;
 	private String httpMethod;
 	private String cookie;
 	private int argcount;
 	private String[] argKey;
 	private String[] argValue;
-	
 
+	/**
+	 * 构造函数
+	 * @param pathName
+	 * @param sheetName
+	 */
 	public ReadCaseFromExcel(String pathName,String sheetName){
-		excel=new TkExcel(pathName, sheetName);
+		excel=new ExcelUtil(pathName, sheetName);
 	}
+	/**
+	 * 构造函数
+	 * @param pathName
+	 */
 	public ReadCaseFromExcel(String pathName){
-		excel=new TkExcel(pathName, 0);
+		excel=new ExcelUtil(pathName, 0);
 	}
 
 	/**
 	 * 功能说明：从excel表格B1中读取url并返回
-	 *  @return String url
+	 *  @return String 
 	 */
 	public String readUrl(){
 		this.url=excel.getCellValue(IftConf.urlRow, IftConf.urlCol).trim();
@@ -41,7 +44,7 @@ public class ReadCaseFromExcel {
 	
 	/**
 	 * 功能说明：从excel表格B2中读取readHttpMethod并返回
-	 *  @return String readHttpMethod
+	 *  @return String 
 	 */
 	public String readHttpMethod(){
 		this.httpMethod = excel.getCellValue(IftConf.methodRow, IftConf.methodCol).trim();
@@ -51,7 +54,7 @@ public class ReadCaseFromExcel {
 	/**
 	 * 功能说明：从excel表格B3中读取Cookie并返回
 	 * 			 
-	 *  @return String Cookie
+	 *  @return String 
 	 * 
 	 */
 	public String readCookie(){
@@ -62,7 +65,7 @@ public class ReadCaseFromExcel {
 	/**
 	 * 功能说明：从excel表格B4中读取argcount并返回
 	 * 			 
-	 *  @return int argcount
+	 *  @return int 
 	 * 
 	 */
 	public int readArgCount(){
@@ -73,7 +76,7 @@ public class ReadCaseFromExcel {
 	/**
 	 * 功能说明：从excel表格第5行中读取参数标题并返回
 	 * 			 
-	 *  @return String[]  argKey
+	 *  @return String[]  
 	 * 
 	 */
 	public String[] readArgKey(){
@@ -88,8 +91,8 @@ public class ReadCaseFromExcel {
 	/**
 	 * 功能说明：从excel表格指定行开始读取所有值并返回
 	 * 			 
-	 * @param int argKeynum
-	 *  @return String[]  argValue
+	 * @param argKeynum
+	 *  @return String[]  
 	 * 
 	 */
 	public String[] readArgValue(int argKeynum){	
@@ -100,7 +103,12 @@ public class ReadCaseFromExcel {
 		}
 		return this.argValue;
 		}
-	public int readRowNum() {
+	
+	/**
+	 * Excel的行数
+	 * @return int
+	 */
+	public int getRowNum() {
 		this.rowNum=excel.getRowNum();
 		return this.rowNum;
 	}

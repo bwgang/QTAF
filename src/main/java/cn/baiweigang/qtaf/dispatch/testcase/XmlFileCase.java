@@ -10,15 +10,26 @@ import java.util.List;
  */
 public class XmlFileCase extends SuperCase{
 
+	/**
+	 *默认构造函数
+	 */
 	public  XmlFileCase() {
 		super();
 		xmlPathNameList=new ArrayList<>();
 	}
+	/**
+	 * 构造函数  根据xml文件列表信息创建
+	 * @param xmlPathNameList
+	 */
 	public  XmlFileCase(List<String> xmlPathNameList) {
 		super();
 		xmlPathNameList=new ArrayList<>();
 		this.xmlPathNameList=xmlPathNameList;
 	}
+	/**
+	 * 构造函数 根据单个xml文件信息创建
+	 * @param xmlPathName
+	 */
 	public  XmlFileCase(String xmlPathName) {
 		super();
 		xmlPathNameList=new ArrayList<>();
@@ -26,9 +37,17 @@ public class XmlFileCase extends SuperCase{
 		this.xmlPathNameList.add(xmlPathName);
 	}
 
+	/**
+	 * 添加xml文件列表信息
+	 * @param xmlPathNameList
+	 */
 	public void addXmlCase(List<String> xmlPathNameList) {
 		this.xmlPathNameList.addAll(xmlPathNameList);
 	}
+	/**
+	 * 添加单个xml文件信息
+	 * @param xmlPathName
+	 */
 	public void addXmlCase(String xmlPathName) {
 		if (null==xmlPathName)return;
 		this.xmlPathNameList.add(xmlPathName);

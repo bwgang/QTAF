@@ -9,8 +9,8 @@ import org.testng.xml.XmlSuite;
 import org.testng.xml.XmlTest;
 
 import cn.baiweigang.qtaf.dispatch.DispatchConf;
-import cn.baiweigang.qtaf.dispatch.util.DispatchComm;
-import cn.baiweigang.qtaf.dispatch.util.DisPatchFile;
+import cn.baiweigang.qtaf.toolkit.util.CommUtils;
+import cn.baiweigang.qtaf.toolkit.util.FileUtil;
 
 
 /**
@@ -22,24 +22,40 @@ public class JavaFileCase extends SuperCase{
 	private final String XMLPATHNAME=DispatchConf.SuitsXmlPath;
 	private XmlSuite suite;
 	private String suiteName;
+	/**
+	 * 构造函数
+	 */
 	public JavaFileCase(){
 		super();
 		suite=new XmlSuite();
-		setSuiteName("未命名测试任务"+DispatchComm.getRandomStr(5));
+		setSuiteName("未命名测试任务"+CommUtils.getRandomStr(5));
 	}
+	/**
+	 * 获取用例列表，返回的是xml文件路径信息
+	 * @return List<String>
+	 */
 	public List<String> getCaseList(){
 		if (this.suite.getTests().size()<1) return null;
 		return Arrays.asList(createXmlFile());
 	}
+	/**
+	 * 添加用例
+	 * @param cls
+	 */
 	public void addCase(Class<?> cls){
 		if (null==cls) return ;
 		String caseName=cls.getSimpleName();
 		addCase(caseName, cls);
 	}
+	/**
+	 * 添加用例
+	 * @param caseName
+	 * @param cls
+	 */
 	public void addCase(String caseName,Class<?> cls) {
 		if (null==cls ) return;
 		if (null==caseName || caseName.length()<1) {
-			String nameTmp="未命名测试用例"+DispatchComm.getRandomStr(5);
+			String nameTmp="未命名测试用例"+CommUtils.getRandomStr(5);
 			addClassToXmlTest(cls.getName(), nameTmp);
 			return;
 		}
@@ -50,6 +66,10 @@ public class JavaFileCase extends SuperCase{
 		this.suite.addTest(test);
 	}
 
+	/**
+	 * 设置测试套名称
+	 * @param suiteName
+	 */
 	public void setSuiteName(String suiteName) {
 		if (null!=suiteName && suiteName.length()>0) this.suiteName = suiteName;
 		this.suite.setName(this.suiteName);
@@ -76,7 +96,7 @@ public class JavaFileCase extends SuperCase{
 			}
 			arr.add(xx[i]);
 		}
-		if (DisPatchFile.writeString(arr, this.XMLPATHNAME+this.suiteName+".xml", "UTF-8")){
+		if (FileUtil.writeString(arr, this.XMLPATHNAME+this.suiteName+".xml", "UTF-8")){
 			return this.XMLPATHNAME+this.suiteName+".xml";
 		}else {
 			return "";

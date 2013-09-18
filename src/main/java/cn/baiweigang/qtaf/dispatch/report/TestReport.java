@@ -9,29 +9,45 @@ import java.util.ArrayList;
  */
 public class TestReport {
 
-	private String taskId;//任务ID
-	private String taskName;//任务名称
-	private String htmlReport;//html报告存储位置
-	private String hostsFilePath;//使用的host文件存储位置
-	private Long  sumTime;//测试任务执行时长，单位：秒
+	/**
+	 * 任务ID
+	 */
+	private String taskId;
+	/**
+	 * 任务名称
+	 */
+	private String taskName;
+	/**
+	 * html报告存储位置
+	 */
+	private String htmlReport;
+	/**
+	 * 测试任务执行时长，单位：毫秒
+	 */
+	private Long  sumTime;
+	/**
+	 * 测试套/集 结果信息
+	 */
+	private TngCount tngSuiteCount;
+	/**
+	 * 测试套中所有测试集结果信息
+	 */
+	private ArrayList<TngCount> tngTestCountList;//
+	/**
+	 * 任务运行结果返回码
+	 */
+	private int resNo;
+	/**
+	 * 任务运行结果返回信息
+	 */
+	private String resMsg;
 	
-	private TngCount tngSuiteCount;//测试套结果信息
-	private ArrayList<TngCount> tngTestCountList;//测试套中所有测试集结果信息
-	
-	private int resNo;//任务运行结果返回码
-	private String resMsg;//任务运行结果返回信息
 	
 	public String getHtmlReport() {
 		return htmlReport;
 	}
 	public void setHtmlReport(String htmlReport) {
 		this.htmlReport = htmlReport;
-	}
-	public String getHostsFilePath() {
-		return hostsFilePath;
-	}
-	public void setHostsFilePath(String hostsFilePath) {
-		this.hostsFilePath = hostsFilePath;
 	}
 	public TngCount getTngSuiteCount() {
 		return tngSuiteCount;

@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.testng.xml.XmlSuite;
 
-import cn.baiweigang.qtaf.toolkit.file.TkFile;
-import cn.baiweigang.qtaf.toolkit.log.Tklogger;
+import cn.baiweigang.qtaf.toolkit.util.FileUtil;
+import cn.baiweigang.qtaf.toolkit.util.LogUtil;
 
 /**
  * 封装TestNg的XmlSuite
@@ -17,20 +17,19 @@ import cn.baiweigang.qtaf.toolkit.log.Tklogger;
  */
 public class TestngXmlSuite {
 
-	private static Tklogger log = Tklogger.getLogger(TestngXmlSuite.class);//日志记录
+	private static LogUtil log = LogUtil.getLogger(TestngXmlSuite.class);//日志记录
 	//默认测试套名称
-//	@SuppressWarnings("unused")
-//	private final static String XMLSUITE_NAME="interface_test";
 	private final static String XMLSUITE_XML_FILE_NAME="alltest.xml";
-	
 	private  XmlSuite  xmlsuite;
-	
 	//测试集，一个TestNG测试套中可以有多个测试集
 	private  List<TestngXmlTest> testngxmltestlist;
-	
 	private String xmlfilepath="";
 	private String xmlname=XMLSUITE_XML_FILE_NAME;
 	
+	/**
+	 * 更新测试集信息
+	 * @return boolean
+	 */
 	public boolean updateTestToXmlSuite() {
 		try {
 			//清空测试套
@@ -60,6 +59,11 @@ public class TestngXmlSuite {
 		}
 		
 	}
+	/**
+	 * 添加测试集
+	 * @param testngxmltest
+	 * @return boolean
+	 */
 	public boolean addXmlTest(TestngXmlTest testngxmltest) {
 		if (null == testngxmltest) {
 			log.info("添加的测试集不能为null");
@@ -74,8 +78,8 @@ public class TestngXmlSuite {
 	}
 	
 	/**
-	 * @param xmltest the xmltest to set
-	 * @return 设置成功返回true，失败返回false
+	 * @param testngxmltestlist the xmltest to set
+	 * @return boolean 设置成功返回true，失败返回false
 	 */
 	public boolean setXmlTestList(List<TestngXmlTest> testngxmltestlist) {
 		if (null!=testngxmltestlist) {
@@ -89,7 +93,7 @@ public class TestngXmlSuite {
 	
 	/**
 	 * 创建测试套对应的xml配置文件
-	 * @return 创建成功返回true，失败返回false
+	 * @return  boolean 创建成功返回true，失败返回false
 	 */
 	public boolean createXmlFile() {		
 		try {
@@ -105,7 +109,7 @@ public class TestngXmlSuite {
 				}
 				arr.add(xx[i]);
 			}	
-			boolean res = TkFile.writeString(arr,this.xmlfilepath+"/"+this.xmlname+".xml", "UTF-8");
+			boolean res = FileUtil.writeString(arr,this.xmlfilepath+"/"+this.xmlname+".xml", "UTF-8");
 //			if (res) log.info("创建测试套："+getXmlName()+" 对应的xml文件 "+this.xmlfilepath+"/"+this.xmlname+".xml 成功");
 			return res;
 			
@@ -118,7 +122,9 @@ public class TestngXmlSuite {
 
 
 	/**
-	 * @param xmlfilepath the xmlfilepath to set
+	 * 设置xml文件路径
+	 * @param xmlfilepath
+	 * @return boolean 设置成功返回true
 	 */
 	public boolean setXmlFilePath(String xmlfilepath) {
 		File filepath=new File(xmlfilepath);
@@ -137,7 +143,9 @@ public class TestngXmlSuite {
 	}
 
 	/**
-	 * @param xmlname the xmlname to set
+	 * 设置xml名称
+	 * @param xmlname
+	 * @return boolean 设置成功返回true
 	 */
 	public boolean setXmlName(String xmlname) {
 		try {

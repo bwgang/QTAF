@@ -1,6 +1,5 @@
 package cn.baiweigang.qtaf.ift.core;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,11 +7,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import cn.baiweigang.qtaf.dispatch.log.TestngLog;
-import cn.baiweigang.qtaf.toolkit.string.CommUtils;
-import cn.baiweigang.qtaf.toolkit.string.JSONToMap;
-import cn.baiweigang.qtaf.toolkit.string.TkString;
-import cn.baiweigang.qtaf.toolkit.string.XMLToMap;
+import cn.baiweigang.qtaf.ift.IftConf;
+import cn.baiweigang.qtaf.toolkit.util.CommUtils;
+import cn.baiweigang.qtaf.toolkit.util.JsonUtil;
+import cn.baiweigang.qtaf.toolkit.util.StringUtil;
+import cn.baiweigang.qtaf.toolkit.util.XmlUtil;
 
 
 /**
@@ -34,14 +33,11 @@ public class CompareResult {
 		clearExpres = "";
 	}
 	
-
 	/**
-	 * 说明：期望结果与实际结果的比对
-	 * 
-	 * @param expres 预期结果
-	 * @param actres 从请求响应中提取过滤后的实际结果
-	 * @param boolean 可选参数默认为1，只解析一层，2时全解析
-	 * 
+	 * 说明：期望结果与实际结果的比对  
+	 * @param expRes 预期结果
+	 * @param actRes 从请求响应中提取过滤后的实际结果
+	 * @param config 可选参数默认为1，只解析一层，2时全解析
 	 * @return boolean 相同时返回true，不同时返回false
 	 */
 	public boolean getCompareResult(String expRes, String actRes,int config){
@@ -51,13 +47,13 @@ public class CompareResult {
 		
 		Map<String, String> exp = new TreeMap<String, String>();
 		Map<String, String> act = new TreeMap<String, String>();
-		if (TkString.IsNullOrEmpty(expRes)) {
+		if (StringUtil.IsNullOrEmpty(expRes)) {
 			setClearExpres("预期结果为null或空字符串，不进行比对");
 			setClearActres("未设置预期值&实际结果为："+actRes);
 			return true;//预期结果为空或null时，不再进行比对处理，直接返回true
 		}
 		exp = trimExpres(expRes);
-		if (TkString.IsNullOrEmpty(actRes)) {
+		if (StringUtil.IsNullOrEmpty(actRes)) {
 			setClearActres("实际结果为null或空字符串，未找到");
 			return false;//实际结果为空或null时，不再进行比对处理，直接返回false
 		}
@@ -66,16 +62,13 @@ public class CompareResult {
 	}
 
 	/**
-	 * 说明：期望结果与实际结果的比对
-	 * 
-	 * @param expres 预期结果
-	 * @param actres 从请求响应中提取过滤后的实际结果
-	 * @param boolean 可选参数默认为1，只解析一层，2时全解析
-	 * 
+	 * 说明：期望结果与实际结果的比对 json解析方式 使用默认
+	 * @param expRes 预期结果
+	 * @param actRes 从请求响应中提取过滤后的实际结果
 	 * @return boolean 相同时返回true，不同时返回false
 	 */
 	public boolean getCompareResult(String expRes, String actRes) {
-		return getCompareResult(expRes,actRes,1);
+		return getCompareResult(expRes,actRes,IftConf.parseJson);
 	}
 
 	/**
@@ -138,7 +131,7 @@ public class CompareResult {
 		} 
 		
 		if (record.indexOf("未找到")>-1)  {
-			setClearActres(record+"&实际结果为："+TkString.getStrFromMap(actMap));
+			setClearActres(record+"&实际结果为："+StringUtil.getStrFromMap(actMap));
 		}
 
 		// 汇总比对结果
@@ -158,7 +151,7 @@ public class CompareResult {
 	 * 单个预期结果值与对应实际结果值的比对，支持预期结果值以#标识分割，多个预期结果的处理
 	 * @param expValue
 	 * @param actValue
-	 * @return
+	 * @return boolean
 	 */
 	private boolean MyCompareStr(String expValue, String actValue) {
 		//预期结果与实际结果任一为null，返回false
@@ -224,9 +217,9 @@ public class CompareResult {
 	private TreeMap<String, String> trimActres(String responseRes,int config) {
 		TreeMap<String, String> trimactres = new TreeMap<String, String>();
 		Map<String, Object> map = new TreeMap<String,Object>();
-		JSONToMap json = new JSONToMap();
+		JsonUtil json = new JsonUtil();
 		if (responseRes.contains("<?xml") && responseRes.indexOf("<?xml")<1) {//此处xml格式文本判断不严谨，有待优化
-			trimactres = XMLToMap.fomatXMLToMap(responseRes);
+			trimactres = XmlUtil.fomatXMLToMap(responseRes);
 			if (trimactres.size()<1) {
 				trimactres.put("解析xml格式错误", "---"+responseRes);
 			}
@@ -251,76 +244,19 @@ public class CompareResult {
 		return trimactres;
 	}
 
-	/**
-	 * 支付业务数据库比较专用，
-	 * @param expMap
-	 * @param actMap
-	 * @return
-	 */
-	public static boolean compareDataSqlMap(Map<String, String> expMap, Map<String, String> actMap) {
-		List<Boolean> resList = new ArrayList<Boolean>();
-		List<String> keyList = TkString.getKeyListFromMap(expMap);
-		for (int i = 0; i < keyList.size(); i++) {
-			String exp = TkString.getValueFromMapByKey(expMap, keyList.get(i));
-			String act = TkString.getValueFromMapByKey(actMap, keyList.get(i));
-			boolean res = exp.equals(act);
-			// 结果处理
-			if (res) {
-				TestngLog.Log("字段-" + keyList.get(i) + "    一致，" + "值为：" + act);
-				resList.add(true);
-			} else {
-				// 预期结果的特殊处理
-				// 预期值为NOTNULL时，数据库此字段不为空即可
-				if (exp.toUpperCase().equals("NOTNULL")) {
-					if (null != act && act.length() > 0) {
-						TestngLog.Log("字段-" + keyList.get(i) + "    非空，" + "值为：" + act);
-						resList.add(true);
-					}
-				} else if (exp.toUpperCase().equals("TIME")) {
-					if (null != act && act.length() == 21) {
-						TestngLog.Log("字段-" + keyList.get(i) + " 日期格式，" + "值为：" + act.substring(0, act.length() - 2));
-						resList.add(true);
-					}
-				} else {
-					TestngLog.Log("字段-" + keyList.get(i) + " 不一致，预期为：" + exp + " 实际为：" + act);
-					resList.add(false);
-				}
-			}// 结果判定结束
-		}// for循环处理每一列结束
 
-		for (int i = 0; i < resList.size(); i++) {
-			if (!resList.get(i)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-
-	/**
-	 * @return the clearActres
-	 */
 	public String getClearActres() {
 		return clearActres;
 	}
 
-	/**
-	 * @param clearActres the clearActres to set
-	 */
 	public void setClearActres(String clearActres) {
 		this.clearActres = clearActres;
 	}
 
-	/**
-	 * @return the clearExpres
-	 */
 	public String getClearExpres() {
 		return clearExpres;
 	}
 
-	/**
-	 * @param clearExpres the clearExpres to set
-	 */
 	public void setClearExpres(String clearExpres) {
 		this.clearExpres = clearExpres;
 	}

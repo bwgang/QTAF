@@ -12,11 +12,8 @@ import cn.baiweigang.qtaf.dispatch.report.ExportReportHtml;
 import cn.baiweigang.qtaf.dispatch.report.TestReport;
 import cn.baiweigang.qtaf.dispatch.report.TngCount;
 import cn.baiweigang.qtaf.dispatch.testcase.ICase;
-import cn.baiweigang.qtaf.dispatch.util.DispatchComm;
-import cn.baiweigang.qtaf.dispatch.util.DisPatchFile;
-
-
-
+import cn.baiweigang.qtaf.toolkit.util.CommUtils;
+import cn.baiweigang.qtaf.toolkit.util.FileUtil;
 
 /**
  * 执行testng，
@@ -45,6 +42,10 @@ public class TestngRun {
 		runInfo=new TestRunInfo();
 	}
 	
+	/**
+	 * 设置运行配置信息
+	 * @param runInfo
+	 */
 	public void setRunInfo(TestRunInfo runInfo) {
 		this.runInfo=runInfo;
 		for (ICase icase : this.runInfo.getCaseList()) {
@@ -54,7 +55,7 @@ public class TestngRun {
 	
 	/**
 	 * 执行用例
-	 * @return
+	 * @return boolean 执行成功返回true
 	 */
 	public boolean run() {
 		if (getXmlFileList().size()<1) {
@@ -87,7 +88,7 @@ public class TestngRun {
 
 	/**
 	 * 获取测试报告
-	 * @return
+	 * @return TestReport
 	 */
 	public TestReport getTestReport() {
 		return this.testReport;
@@ -107,7 +108,7 @@ public class TestngRun {
 	
 	private String getTaskName() {
 		if (this.runInfo.getTaskName() == null || this.runInfo.getTaskName().length()<1) {
-			return "未命名测试任务"+DispatchComm.getRandomStr(5);//默认的TestNG输出目录
+			return "未命名测试任务"+CommUtils.getRandomStr(5);//默认的TestNG输出目录
 		}
 		return this.runInfo.getTaskName();
 	}
@@ -141,9 +142,9 @@ public class TestngRun {
 		if (null==xmlPathName){
 			return false;
 		}
-		if (!DisPatchFile.getExtensionName(xmlPathName).equals("xml")) xmlPathName=xmlPathName+".xml";
+		if (!FileUtil.getExtensionName(xmlPathName).equals("xml")) xmlPathName=xmlPathName+".xml";
 		
-		if (DisPatchFile.isEmeyxist(xmlPathName)) {
+		if (FileUtil.isEmeyxist(xmlPathName)) {
 			this.xmlFileList.add(xmlPathName);
 			return true;
 		}else{

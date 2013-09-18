@@ -5,10 +5,25 @@ package cn.baiweigang.qtaf.dispatch.report;
  * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
  */
 public class TngCount {
-	private String name;//测试集/测试套名称
-	private String suiteName;//所属的测试套的名称，为空标识无所属测试套
+	/**
+	 * 测试套/集名称
+	 */
+	private String name;
+	/**
+	 * 所属的测试套的名称，为空标识无所属测试套
+	 */
+	private String suiteName;
+	/**
+	 * 失败数
+	 */
 	private int failed;
+	/**
+	 * 通过数
+	 */
 	private int passed;
+	/**
+	 * 跳过数
+	 */
 	private int skipped;
 	public String getName() {
 		return name;

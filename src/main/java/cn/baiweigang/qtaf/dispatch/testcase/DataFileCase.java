@@ -8,6 +8,9 @@ package cn.baiweigang.qtaf.dispatch.testcase;
  *
  */
 public class DataFileCase extends SuperCase{
+	/**
+	 * 默认构造函数
+	 */
 	public   DataFileCase() {
 		super();
 	}

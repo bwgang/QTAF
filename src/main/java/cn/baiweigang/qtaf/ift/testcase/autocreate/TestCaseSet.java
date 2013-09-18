@@ -8,9 +8,9 @@ import java.util.TreeMap;
 
 import cn.baiweigang.qtaf.ift.testcase.IftTestCase;
 import cn.baiweigang.qtaf.ift.testcase.format.FormatCase;
-import cn.baiweigang.qtaf.toolkit.file.FreeMakerUtil;
-import cn.baiweigang.qtaf.toolkit.file.TkFile;
-import cn.baiweigang.qtaf.toolkit.log.Tklogger;
+import cn.baiweigang.qtaf.toolkit.util.FileUtil;
+import cn.baiweigang.qtaf.toolkit.util.FreeMakerUtil;
+import cn.baiweigang.qtaf.toolkit.util.LogUtil;
 
 
 /**
@@ -20,7 +20,7 @@ import cn.baiweigang.qtaf.toolkit.log.Tklogger;
  */
 public class TestCaseSet {	
 		
-	private static Tklogger log=Tklogger.getLogger(TestCaseSet.class);//日志记录
+	private static LogUtil log=LogUtil.getLogger(TestCaseSet.class);//日志记录
 	
 	private  String javasavepath="";//生成的java用例的路径	
 	private  String casetemplatepath="";//用例模板路径
@@ -43,7 +43,7 @@ public class TestCaseSet {
 
 	/**
 	 * 读取测试用例
-	 * @return
+	 * @return boolean 读取成功返回true
 	 */
 	public boolean readCaseInfo() {
 		boolean flag=false;
@@ -72,7 +72,7 @@ public class TestCaseSet {
 	
 	/**
 	 * 根据用例数据信息创建对应的.java源文件
-	 * @return 创建成功返回true，失败返回false
+	 * @return boolean 创建成功返回true，失败返回false
 	 */
 	public boolean creatJavaSrcFile() {
 		boolean flag=false;
@@ -80,8 +80,6 @@ public class TestCaseSet {
 			FreeMakerUtil creatjava=new FreeMakerUtil();
 			flag=creatjava.CreateJavaFile(getCasetemplatepath(), getJavaFileData(), getJavasavepath()+getCasename()+".java");
 			String javaFilePathTmp = "";
-//			String javaFilePathTmp=creatjava.CreateJavaFile(templateFilePath, data, javaFilePath)(getJavaInfo());
-//模板方式	String javaFilePathTmp=creatjava.Create(getJavaInfo());
 			log.info("创建"+getCasename()+"对应的.java文件成功："+javaFilePathTmp);
 			flag=true;	
 		} catch (Exception e) {
@@ -94,30 +92,20 @@ public class TestCaseSet {
 
 	/**
 	 * 判断用例集是否初始化配置完毕
-	 * @return 初始化完毕返回true，否则返回false
+	 * @return boolean 初始化完毕返回true，否则返回false
 	 */
 	public boolean isConfigOk() {
 		boolean flag=false;
 		try {
-			//调试
-			
 			//判断用例数是否不小于1
 			if (getAllTestCase().size()<1) {
 				log.info("用例："+getCasename()+"的用例数小于1");
 				return false;
 			}
-			//判断创建的java源文件是否存在
-//			log.info(getJavasavepath()+getCasename()+".java");
-//			File temp=new File(getJavasavepath()+getCasename()+".java");
-//			if (!temp.exists()){
-//				log.info("用例："+getCasename()+"对应的java文件未创建");
-//				return false;
-//			}
 			flag=true;
 		} catch (Exception e) {
 			log.error("初始化用例："+getCasename()+"异常");
 			log.error(e.getMessage());
-			// 
 		}
 		return flag;
 	}
@@ -125,11 +113,11 @@ public class TestCaseSet {
 	
 	/**
 	 * 设置用例数据文件路径
-	 * @param casedatafilepath 
-	 * @return 设置成功返回true，失败返回false
+	 * @param casedatapath 
+	 * @return boolean 设置成功返回true，失败返回false
 	 */
 	public boolean setCasedatapath(String casedatapath) {
-		if (!TkFile.isEmeyxist(casedatapath)) {
+		if (!FileUtil.isEmeyxist(casedatapath)) {
 			log.error("用例数据"+casedatapath+"文件不存在，请检查");
 			return false;
 		}
@@ -147,8 +135,8 @@ public class TestCaseSet {
 	
 	/**
 	 * 设置Excel格式测试报告的名称
-	 * @param excelreportname
-	 * @return 设置成功返回true，失败返回false
+	 * @param reportexcelname
+	 * @return boolean 设置成功返回true，失败返回false
 	 */
 	public boolean setReportexcelname(String reportexcelname) {
 		if (null==reportexcelname || reportexcelname.length()<1) {
@@ -162,7 +150,7 @@ public class TestCaseSet {
 	/**
 	 * 设置用例模板的路径
 	 * @param casetemplatepath
-	 * @return 设置成功返回true，失败返回false
+	 * @return boolean 设置成功返回true，失败返回false
 	 */
 	public boolean setCasetemplatepath(String casetemplatepath) {
 		if (!new File(casetemplatepath).exists()) {
@@ -175,7 +163,7 @@ public class TestCaseSet {
 	
 	/**
 	 * 获取所有用例实体信息列表
-	 * @return
+	 * @return List<IftTestCase>
 	 */
 	public  List<IftTestCase> getAllTestCase() {
 		return allcase;
@@ -184,17 +172,17 @@ public class TestCaseSet {
 	
 	/**
 	 * 获取创建的.java文件的包名
-	 * @return 格式为ift.TestCases这样格式的
+	 * @return String 格式为ift.TestCases这样格式的
 	 */
 	public String getPackagename() {
-		if (this.packagename.length()<1) this.packagename="ift.id.server.testcases";
+		if (this.packagename.length()<1) this.packagename="ift.testcases";
 		return packagename;
 	}
 
 	/**
 	 * 设置待创建的用例.java源文件所在的包名
 	 * @param packagename
-	 * @return 设置成功返回true，失败返回false
+	 * @return boolean 设置成功返回true，失败返回false
 	 */
 	public boolean setPackagename(String packagename) {
 		if (null==packagename || packagename.length()<1) {
@@ -213,7 +201,7 @@ public class TestCaseSet {
 	
 	/**
 	 * 获取用例对应的.java文件名称
-	 * @return
+	 * @return String
 	 */
 	public String getCasename() {
 		return testname;
@@ -222,7 +210,7 @@ public class TestCaseSet {
 	/**
 	 * 设置用例对应的.java文件名称
 	 * @param testname
-	 * @return
+	 * @return boolean
 	 */
 	public boolean  setCasename(String testname) {
 		if (null==testname || testname.length()<1 ) {
@@ -345,15 +333,15 @@ public class TestCaseSet {
 
 	/**
 	 * 返回用例数据文件路径
-	 * @return
+	 * @return String
 	 */
 	private String getCasedatapath() {
 		return casedatapath;
 	}
 
-		/**
+	/**
 	 * 返回Excel报告的文件名
-	 * @return
+	 * @return String
 	 */
 	private String getReportexcelname() {
 		return reportexcelname;
@@ -362,7 +350,7 @@ public class TestCaseSet {
 	
 	/**
 	 * 获取用例生成模板的路径
-	 * @return
+	 * @return String
 	 */
 	private String getCasetemplatepath() {
 		return casetemplatepath;

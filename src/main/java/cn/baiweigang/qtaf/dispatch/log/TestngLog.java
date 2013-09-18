@@ -2,7 +2,8 @@ package cn.baiweigang.qtaf.dispatch.log;
 
 import org.testng.Reporter;
 
-import cn.baiweigang.qtaf.dispatch.util.DispatchComm;
+import cn.baiweigang.qtaf.toolkit.util.CommUtils;
+
 
 
 /**
@@ -18,7 +19,7 @@ public class TestngLog {
 	 * @param testCaseName 用例名称
 	 */
 	public static void CaseStart(String testCaseName) {
-		TestNGLog("[" + DispatchComm.getNowTime() + "]" + "--用例-------【" + testCaseName
+		TestNGLog("[" + CommUtils.getNowTime() + "]" + "--用例-------【" + testCaseName
 				+ "】----------开始执行---------------");
 	}
 
@@ -28,7 +29,7 @@ public class TestngLog {
 	 * @param testCaseName 用例名称
 	 */
 	public static void CaseEnd(String testCaseName) {
-		TestNGLog("[" + DispatchComm.getNowTime() + "]" + "--用例-------【" + testCaseName
+		TestNGLog("[" + CommUtils.getNowTime() + "]" + "--用例-------【" + testCaseName
 				+ "】----------执行完毕---------------");
 		TestNGLog(
 				"///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////");
@@ -36,10 +37,10 @@ public class TestngLog {
 
 	/**
 	 * 说明：把指定信息写入TestNG日志
-	 * @param String 字符串
+	 * @param str 字符串
 	 */
 	public static void Log(String str) {
-		TestNGLog("[" + DispatchComm.getNowTime() + "]" + "---" + str + "\n");
+		TestNGLog("[" + CommUtils.getNowTime() + "]" + "---" + str + "\n");
 	}
 
 	/**
