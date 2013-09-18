@@ -3,8 +3,6 @@ package cn.baiweigang.qtaf.dispatch;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.testng.annotations.Test;
-
 import cn.baiweigang.qtaf.dispatch.report.TestReport;
 import cn.baiweigang.qtaf.dispatch.run.TestRunInfo;
 import cn.baiweigang.qtaf.dispatch.testcase.ICase;
