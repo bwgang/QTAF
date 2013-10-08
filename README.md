@@ -14,4 +14,7 @@ maven引用:
   `<version>0.0.1</version>`<br>
 `</dependency>`
 
+使用示例:<br>
+https://github.com/bwgang/QTAF/tree/example
+
 
