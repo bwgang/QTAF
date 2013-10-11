@@ -2,8 +2,11 @@ package cn.baiweigang.qtaf.dispatch;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Properties;
+
 import org.apache.commons.io.FileUtils;
+
 import cn.baiweigang.qtaf.toolkit.util.CommUtils;
 import cn.baiweigang.qtaf.toolkit.util.FileUtil;
 
@@ -49,7 +52,7 @@ public class DispatchConf {
 	 * @return boolean 已存在或创建失败时返回false  创建成功返回true
 	 */
 	public static boolean writeConf() {
-		if (!FileUtil.isEmeyxist(DispatchConf.TestNGXsltFile)) {
+		if (!new File(DispatchConf.TestNGXsltFile).exists()) {
 			try {
 				FileUtils.copyFile(new File(DispatchConf.class.getResource("testng-results.xsl").getFile()), new File(DispatchConf.TestNGXsltFile));
 				return true;
@@ -98,7 +101,7 @@ public class DispatchConf {
 		Properties prop = new Properties();
 		try {
 			FileInputStream file = new FileInputStream("conf.properties");
-			prop.load(file);
+			prop.load(new InputStreamReader(file,"UTF-8"));
 			file.close();
 		} catch (Exception e) {
 //			e.printStackTrace();

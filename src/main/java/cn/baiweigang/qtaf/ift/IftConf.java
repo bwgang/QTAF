@@ -3,6 +3,7 @@ package cn.baiweigang.qtaf.ift;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -193,7 +194,7 @@ public class IftConf{
 			if (!new File(ConfFile).exists() || !new File(TemplatePath).exists()
 					)IftConf.writeConf();
 			FileInputStream file = new FileInputStream(ConfFile);
-			prop.load(file);
+			prop.load(new InputStreamReader(file,"UTF-8"));
 			file.close();
 		} catch (Exception e) {
 //			e.printStackTrace();
@@ -253,8 +254,8 @@ public class IftConf{
 	 * 检查相关配置，不存在则创建
 	 */
 	public static void checkConf() {
-		DispatchConf.writeConf();
 		TkConf.writeConf();
+		DispatchConf.writeConf();
 		IftConf.writeConf();
 	}
 	
