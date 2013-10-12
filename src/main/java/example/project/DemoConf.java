@@ -1,4 +1,4 @@
-package tk.qtest.qtaf.demo;
+package example.project;
 
 public class DemoConf {
 

@@ -1,4 +1,4 @@
-package tk.qtest.qtaf.demo;
+package example.project;
 
 import java.util.TreeMap;
 

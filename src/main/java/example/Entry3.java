@@ -1,10 +1,9 @@
-package tk.qtest.qtaf;
+package example;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-import tk.qtest.qtaf.demo.DemoCasesUtils;
 
 import cn.baiweigang.qtaf.dispatch.ExecTask;
 import cn.baiweigang.qtaf.dispatch.report.TestReport;
@@ -12,6 +11,7 @@ import cn.baiweigang.qtaf.dispatch.run.TestRunInfo;
 import cn.baiweigang.qtaf.dispatch.testcase.ICase;
 import cn.baiweigang.qtaf.ift.IftConf;
 import cn.baiweigang.qtaf.ift.testcase.autocreate.IftDataFileCase;
+import example.project.DemoCasesUtils;
 
 
 public class Entry3 {

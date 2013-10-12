@@ -42,7 +42,7 @@
 						<configuration>
 							<tasks>
 								<property name="runtime_classpath" refid="maven.runtime.classpath" />
-								<java classname="tk.qtest.qtaf.Entry" classpath="${runtime_classpath}"
+								<java classname="example.Entry" classpath="${runtime_classpath}"
 									fork="true" maxmemory="256m">
 									<sysproperty key="file.encoding" value="UTF-8" />
 									<arg value="${runtime_classpath}" />
