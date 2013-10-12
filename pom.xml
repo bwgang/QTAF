@@ -37,8 +37,8 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>compile</id>
-						<phase>compile</phase>
+						<id>test</id>
+						<phase>test</phase>
 						<configuration>
 							<tasks>
 								<property name="runtime_classpath" refid="maven.runtime.classpath" />
@@ -71,6 +71,13 @@
 			<artifactId>qtaf</artifactId>
 			<version>1.0.0</version>
 			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>cn.baiweigang</groupId>
+			<artifactId>qtaf</artifactId>
+			<version>1.0.0</version>
+			<type>java-source</type>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>

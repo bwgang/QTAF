@@ -16,7 +16,7 @@ public class Entry {
 
 
 	public static void main(String[] args) {
-		//依赖的jar文件路径信息  必须设置 以maven方式运行一次后会记录
+		//依赖的jar文件路径信息  必须设置 以maven方式运行一次后会记录本地库jar文件位置
 		if (!IftConf.updateJarFile(args)) return;
 		
 		//添加用例
@@ -31,7 +31,7 @@ public class Entry {
 		iftExec.addCase(IftConf.RootPath+"demo.xlsx","Post","PayDemo",
 				DemoCasesUtils.class,"DemoMethod1");
 		iftExec.addCase(IftConf.RootPath+"demo.xlsx","Get","PayDemo2",
-				DemoCasesUtils.class,"DemoMethod2");
+				DemoCasesUtils.class,"DemoMethod1");
 		
 		//执行
 		TestReport report=iftExec.run();
