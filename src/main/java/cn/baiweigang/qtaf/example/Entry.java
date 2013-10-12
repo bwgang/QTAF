@@ -1,12 +1,12 @@
 /**
  * 
  */
-package example;
+package cn.baiweigang.qtaf.example;
 
 import cn.baiweigang.qtaf.dispatch.report.TestReport;
+import cn.baiweigang.qtaf.example.project.DemoCasesUtils;
 import cn.baiweigang.qtaf.ift.IftConf;
 import cn.baiweigang.qtaf.ift.IftExec;
-import example.project.DemoCasesUtils;
 
 /**
  * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>

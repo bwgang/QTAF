@@ -1,17 +1,18 @@
-package example;
+package cn.baiweigang.qtaf.example;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 
+
 import cn.baiweigang.qtaf.dispatch.ExecTask;
 import cn.baiweigang.qtaf.dispatch.report.TestReport;
 import cn.baiweigang.qtaf.dispatch.run.TestRunInfo;
 import cn.baiweigang.qtaf.dispatch.testcase.ICase;
+import cn.baiweigang.qtaf.example.project.DemoCasesUtils;
 import cn.baiweigang.qtaf.ift.IftConf;
 import cn.baiweigang.qtaf.ift.testcase.autocreate.IftDataFileCase;
-import example.project.DemoCasesUtils;
 
 
 public class Entry3 {

@@ -1,4 +1,4 @@
-package example.project;
+package cn.baiweigang.qtaf.example.project;
 
 import java.util.TreeMap;
 

@@ -2,13 +2,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>tk.qtest</groupId>
-  <artifactId>qtaf.project</artifactId>
+  <groupId>cn.baiweigang</groupId>
+  <artifactId>qtaf.example</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>qtaf.project</name>
-  <url>http://maven.apache.org</url>
+  <name>qtaf.example</name>
+  <url>http://baiweigang.cn</url>
 
   <build>
 
@@ -42,7 +42,7 @@
 						<configuration>
 							<tasks>
 								<property name="runtime_classpath" refid="maven.runtime.classpath" />
-								<java classname="example.Entry" classpath="${runtime_classpath}"
+								<java classname="cn.baiweigang.qtaf.example.Entry" classpath="${runtime_classpath}"
 									fork="true" maxmemory="256m">
 									<sysproperty key="file.encoding" value="UTF-8" />
 									<arg value="${runtime_classpath}" />
