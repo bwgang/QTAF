@@ -11,7 +11,7 @@ import java.util.TreeMap;
 import cn.baiweigang.qtaf.ift.IftConf;
 import cn.baiweigang.qtaf.ift.testcase.IftTestCase;
 import cn.baiweigang.qtaf.ift.util.ExportReportExcel;
-import cn.baiweigang.qtaf.toolkit.httpclient.HttpRequest;
+import cn.baiweigang.qtaf.toolkit.httpclient.HttpUtil;
 import cn.baiweigang.qtaf.toolkit.httpclient.ResponseInfo;
 import cn.baiweigang.qtaf.toolkit.util.CommUtils;
 import cn.baiweigang.qtaf.toolkit.util.LogUtil;
@@ -58,7 +58,7 @@ public class CasesUtils {
 	/**
 	 * http请求执行类
 	 */
-	protected HttpRequest sendRequestCore;
+	protected HttpUtil sendRequestCore;
 	
 	/**
 	 * 无参构造函数 说明：创建httpclient连接初始化
@@ -71,9 +71,9 @@ public class CasesUtils {
 		this.urlParaMap = new LinkedHashMap<String, String>();
 		this.formParaMap = new LinkedHashMap<String, String>();
 		if (IftConf.ProxyEnable.equals("Y")) {
-			sendRequestCore = new HttpRequest(IftConf.ProxyIp,IftConf.PROXY_PORT);
+			sendRequestCore = new HttpUtil(IftConf.ProxyIp,IftConf.PROXY_PORT);
 		} else {
-			sendRequestCore = new HttpRequest();
+			sendRequestCore = new HttpUtil();
 		}
 	}
 

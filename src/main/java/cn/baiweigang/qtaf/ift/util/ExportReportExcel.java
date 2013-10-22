@@ -26,6 +26,7 @@ import cn.baiweigang.qtaf.toolkit.util.FileUtil;
  */
 public class ExportReportExcel {
 	
+//	private static LogUtil log = LogUtil.getLogger(ExportReportExcel.class);
 	/**
 	 * 根据测试执行过程中的记录，生成Excel的测试报告
 	 * @param excelreportpath
@@ -108,6 +109,21 @@ public class ExportReportExcel {
 
 	//Excel报告格式定义
 	private void writeExcel(List<String> title,List<String[]> datas,String sheetName,String excelName,String excelreportpath){
+//			log.error("title:");
+//			for (int i = 0; i < title.size(); i++) {
+//				log.error(title.get(i));
+//			}
+//			log.error("datas:");
+//			for (int i = 0; i < datas.size(); i++) {
+//				log.error("data--"+i);
+//				for (String str : datas.get(i)) {
+//					log.error(str);
+//				}
+//				
+//			}
+//			log.error("sheetname--"+sheetName);
+//			log.error("excelName--"+excelName);
+//			log.error("excelreportpath--"+excelreportpath);
 			ExcelUtil excel = new ExcelUtil();	
 			String pathName=excelreportpath+"/"+excelName+".xlsx";
 			
