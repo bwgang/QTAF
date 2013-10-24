@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import cn.baiweigang.qtaf.dispatch.DispatchConf;
 import cn.baiweigang.qtaf.dispatch.testcase.SuperCase;
 import cn.baiweigang.qtaf.ift.IftConf;
 import cn.baiweigang.qtaf.toolkit.util.CommUtils;
@@ -42,7 +41,7 @@ public class IftDataFileCase extends SuperCase{
 	 */
 	public   IftDataFileCase() {
 		super();
-		xmlFilePath = DispatchConf.SuitsXmlPath;
+		xmlFilePath = IftConf.SuitesXmlFilePath;
 		javaCase = IftConf.JavaPath;
 		
 		xmlSuite=new TestngXmlSuite();

@@ -26,7 +26,7 @@ public class IftConf{
 	/**
 	 * 接口ift配置等文件默认保存目录
 	 */
-	public static  String IftPath = getRootPath()+"qtaf/ift/";
+	public static  String IftPath = RootPath+"qtaf/ift/";
 	/**
 	 * 默认编译输出目录
 	 */
@@ -46,10 +46,8 @@ public class IftConf{
 	/**
 	 * 默认的testng的xml文件输出目录
 	 */
-	public static  String SuitesXmlFilePath = "";
-		{
-			SuitesXmlFilePath=DispatchConf.SuitsXmlPath;
-		}
+	public static  String SuitesXmlFilePath = getSuiteFolder();
+
 	/**
 	 * 默认的模板文件
 	 */
@@ -147,6 +145,8 @@ public class IftConf{
 		FileUtil.delAllFile(JavaPath);
 	}
 	
+
+
 	/**
 	 * 如果配置文件不存在，写入
 	 * @return boolean
@@ -278,5 +278,8 @@ public class IftConf{
 		return prop;
 	}
 	
+	private static String getSuiteFolder() {
+		return DispatchConf.SuitsXmlPath;
+	}
 	
 }
