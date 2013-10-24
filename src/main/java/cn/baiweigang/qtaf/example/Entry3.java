@@ -6,6 +6,7 @@ import java.util.List;
 
 
 
+import cn.baiweigang.qtaf.dispatch.DispatchConf;
 import cn.baiweigang.qtaf.dispatch.ExecTask;
 import cn.baiweigang.qtaf.dispatch.report.TestReport;
 import cn.baiweigang.qtaf.dispatch.run.TestRunInfo;
@@ -21,6 +22,10 @@ public class Entry3 {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		//清空临时目录
+		DispatchConf.delTmpPath();
+		IftConf.delTmpPath();
+		
 		//检查相关配置，不存在则创建
 		IftConf.checkConf();
 		
