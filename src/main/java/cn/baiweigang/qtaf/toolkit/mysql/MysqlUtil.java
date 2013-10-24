@@ -39,9 +39,9 @@ public class MysqlUtil {
 				mysql = new ConnMysql();
 				mysql.ip = ip;
 				mysql.port = port;
-				mysql.dataname = dataName;
-				mysql.username = userName;
-				mysql.password = passWord;
+				mysql.dataName = dataName;
+				mysql.userName = userName;
+				mysql.passWord = passWord;
 			}
 			con = mysql.getConnection();
 		}
@@ -76,7 +76,7 @@ public class MysqlUtil {
 	 * 说明：用于执行插入、更新、删除的sql语句，当受影响的行数为0和执行失败时返回false
 	 * 
 	 * @param sql
-	 * @return 成功返回true，失败返回false
+	 * @return boolean 成功返回true，失败返回false
 	 */
 	public static boolean excSql(String sql) {
 		if (null == con) {
@@ -90,7 +90,7 @@ public class MysqlUtil {
 	 * 按指定的sql，查询表中所有数据，返回表中所有列
 	 * 
 	 * @param sql
-	 * @return
+	 * @return List<Map<String, String>>
 	 */
 	public static List<Map<String, String>> queryBySql(String sql) {
 		return getMapFromResult(querySql(sql));
@@ -100,7 +100,7 @@ public class MysqlUtil {
 	 * 按指定的表名，查询表中所有数据，返回表中所有列
 	 * 
 	 * @param tablename
-	 * @return
+	 * @return List<Map<String, String>>
 	 */
 	public static List<Map<String, String>> queryFromTable(String tablename) {
 		String sql = "select * from " + tablename;
@@ -111,7 +111,7 @@ public class MysqlUtil {
 	 * 按指定的表名，查询表中所有数据，返回表中所有列
 	 * 
 	 * @param tablename
-	 * @return
+	 * @return List<Map<String, String>>
 	 */
 	public static List<Map<String, String>> queryFromTable(String tablename,
 			List<String> keyList) {
@@ -123,7 +123,7 @@ public class MysqlUtil {
 	 * 
 	 * @param tablename
 	 * @param wherestr
-	 * @return
+	 * @return List<Map<String, String>>
 	 */
 	public static List<Map<String, String>> queryFromTableByIf(
 			String tablename, String wherestr) {
@@ -137,7 +137,7 @@ public class MysqlUtil {
 	 * @param tablename
 	 * @param wherestr
 	 * @param keyname
-	 * @return
+	 * @return String
 	 */
 	public static String queryFromTableByIf(String tablename, String wherestr,
 			String keyname) {
@@ -157,7 +157,7 @@ public class MysqlUtil {
 	 * 
 	 * @param sql
 	 * @param keyname
-	 * @return
+	 * @return String
 	 */
 	public static String queryTableBysqlMax(String sql) {
 		String max = "";
@@ -178,7 +178,7 @@ public class MysqlUtil {
 	 * @param tableName
 	 * @param whereStr
 	 * @param keyList
-	 * @return
+	 * @return List<Map<String, String>>
 	 */
 	public static List<Map<String, String>> getMapFromSql(String tableName,
 			String whereStr, List<String> keyList) {
@@ -191,7 +191,7 @@ public class MysqlUtil {
 	 * @param tablename
 	 * @param wherestr
 	 * @param expMap
-	 * @return
+	 * @return List<Map<String, String>>
 	 */
 	public static List<Map<String, String>> getMapFromSql(String tablename,
 			String wherestr, Map<String, String> expMap) {
@@ -244,7 +244,7 @@ public class MysqlUtil {
 	 * 查询结果集转换为Map列表
 	 * 
 	 * @param rs
-	 * @return
+	 * @return List<Map<String, String>>
 	 */
 	private static List<Map<String, String>> getMapFromResult(ResultSet rs) {
 		
@@ -292,7 +292,7 @@ public class MysqlUtil {
 	 * 
 	 * @param mapTmpList
 	 * @param keyList
-	 * @return
+	 * @return List<Map<String, String>>
 	 */
 	private static List<Map<String, String>> getMapByKeyList(
 			List<Map<String, String>> mapTmpList, List<String> keyList) {

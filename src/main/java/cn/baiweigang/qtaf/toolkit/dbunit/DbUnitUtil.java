@@ -47,7 +47,7 @@ public static void writeToFileFromMysql(String destFilePath,ConnMysql mysql,Stri
  * @param mysql  mysql数据库连接实例
  * @param resultName 查询结果集对应的名称
  * @param querySql 单个sql查询语句
- * @return
+ * @return ITable
  */
 public static ITable getTableFromMysql(ConnMysql mysql,String resultName,String querySql){
 	return getTableFromDataBase(mysql.getConnection(), resultName, querySql);
@@ -57,7 +57,7 @@ public static ITable getTableFromMysql(ConnMysql mysql,String resultName,String 
  * 根据connection和查询sql语句，返回IDataSet
  * @param mysql mysql数据库连接实例
  * @param querySqlsSplitBySemicolon 查询的sql语句，支持多个，使用;分开
- * @return 
+ * @return  IDataSet
  */
 public static IDataSet getDataSetFromMysql(ConnMysql mysql,String querySqlsSplitBySemicolon){
 	return getDataSetFromDataBase(mysql.getConnection(), querySqlsSplitBySemicolon);
@@ -66,7 +66,7 @@ public static IDataSet getDataSetFromMysql(ConnMysql mysql,String querySqlsSplit
 /**
  * 从Mysql实例转换为DatabaseConnection
  * @param mysql
- * @return
+ * @return DatabaseConnection
  */
 public static DatabaseConnection getDatabaseConnectionFromMysql(ConnMysql mysql) {
 	return getDatabaseConnection(mysql.getConnection());
@@ -142,7 +142,7 @@ public static void writeToFileFromDataSet(IDataSet dataSet,String destFilePath) 
  * 根据connection和查询sql语句，返回IDataSet
  * @param connection 使用的数据连接
  * @param querySqlsSplitBySemicolon 查询的sql语句，支持多个，使用;分开
- * @return 
+ * @return  IDataSet
  */
 public static IDataSet getDataSetFromDataBase(Connection connection,String querySqlsSplitBySemicolon){
 	return getDataSetFromDataBase(getDatabaseConnection(connection), querySqlsSplitBySemicolon);
@@ -176,7 +176,7 @@ public static IDataSet getDataSetFromDataBase(IDatabaseConnection databaseConnec
  * @param connection
  * @param tableName 指定查询结果集对应的表名
  * @param querySql 单个sql查询语句
- * @return
+ * @return ITable
  */
 public static ITable getTableFromDataBase(Connection connection,String resultName,String querySql){
 	//分割多个sql语句
@@ -193,7 +193,7 @@ public static ITable getTableFromDataBase(Connection connection,String resultNam
 /**
  * 从connection转换为DatabaseConnection
  * @param connection
- * @return
+ * @return DatabaseConnection
  */
 public static DatabaseConnection getDatabaseConnection(Connection connection) {
 	DatabaseConnection databaseConnection = null;
@@ -228,7 +228,7 @@ public static DatabaseConnection getDatabaseConnection(Connection connection) {
 	/**
 	 * 从sql语句中查找到表名，第一个from之后的表名
 	 * @param querySql
-	 * @return
+	 * @return String
 	 */
 
 	private static String getTableNameFromQuerySql(String querySql){
