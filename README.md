@@ -15,7 +15,7 @@ maven引用:
 `<dependency>`<br>
   `<groupId>cn.baiweigang</groupId>`<br>
   `<artifactId>qtaf</artifactId>`<br>
-  `<version>0.0.1</version>`<br>
+  `<version>1.0.1</version>`<br>
 `</dependency>`
 
 使用示例:<br>
