@@ -6,6 +6,7 @@ package cn.baiweigang.qtaf.ift;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.baiweigang.qtaf.dispatch.DispatchConf;
 import cn.baiweigang.qtaf.dispatch.ExecTask;
 import cn.baiweigang.qtaf.dispatch.report.TestReport;
 import cn.baiweigang.qtaf.dispatch.run.TestRunInfo;
@@ -24,6 +25,10 @@ public class IftExec {
 	private List<ICase> caseList;
 	private IftDataFileCase dataCase;
 	public IftExec(){
+		//清空临时目录
+		DispatchConf.delTmpPath();
+		IftConf.delTmpPath();
+		
 		//检查相关配置，不存在则创建
 		IftConf.checkConf();
 		 exec = new ExecTask();

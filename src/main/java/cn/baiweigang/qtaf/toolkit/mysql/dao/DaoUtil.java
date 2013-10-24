@@ -16,7 +16,7 @@ import cn.baiweigang.qtaf.toolkit.util.LogUtil;
  * 说明：数据库通用操作类，
  * 当前只支持数据类型为String
  * 所有实现ITable接口的实体类都可使用此类的方法完成增删改查
- * @author bwgang 2013-01-08
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a> (bwgang@163.com)<br/> 2013-01-08
  *
  */
 public class DaoUtil {
@@ -26,7 +26,7 @@ public class DaoUtil {
 	/**
 	 * 说明：根据传入的实体类，返回对应数据库表所有记录List
 	 * @param table 实体类对象
-	 * @return 实体类对应数据库表的所有记录List
+	 * @return List<ITable>实体类对应数据库表的所有记录List
 	 */
 	public static List<ITable> getAllInfo(ITable table){		
 		String tablename=getNameOfClass(table);
@@ -39,7 +39,7 @@ public class DaoUtil {
 	 * 说明：根据传入的实体类，按指定的查询条件返回对应数据库表记录List
 	 * @param where
 	 * @param table
-	 * @return
+	 * @return List<ITable>
 	 */
 	public static List<ITable>  getInfoByKey(String where,ITable table) {
 		String tablename=getNameOfClass(table);
@@ -52,7 +52,7 @@ public class DaoUtil {
 	 * 说明：根据传入的实体类，按自定义sql语句返回对应数据库表记录List
 	 * @param sql
 	 * @param table
-	 * @return
+	 * @return List<ITable>
 	 */
 	public static List<ITable>  getInfoBySql(String sql,ITable table) {
 		List<Map<String, String>>resMapList=MysqlUtil.queryBySql(sql);
@@ -63,7 +63,7 @@ public class DaoUtil {
 	 * 说明：根据传入的实体类，按指定列名返回此列的最大值
 	 * @param key
 	 * @param cls
-	 * @return
+	 * @return String
 	 */
 	public static String getMaxInfoByKey(String key,ITable table) {
 		String tablename=getNameOfClass(table);
@@ -80,7 +80,7 @@ public class DaoUtil {
 	 * @param key
 	 * @param value
 	 * @param cls
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean updateInfo(String key,String value,ITable table) {
 		boolean flag=false;
@@ -92,7 +92,7 @@ public class DaoUtil {
 	/**
 	 * 说明：根据传入的实体类，插入到数据库对应的表中一条数据
 	 * @param cls
-	 * @return 插入成功返回true，失败返回false
+	 * @return boolean 插入成功返回true，失败返回false
 	 */
 	public static boolean insterInfo(ITable table) {
 		boolean flag=false;
@@ -106,7 +106,7 @@ public class DaoUtil {
 	 * @param key
 	 * @param value
 	 * @param cls
-	 * @return  删除成功返回true，失败返回false
+	 * @return  boolean 删除成功返回true，失败返回false
 	 */
 	public static boolean deleteInfoByKey(String key,String value,ITable table) {
 		boolean flag=false;
@@ -121,7 +121,7 @@ public class DaoUtil {
 	/**
 	 * 说明：根据实体类对象，获取实体类对应table的所有列名
 	 * @param 实体类对象
-	 * @return table的所有列名的List
+	 * @return List<String> table的所有列名的List
 	 */
 	public static  List<String> getCoList(ITable table) {
 		 List<String> colList=new ArrayList<String>();
@@ -145,7 +145,7 @@ public class DaoUtil {
 	 * @param key 
 	 * @param value
 	 * @param 实体类对象
-	 * @return 赋值成功返回true，失败返回false
+	 * @return boolean  赋值成功返回true，失败返回false
 	 */
 	public static boolean set(String key,String value,ITable table) {
 		boolean flag=false;
@@ -175,8 +175,8 @@ public class DaoUtil {
 	/**
 	 * 说明：根据key值，从实体类中获取对应的value值
 	 * @param key
-	 * @param 实体类对象
-	 * @return  实体类中key对应的value值
+	 * @param table 实体类对象
+	 * @return String 实体类中key对应的value值
 	 */
 	public static String get(String key,ITable table) {
 		String res="";
@@ -202,7 +202,7 @@ public class DaoUtil {
 	/**
 	 * 说明： 根据类对象获取此类的名称，用于获取实体类名称，代表对应数据库table名称
 	 * @param 实体类对象
-	 * @return  table名称
+	 * @return  String table名称
 	 */
 	private static  String getNameOfClass(Object cls) {
 		 return cls.getClass().getSimpleName();		
@@ -215,7 +215,7 @@ public class DaoUtil {
 	 * @param key 列名
 	 * @param value 对应的值
 	 * @param cls  实体类对象
-	 * @return 返回拼接后的sql语句
+	 * @return String 返回拼接后的sql语句
 	 */
 	private static String getUpdateSql(String key, String value, ITable table) {
 		String sql="update "+getNameOfClass(table)+" set ";
@@ -241,7 +241,7 @@ public class DaoUtil {
 	/**
 	 * 说明：根据传入的实体类，拼接用户数据库插入的sql语句
 	 * @param cls 实体类对象
-	 * @return  拼接后的sql语句
+	 * @return  String 拼接后的sql语句
 	 */
 	private static String getInsertSql(ITable table) {
 		String sql="insert into "+getNameOfClass(table);
@@ -294,7 +294,7 @@ public class DaoUtil {
 	 * 说明：内部使用，根据传入的set或get、实体类属性名称拼接对应的set或get方法名
 	 * @param method
 	 * @param fildeName
-	 * @return 对应的set或get方法名
+	 * @return String 对应的set或get方法名
 	 */
 	private static String getMethodByName(String method,String fildeName) {
 		return method+getFirstCapitalized(fildeName);
@@ -303,7 +303,7 @@ public class DaoUtil {
 	/**
 	 * 说明：内部使用，把传入的字符串首字母大写并返回
 	 * @param fildeName
-	 * @return  首字母大写之后的字符串
+	 * @return  String 首字母大写之后的字符串
 	 */
 	private static String getFirstCapitalized(String fildeName) {
 		  byte[] items = fildeName.getBytes();
@@ -314,7 +314,7 @@ public class DaoUtil {
 	/**
 	 * 说明：内部使用，根据传入的类，返回new之后的此类的实例化对象
 	 * @param cls 类对象
-	 * @return    实例化之后的类对象
+	 * @return   ITable 实例化之后的类对象
 	 */
 	private static ITable getNewInstanceByClassdeep(ITable table) {        
 		ITable table2;	
@@ -324,8 +324,7 @@ public class DaoUtil {
 			table2=(ITable) clazz.newInstance();
 			return table2;
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 			return null;
 		}		
 		

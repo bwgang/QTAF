@@ -1,7 +1,6 @@
 package cn.baiweigang.qtaf.ift.testcase.autocreate;
 
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,8 +41,17 @@ public class TestngXmlSuite {
 			XmlSuite.DEFAULT_PRESERVE_ORDER="true";			
 			
 			//添加包含的XmlTest
+			if (this.testngxmltestlist.size()<1) {
+				log.error("测试集列表为空");
+				return false;
+			}
+			
 			for (int i = 0; i < this.testngxmltestlist.size(); i++) {
-				this.testngxmltestlist.get(i).updateTestToXmlTest();//更新生成xml文件
+				boolean flag=this.testngxmltestlist.get(i).updateTestToXmlTest();//更新生成xml文件
+				if (!flag) {
+					log.error("更新测试集："+this.testngxmltestlist.get(i).getXmltestname()+" 信息失败");
+					return false;
+				}
 				this.xmlsuite.addTest(this.testngxmltestlist.get(i).getXmlTest());
 			}
 			
@@ -109,8 +117,8 @@ public class TestngXmlSuite {
 				}
 				arr.add(xx[i]);
 			}	
-			boolean res = FileUtil.writeString(arr,this.xmlfilepath+"/"+this.xmlname+".xml", "UTF-8");
-//			if (res) log.info("创建测试套："+getXmlName()+" 对应的xml文件 "+this.xmlfilepath+"/"+this.xmlname+".xml 成功");
+			boolean res = FileUtil.writeString(arr,this.xmlfilepath+this.xmlname+".xml", "UTF-8");
+//			log.info("创建测试套："+getXmlName()+" 对应的xml文件 "+this.xmlfilepath+this.xmlname+".xml 成功");
 			return res;
 			
 		} catch (Exception e) {
@@ -127,19 +135,11 @@ public class TestngXmlSuite {
 	 * @return boolean 设置成功返回true
 	 */
 	public boolean setXmlFilePath(String xmlfilepath) {
-		File filepath=new File(xmlfilepath);
-		try {
-			if (!filepath.exists()) {
-				filepath.mkdirs();
-			}
+		if (FileUtil.createDictory(xmlfilepath)) {
 			this.xmlfilepath = xmlfilepath;
 			return true;
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			return false;
 		}
-
-		
+		return false;
 	}
 
 	/**

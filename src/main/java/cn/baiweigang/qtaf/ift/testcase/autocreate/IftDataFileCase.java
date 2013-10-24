@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import cn.baiweigang.qtaf.dispatch.DispatchConf;
 import cn.baiweigang.qtaf.dispatch.testcase.SuperCase;
 import cn.baiweigang.qtaf.ift.IftConf;
 import cn.baiweigang.qtaf.toolkit.util.CommUtils;
@@ -41,9 +42,9 @@ public class IftDataFileCase extends SuperCase{
 	 */
 	public   IftDataFileCase() {
 		super();
-		xmlFilePath = IftConf.IftPath+ "suites/data/";
-		javaCase=IftConf.JavaPath;
-
+		xmlFilePath = DispatchConf.SuitsXmlPath;
+		javaCase = IftConf.JavaPath;
+		
 		xmlSuite=new TestngXmlSuite();
 		testCaseList=new ArrayList<Map<String, Object>>();
 		
@@ -134,14 +135,13 @@ public class IftDataFileCase extends SuperCase{
 	 */
 	public boolean updateXmlFileList() {
 		//创建java、xml文件
-		boolean res = createJavaAndXmlFile();
-		
-		if (res) {
+		if (createJavaAndXmlFile()) {
 			xmlPathNameList.add(this.xmlSuite.getXmlFilePath()+this.xmlSuite.getXmlName());
+			return true;
 		}else{
-			log.info("生成java或xml文件失败，请检查日志记录");
+			log.error("生成java或xml文件失败，请检查日志记录");
+			return false;
 		}
-		return res;
 	}
 	
 	public String getExcelReportPath() {

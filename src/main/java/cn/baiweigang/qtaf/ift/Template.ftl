@@ -15,46 +15,46 @@ import ${clsInfo.importInfo};
 
 /**
  * 自动生成的测试用例
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/>
  *
  */
 public class ${javaInfo.javaFileName}  {
 	
 	private ${clsInfo.className} cau;//执行用例的类
-	private String PATH_NAME;//用例文件路径
-	private String CASE_SHEET_NAME;//用例的Sheet名
-	private String REPORT_PATH;	//Excel测试报告输出目录
-	private String REPORT_EXCEL_NAME;//EXcel报告文件名	
-	private String REPORT_SHEET_NAME;//Excel报告sheet名	
-	private List<IftTestCase> allcase ;//所有用例列表
+	private String caseFilePath;//用例文件路径
+	private String caseSheetName;//用例的Sheet名
+	private String excelReportFilePath;	//Excel测试报告输出目录
+	private String excelReportName;//EXcel报告文件名	
+	private String excelReportSheetName;//Excel报告sheet名	
+	private List<IftTestCase> testCaseList ;//所有用例列表
 
 	
 	//记录预期值与实际值比对情况
-	private List<LinkedHashMap<String,String>> arrres;
+	private List<LinkedHashMap<String,String>> compareResultList;
 	
 	@BeforeTest
-	public void SetUp() {   
+	public void beforeTest() {   
 		
 		cau=new ${clsInfo.className}();
-		allcase=new ArrayList<IftTestCase>() ;		
-		PATH_NAME="${javaInfo.caseDataPathName}";
-		CASE_SHEET_NAME="${javaInfo.caseDataSheetName}";
-		REPORT_PATH="${javaInfo.excelReportPath}";
-		REPORT_EXCEL_NAME="${javaInfo.excelReportName}";
-		REPORT_SHEET_NAME="${javaInfo.excelReportSheetName}";
-		arrres=new ArrayList<LinkedHashMap<String,String>>();
+		testCaseList=new ArrayList<IftTestCase>() ;		
+		caseFilePath="${javaInfo.caseDataPathName}";
+		caseSheetName="${javaInfo.caseDataSheetName}";
+		excelReportFilePath="${javaInfo.excelReportPath}";
+		excelReportName="${javaInfo.excelReportName}";
+		excelReportSheetName="${javaInfo.excelReportSheetName}";
+		compareResultList=new ArrayList<LinkedHashMap<String,String>>();
 		
 		 FormatCase formatcase=new FormatCase();		 
-		 formatcase.FormatCaseFromObj(PATH_NAME,CASE_SHEET_NAME);
-		 allcase=formatcase.getTestCase();
+		 formatcase.FormatCaseFromObj(caseFilePath,caseSheetName);
+		 testCaseList=formatcase.getTestCase();
 	 }
 	//根据待执行用例列表，生成对应的测试用例java源码
 	<#list javaInfo.allCase as testCase>
 	@Test(description="${testCase.testPoint}()")
 	  public void ${testCase.caseId}(){
 			
-		IftTestCase testcase=new 	IftTestCase();
-		testcase=allcase.get(${testCase_index});
+		IftTestCase testCase=new 	IftTestCase();
+		testCase=testCaseList.get(${testCase_index});
 		LinkedHashMap<String,String> result=new LinkedHashMap<String,String>();//记录Excel测试报告
 		IFtResultInfo iftResInfo=new IFtResultInfo();
 		String httpurl="";//记录请求发送的Url
@@ -63,16 +63,16 @@ public class ${javaInfo.javaFileName}  {
 		String actres="";//过滤后实际的结果
 		boolean res=false;//记录比对结果
 		
-		String temp="";
-		temp=Thread.currentThread().getStackTrace()[1].getClassName();
-		temp=temp.substring(temp.lastIndexOf(".")+1, temp.length());
+		String infoTmp="";
+		infoTmp=Thread.currentThread().getStackTrace()[1].getClassName();
+		infoTmp=infoTmp.substring(infoTmp.lastIndexOf(".")+1, infoTmp.length());
 		
 		//用例开始
 
-		TestngLog.CaseStart("测试集："+temp+"--的用例："+testcase.getCaseMap().get("CaseID")+"--"+testcase.getCaseMap().get("TestPoint"));
+		TestngLog.CaseStart("测试集："+infoTmp+"--的用例："+testCase.getCaseMap().get("CaseID")+"--"+testCase.getCaseMap().get("TestPoint"));
 		
 		//发起http请求，
-		iftResInfo=cau.${clsInfo.method}(testcase);
+		iftResInfo=cau.${clsInfo.method}(testCase);
 		
 		//获取返回结果信息和发起的http信息
 		response=iftResInfo.getResponseInfo().getResBodyInfo();
@@ -84,8 +84,8 @@ public class ${javaInfo.javaFileName}  {
 		expres=iftResInfo.getExpRes();
 		
 		//记录执行结果到ArrayList,写Excel报告要用到
-		result.put("CaseID", testcase.getCaseMap().get("CaseID"));
-		result.put("TestPoint", testcase.getCaseMap().get("TestPoint"));
+		result.put("CaseID", testCase.getCaseMap().get("CaseID"));
+		result.put("TestPoint", testCase.getCaseMap().get("TestPoint"));
 		result.put("ExpRes", expres);
 		result.put("ActRes", actres);
 		result.put("ResponseRes", response);
@@ -98,7 +98,7 @@ public class ${javaInfo.javaFileName}  {
 		else {
 			result.put("ExcResult", "Fail");
 		}
-		arrres.add(result);
+		compareResultList.add(result);
 		
 		//写入TestNG日志
 		TestngLog.Log("此用例预期结果为："+expres);
@@ -108,7 +108,7 @@ public class ${javaInfo.javaFileName}  {
 		TestngLog.Log("执行结果为："+res);
 
 		//用例结束
-		TestngLog.CaseEnd("测试集："+temp+"--的用例："+testcase.getCaseMap().get("CaseID")+"--"+testcase.getCaseMap().get("TestPoint"));
+		TestngLog.CaseEnd("测试集："+infoTmp+"--的用例："+testCase.getCaseMap().get("CaseID")+"--"+testCase.getCaseMap().get("TestPoint"));
 	 
 		//比较结果记入TestNG断言中
 		org.testng.Assert.assertTrue(res, "实际结果:"+actres+"  -预期结果:"+expres);
@@ -117,20 +117,20 @@ public class ${javaInfo.javaFileName}  {
 	</#list>
 	
 	@AfterTest
-	public void CloseConn() {   
-		String temp="";
+	public void afterTest() {   
+		String infoTmp="";
 		cau.closeConn();
 		
 		//执行结果写入excel
-		cau.CreatReportExcel(REPORT_PATH,REPORT_EXCEL_NAME,REPORT_SHEET_NAME,arrres);
+		cau.CreatReportExcel(excelReportFilePath,excelReportName,excelReportSheetName,compareResultList);
 
 		//记录到TestNG日志
 		TestngLog.Log("所有用例执行完毕");
-		TestngLog.Log("共验证检查点数为："+arrres.size());
+		TestngLog.Log("共验证检查点数为："+compareResultList.size());
 		
 		 //此测试套执行完毕记入TestNG日志
-		temp=Thread.currentThread().getStackTrace()[1].getClassName();
-		temp=temp.substring(temp.lastIndexOf(".")+1, temp.length());
-		TestngLog.Log("********************测试套：【"+temp+"】执行完毕**************************");
+		infoTmp=Thread.currentThread().getStackTrace()[1].getClassName();
+		infoTmp=infoTmp.substring(infoTmp.lastIndexOf(".")+1, infoTmp.length());
+		TestngLog.Log("********************测试套：【"+infoTmp+"】执行完毕**************************");
 	 }
 }

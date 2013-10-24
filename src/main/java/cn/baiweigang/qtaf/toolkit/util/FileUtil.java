@@ -255,14 +255,12 @@ public class FileUtil {
 	 * @return boolean 		删除成功返回true，删除失败、指定路径不存在返回false
 	 */
 	public static boolean delFile(File file) {
-		boolean flag = false;
 		if (file.isFile() == true) {
-			file.delete();
-			flag = true;
+			return file.delete();
 		}else{
 			log.error("文件："+file+" 不存在，或者不是文件类型");
 		}
-		return flag;
+		return false;
 	}
 
 	
@@ -286,11 +284,11 @@ public class FileUtil {
 	public static boolean delAllFile(String folderPath) {
 		File path = new File(folderPath);
 		if (!path.exists()) {
-			log.error("删除指定的文件夹："+folderPath+"不存在");
+//			log.error("删除指定的文件夹："+folderPath+"不存在");
 			return false;
 		}
 		if (!path.isDirectory()) {
-			log.error("删除指定的："+folderPath+"不是个文件夹");
+//			log.error("删除指定的："+folderPath+"不是个文件夹");
 			return false;
 		}
 		

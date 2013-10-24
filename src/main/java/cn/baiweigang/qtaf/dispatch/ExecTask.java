@@ -36,8 +36,6 @@ public class ExecTask {
 			setResNoAndMsg(-100,"待执行的用例不存在");
 			return report;
 		}
-		//执行用例之前清空用例执行相关目录(XML配置文件、TestNG输出目录)
-		DispatchConf.delTmpPath();
 		Long startTimeMS=System.currentTimeMillis();
 		Long startTime=startTimeMS/1000;
 		int sumTime=0;//记录等待时长，单位秒

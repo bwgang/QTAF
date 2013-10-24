@@ -63,12 +63,7 @@ public class TestngRunSingle {
 	 */
 	public TestReport execTask() {
 		setFlag(true);
-		if(doTask()){
-			
-		}else{
-			this.testReport.setResNo(-1);
-			this.testReport.setResMsg("未知错误，见TestNG日志记录");
-		}
+		doTask();			
 		setFlag(false);
 		return this.testReport;		
 	}

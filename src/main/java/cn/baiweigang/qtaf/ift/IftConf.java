@@ -44,6 +44,13 @@ public class IftConf{
 	 */
 	public static String JavaPath = IftPath+"javaCase/";
 	/**
+	 * 默认的testng的xml文件输出目录
+	 */
+	public static  String SuitesXmlFilePath = "";
+		{
+			SuitesXmlFilePath=DispatchConf.SuitsXmlPath;
+		}
+	/**
 	 * 默认的模板文件
 	 */
 	public static String TemplatePath = IftPath +"template/Template.ftl";	
@@ -65,7 +72,13 @@ public class IftConf{
 		 * 代理端口
 		 */
 		public static int PROXY_PORT = Integer.parseInt(getPropValue("ProxyPort","8888"));
-        
+       
+	//结果比对参数
+		/**
+		 * json默认解析方式 单层解析
+		 */
+		public static final int parseJson = 1;
+		
     //测试用例Excel文件读取 相关配置信息
 		/**
 		 * url所在行数
@@ -124,10 +137,73 @@ public class IftConf{
 		 */
 		public static final int secondUrlCol = 2;
 	
+
+	
 	/**
-	 * json默认解析方式 单层解析
+	 * 删除默认临时目录
 	 */
-	public static final int parseJson = 1; 
+	public static void delTmpPath() {
+		// 清空java文件生成目录
+		FileUtil.delAllFile(JavaPath);
+	}
+	
+	/**
+	 * 如果配置文件不存在，写入
+	 * @return boolean
+	 */
+	public static boolean writeConf() {
+		//相应配置文件如果不存在，则创建
+		try {
+			if (!new File(IftConf.ConfFile).exists()) {
+				FileUtils.copyFile(new File(IftConf.class.getResource("IftConf.properties").getFile()), 
+						new File(IftConf.ConfFile));
+			}
+			if (!new File(IftConf.TemplatePath).exists()) {
+				FileUtils.copyFile(new File(IftConf.class.getResource("Template.ftl").getFile()), 
+					new File(IftConf.TemplatePath));
+			}
+			
+			return true;
+		} catch (IOException e) {
+			System.out.print(e.getMessage());
+			return false;
+		}
+	}
+
+	/**
+	 * 设置依赖的jar文件路径信息 maven
+	 * @param args
+	 * @return boolean 设置成功返回true
+	 */
+	public static boolean updateJarFile(String[] args) {
+		
+		if (IftConf.JarFile.length()>0) {
+			return true;//JarFile已设置
+		}
+		
+		if (null!=args && args.length>0) {//设置JarFile，同时写入文件
+			IftConf.JarFile=args[0];
+			FileUtil.writeString(args[0], IftConf.IftPath+"JarFile", "UTF-8");
+		}else{
+			if (FileUtil.isEmeyxist(IftConf.IftPath+"JarFile")) {//已存在则读取
+				IftConf.JarFile=FileUtil.readToString(IftConf.IftPath+"JarFile", "UTF-8");
+			}else{
+				System.out.print("在eclipse中，第一次需要以maven方式执行");
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * 检查相关配置，不存在则创建
+	 */
+	public static void checkConf() {
+		TkConf.writeConf();
+		DispatchConf.writeConf();
+		IftConf.writeConf();
+	}
+	
 	
 	
 	/**
@@ -202,61 +278,5 @@ public class IftConf{
 		return prop;
 	}
 	
-	/**
-	 * 如果配置文件不存在，写入
-	 * @return boolean
-	 */
-	public static boolean writeConf() {
-		//相应配置文件如果不存在，则创建
-		try {
-			if (!new File(IftConf.ConfFile).exists()) {
-				FileUtils.copyFile(new File(IftConf.class.getResource("IftConf.properties").getFile()), 
-						new File(IftConf.ConfFile));
-			}
-			if (!new File(IftConf.TemplatePath).exists()) {
-				FileUtils.copyFile(new File(IftConf.class.getResource("Template.ftl").getFile()), 
-					new File(IftConf.TemplatePath));
-			}
-			
-			return true;
-		} catch (IOException e) {
-			System.out.print(e.getMessage());
-			return false;
-		}
-	}
-
-	/**
-	 * 设置依赖的jar文件路径信息 maven
-	 * @param args
-	 * @return boolean 设置成功返回true
-	 */
-	public static boolean updateJarFile(String[] args) {
-		
-		if (IftConf.JarFile.length()>0) {
-			return true;//JarFile已设置
-		}
-		
-		if (null!=args && args.length>0) {//设置JarFile，同时写入文件
-			IftConf.JarFile=args[0];
-			FileUtil.writeString(args[0], IftConf.IftPath+"JarFile", "UTF-8");
-		}else{
-			if (FileUtil.isEmeyxist(IftConf.IftPath+"JarFile")) {//已存在则读取
-				IftConf.JarFile=FileUtil.readToString(IftConf.IftPath+"JarFile", "UTF-8");
-			}else{
-				System.out.print("在eclipse中，第一次需要以maven方式执行");
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * 检查相关配置，不存在则创建
-	 */
-	public static void checkConf() {
-		TkConf.writeConf();
-		DispatchConf.writeConf();
-		IftConf.writeConf();
-	}
 	
 }

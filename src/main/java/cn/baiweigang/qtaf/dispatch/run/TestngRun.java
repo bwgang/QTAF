@@ -59,6 +59,8 @@ public class TestngRun {
 	 */
 	public boolean run() {
 		if (getXmlFileList().size()<1) {
+			this.testReport.setResNo(-6000);
+			this.testReport.setResMsg("Xml文件列表为空");
 			return false;
 		}
 		//运行相关参数配置
@@ -68,7 +70,9 @@ public class TestngRun {
 			tng.setTestSuites(getXmlFileList());
 			tng.run();
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			this.testReport.setResNo(-7000);
+			this.testReport.setResMsg("执行用例异常： "+e.getMessage());
 			return false;
 		}
 		//记录测试报告摘要
