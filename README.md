@@ -4,6 +4,10 @@
 	TestNGXslt优化Html测试报告输出<br>
 	接口测试框架，用例自动生成，Excel测试报告输出<br>
 <br>	
+
+使用文档编写中...现在只写了一篇环境配置的 点击查看http://baiweigang.cn/?p=256
+
+<br>	
 在线javadoc：http://baiweigang.cn/javadoc/qtaf/
 
 maven引用:
