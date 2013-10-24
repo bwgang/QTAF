@@ -14,7 +14,7 @@ import cn.baiweigang.qtaf.ift.testcase.autocreate.IftDataFileCase;
 
 /**
  * 接口测试任务执行类
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a> (bwgang@163.com)<br/>
  *
  */
 public class IftExec {

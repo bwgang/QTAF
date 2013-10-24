@@ -20,7 +20,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  * Excel文件的读写
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a> (bwgang@163.com)<br/>
  *
  * 2007以下版本xsl
  * 2007及以上版本xslx

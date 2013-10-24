@@ -15,7 +15,7 @@ import cn.baiweigang.qtaf.toolkit.util.FileUtil;
 
 /**
  * TestNG的原生报告转换为美化后的Html格式测试报告
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/>
  *
  */
 public class ExportReportHtml {

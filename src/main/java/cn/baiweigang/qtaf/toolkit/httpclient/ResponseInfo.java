@@ -4,7 +4,7 @@ import java.util.Map;
 
 /**
  * http请求发送信息及返回信息
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a> (bwgang@163.com)<br/>
  *
  */
 public class ResponseInfo {

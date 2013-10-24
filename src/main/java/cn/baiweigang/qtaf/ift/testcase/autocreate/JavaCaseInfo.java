@@ -6,7 +6,7 @@ import cn.baiweigang.qtaf.ift.testcase.IftTestCase;
 
 /**
  * 生成java文件时需要的信息
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/>
  *
  */
 public class JavaCaseInfo {

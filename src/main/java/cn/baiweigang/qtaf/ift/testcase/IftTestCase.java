@@ -8,7 +8,7 @@ import java.util.TreeMap;
 
 /**
  * 说明：测试用例实体类
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/>
  *
  */
 public class IftTestCase {

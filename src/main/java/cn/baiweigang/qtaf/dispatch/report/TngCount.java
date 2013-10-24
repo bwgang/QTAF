@@ -2,7 +2,7 @@ package cn.baiweigang.qtaf.dispatch.report;
 
 /**
  * 一个testng的测试集或测试套的执行结果信息
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/>
  */
 public class TngCount {
 	/**

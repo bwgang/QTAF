@@ -17,7 +17,7 @@ import cn.baiweigang.qtaf.toolkit.util.XmlUtil;
 /**
  * 说明：比对期望结果与实际结果
  * 
- * @author bwgang
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/>
  * 
  */
 public class CompareResult {

@@ -15,7 +15,7 @@ import cn.baiweigang.qtaf.toolkit.util.FileUtil;
 
 /**
  * 接口全局配置文件
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a> (bwgang@163.com)<br/>
  *
  */
 public class IftConf{

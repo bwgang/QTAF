@@ -23,7 +23,7 @@ import cn.baiweigang.qtaf.toolkit.util.LogUtil;
 
 /**
  * 从数据库中导出到excel、xml文件、创建dbunit的DatabaseConnection、IDataSet
- * @author bwgang 2013-02-27
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a> (bwgang@163.com)<br/> 2013-02-07
  *
  */
 public class DbUnitUtil {

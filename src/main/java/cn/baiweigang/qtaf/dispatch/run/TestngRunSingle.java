@@ -5,7 +5,7 @@ import cn.baiweigang.qtaf.dispatch.report.TestReport;
 /**
  * 说明：封装用例执行 单例模式
  * 
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/> 2012-12-04
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/> 2012-12-04
  * 
  */
 public class TestngRunSingle {

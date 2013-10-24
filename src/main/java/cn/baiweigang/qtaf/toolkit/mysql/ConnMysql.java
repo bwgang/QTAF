@@ -12,7 +12,7 @@ import com.mysql.jdbc.Statement;
 
 /**
  * 说明：连接数据库配置信息
- * @author bwgang 2013-01-08
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a> (bwgang@163.com)<br/> 2013-01-08
  *
  */
 public class ConnMysql {

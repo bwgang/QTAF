@@ -23,8 +23,7 @@ import cn.baiweigang.qtaf.toolkit.util.StringUtil;
  * 
  * 注意：当不满足新加入项目需要时，创建一子类，重写其中的方法，不允许在此类中修改
  * 
- * @author bwgang 2013-01-10
- * 
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/> 2013-01-10
  */
 public class CasesUtils {
 	/**

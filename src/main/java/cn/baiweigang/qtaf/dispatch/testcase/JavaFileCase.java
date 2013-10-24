@@ -15,7 +15,7 @@ import cn.baiweigang.qtaf.toolkit.util.FileUtil;
 
 /**
  * .java文件类型的测试用例
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/>
  *
  */
 public class JavaFileCase extends SuperCase{

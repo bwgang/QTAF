@@ -15,7 +15,7 @@ import cn.baiweigang.qtaf.toolkit.util.LogUtil;
 
 /**
  * 封装用例集，对集合进行分组格式化等处理，当前是1个excel文件对应1个此类的实例
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/> 2012-11-12
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/> 2012-11-12
  *
  */
 public class TestCaseSet {	

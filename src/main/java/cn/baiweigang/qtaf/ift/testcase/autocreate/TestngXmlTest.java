@@ -12,7 +12,7 @@ import cn.baiweigang.qtaf.toolkit.util.LogUtil;
 /**
  * 说明：封装TestNG的XmlTest，包括名称、执行线程数等参数设置
  * 			  
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/> 2012-11-14
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/> 2012-11-14
  *
  */
 public class TestngXmlTest {

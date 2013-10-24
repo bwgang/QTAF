@@ -14,7 +14,7 @@ import cn.baiweigang.qtaf.toolkit.util.StringUtil;
 
 /**
  * 数据库操作类，需先使用connMysql或reConnMysql方法先连接到数据库后，再执行其他操作
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a> (bwgang@163.com)<br/>
  *
  */
 public class MysqlUtil {

@@ -9,7 +9,7 @@ import cn.baiweigang.qtaf.toolkit.TkConf;
 
 /**
  * 自定义日志
- *	@author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ *	@author @<a href='http://weibo.com/bwgang'>bwgang</a> (bwgang@163.com)<br/>
  */
 public class LogUtil {
 	private Logger log ;

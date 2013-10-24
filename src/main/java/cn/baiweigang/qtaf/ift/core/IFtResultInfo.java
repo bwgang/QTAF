@@ -5,7 +5,7 @@ import cn.baiweigang.qtaf.toolkit.httpclient.ResponseInfo;
 
 /**
  * 接口测试执行结果信息
- * @author @bwgang
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/>
  */
 public class IFtResultInfo {
 	private ResponseInfo responseInfo;//http请求的返回信息

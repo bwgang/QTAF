@@ -35,7 +35,7 @@ import cn.baiweigang.qtaf.toolkit.util.StringUtil;
 
 /**
  * 封装HttpClient 发送Get、Post等请求
- *
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a> (bwgang@163.com)<br/>
  */
 public class HttpUtil {
 	protected LogUtil log = LogUtil.getLogger(this.getClass());

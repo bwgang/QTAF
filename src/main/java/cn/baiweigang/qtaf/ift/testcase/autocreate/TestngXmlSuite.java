@@ -12,7 +12,7 @@ import cn.baiweigang.qtaf.toolkit.util.LogUtil;
 
 /**
  * 封装TestNg的XmlSuite
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/>
  *
  */
 public class TestngXmlSuite {

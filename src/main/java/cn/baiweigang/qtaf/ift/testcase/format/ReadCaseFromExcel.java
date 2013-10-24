@@ -5,7 +5,7 @@ import cn.baiweigang.qtaf.toolkit.util.ExcelUtil;
 
 /**
  * 功能说明：从excel表中读取用例数据文件
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/>
  */
 public class ReadCaseFromExcel {
 	private ExcelUtil excel;

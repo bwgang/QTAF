@@ -8,7 +8,7 @@ import cn.baiweigang.qtaf.toolkit.util.LogUtil;
 
 /**
  * 各种签名算法
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a> (bwgang@163.com)<br/>
  */
 public class CommonSign {
 	

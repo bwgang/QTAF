@@ -4,7 +4,7 @@ package cn.baiweigang.qtaf.dispatch.testcase;
 /**
  * 数据文件类型的测试用例 
  * 
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/>
  *
  */
 public class DataFileCase extends SuperCase{

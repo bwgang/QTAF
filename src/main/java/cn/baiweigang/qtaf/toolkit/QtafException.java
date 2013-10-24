@@ -2,7 +2,7 @@ package cn.baiweigang.qtaf.toolkit;
 
 /**
  * 自定义异常信息
- * @author bwgang
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a> (bwgang@163.com)<br/>
  *
  */
 public class QtafException extends RuntimeException {

@@ -8,7 +8,7 @@ import cn.baiweigang.qtaf.toolkit.util.CommUtils;
 
 /**
  * 任务执行入口
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/>
  *
  */
 public class ExecTask {

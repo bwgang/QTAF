@@ -17,7 +17,7 @@ import cn.baiweigang.qtaf.toolkit.util.FileUtil;
 
 /**
  * 执行testng，
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/> 2012-10-29
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/> 2012-10-29
  *
  */
 public class TestngRun {

@@ -7,7 +7,7 @@ import cn.baiweigang.qtaf.dispatch.testcase.ICase;
 
 /**
  * TestNG运行信息
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/>
  */
 public class TestRunInfo {
 	private String taskName;//任务名称

@@ -22,7 +22,7 @@ import cn.baiweigang.qtaf.toolkit.util.FileUtil;
 
 /**
  * 说明：输出Excel格式的测试报告
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a> (bwgang@163.com)<br/>
  */
 public class ExportReportExcel {
 	

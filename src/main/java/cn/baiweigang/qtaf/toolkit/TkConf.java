@@ -8,8 +8,7 @@ import org.apache.commons.io.FileUtils;
 
 /**
  * 配置文件
- * @author @<a href='http://weibo.com/bwgang'>bwgang</a><br/>
- *
+ * @author @<a href='http://weibo.com/bwgang'>bwgang</a> (bwgang@163.com)<br/>
  */
 public class TkConf  {
 	
