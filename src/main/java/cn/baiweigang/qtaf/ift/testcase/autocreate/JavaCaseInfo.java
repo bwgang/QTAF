@@ -17,7 +17,9 @@ public class JavaCaseInfo {
 	private String javaSavePath;//java文件保存目录
 	private String caseDataPathName;//用例数据文件路径
 	private String caseDataSheetName;//Excel用例数据sheet名称
-	private String templatePathName;//模板路径
+	
+	private Class<?> cls;//执行用例的类名
+	private String method;//执行用例的方法名
 	
 	private String excelReportSheetName;//excel测试报告sheet名称
 	private String excelReportName;//excel测试报告文件名称
@@ -52,12 +54,6 @@ public class JavaCaseInfo {
 	public void setCaseDataPathName(String caseDataPathName) {
 		this.caseDataPathName = caseDataPathName;
 	}
-	public String getTemplatePathName() {
-		return templatePathName;
-	}
-	public void setTemplatePathName(String templatePathName) {
-		this.templatePathName = templatePathName;
-	}
 	public String getExcelReportSheetName() {
 		return excelReportSheetName;
 	}
@@ -81,5 +77,17 @@ public class JavaCaseInfo {
 	}
 	public void setCaseDataSheetName(String caseDataSheetName) {
 		this.caseDataSheetName = caseDataSheetName;
+	}
+	public Class<?> getCls() {
+		return cls;
+	}
+	public void setCls(Class<?> cls) {
+		this.cls = cls;
+	}
+	public String getMethod() {
+		return method;
+	}
+	public void setMethod(String method) {
+		this.method = method;
 	}
 }

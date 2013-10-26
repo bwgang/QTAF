@@ -88,7 +88,8 @@ public class TestngRunSingle {
 			testReport = testngRun.getTestReport();
 			testngRun = null;
 		} catch (Exception e) {
-			e.printStackTrace();
+			testReport.setResNo(-8000);
+			testReport.setResMsg("TestNG运行出错:"+e.getMessage());
 		}
 		return res;
 	}

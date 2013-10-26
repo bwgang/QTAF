@@ -21,7 +21,6 @@ public class ExecTask {
 	 * 构造函数
 	 */
 	public ExecTask() {
-		DispatchConf.writeConf();//检查配置文件，不存在则写入
 		task    = TestngRunSingle.getInstance();
 		report  = new TestReport();
 	}
@@ -30,7 +29,6 @@ public class ExecTask {
 	 * @return TestReport
 	 */
 	public TestReport Exec() {
-		setResNoAndMsg(-1,"未知错误");
 		//传入参数校验
 		if (runInfo.getCaseList() == null || runInfo.getCaseList().size()<1) {
 			setResNoAndMsg(-100,"待执行的用例不存在");

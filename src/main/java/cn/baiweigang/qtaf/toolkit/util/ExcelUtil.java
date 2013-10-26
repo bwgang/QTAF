@@ -276,6 +276,7 @@ public class ExcelUtil {
 		} catch ( NullPointerException | IOException e) {
 			log.error("读取Excel文件出错："+this.pathName);
 			log.error(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	private void delBankRow() {

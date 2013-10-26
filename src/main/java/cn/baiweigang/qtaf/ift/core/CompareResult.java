@@ -217,19 +217,18 @@ public class CompareResult {
 	private Map<String, String> trimActres(String responseRes,int config) {
 		Map<String, String> trimactres = new TreeMap<String, String>();
 		Map<String, Object> map = new TreeMap<String,Object>();
-		JsonUtil json = new JsonUtil();
-		if (responseRes.contains("<?xml") && responseRes.indexOf("<?xml")<1) {//此处xml格式文本判断不严谨，有待优化
+		if (XmlUtil.isXmlText(responseRes)) {
 			trimactres = XmlUtil.fomatXMLToMap(responseRes);
 			if (trimactres.size()<1) {
 				trimactres.put("解析xml格式错误", "---"+responseRes);
 			}
 		} else{
 			if(config == 1){//单层方式解析json串
-				map = json.getResult(responseRes);
+				map = JsonUtil.getResult(responseRes);
 			}else if(config == 2){//多层方式解析json串
-				map = json.getAllResult(responseRes);
+				map = JsonUtil.getAllResult(responseRes);
 			}else{//config不为1、2时  按单层方式解析
-				map = json.getResult(responseRes);
+				map = JsonUtil.getResult(responseRes);
 			}
 			if(map == null){
 				trimactres.put("解析json格式错误", "---"+responseRes);

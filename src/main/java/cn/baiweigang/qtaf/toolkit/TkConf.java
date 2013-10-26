@@ -1,9 +1,10 @@
 package cn.baiweigang.qtaf.toolkit;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-
-import org.apache.commons.io.FileUtils;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 
 /**
@@ -23,20 +24,13 @@ public class TkConf  {
 
 	/**
 	 * 如果配置文件不存在，写入
-	 * @return boolean
+	 * @return boolean 已存在或写入失败返回false  重新写入成功返回true
 	 */
-	public static boolean writeConf() {
-		//相应配置文件如果不存在，则创建
-		try {
-			if (!new File(TkConf.Log4jConf).exists()) {
-				FileUtils.copyFile(new File(TkConf.class.getResource("log4j.properties").getFile()), 
-						new File(TkConf.Log4jConf));
-			}
-			return true;
-		} catch (IOException e) {
-//			e.printStackTrace();
-			return false;
+	public static boolean writeConf(){
+		if (!new File(Log4jConf).exists()) {
+			return copyFile(TkConf.class.getResourceAsStream("/log4j.properties"),new File(Log4jConf));
 		}
+		return false;
 	}
 
 	/**
@@ -56,5 +50,24 @@ public class TkConf  {
 		return path;
 	}
 	
+	private static boolean copyFile(InputStream from, File to) {
+			try {
+				if (! to.getParentFile().exists()) {
+				      to.getParentFile().mkdirs();
+				 }
+				OutputStream os = new FileOutputStream(to);
+				 byte[] buffer = new byte[65536];
+				 int count = from.read(buffer);
+				 while (count > 0) {
+				      os.write(buffer, 0, count);
+				      count = from.read(buffer);
+				 }
+				 os.close();
+				 return true;
+			} catch (IOException e) {
+//				e.printStackTrace();
+				return false;
+			}
+		  }
 }
 

@@ -44,7 +44,7 @@ public class FormatCase {
 	 */
 	public void FormatCaseFromObj(String casePath,String sheetName) {
 		this.FormatCaseFromExcel(casePath,sheetName);
-		this.casesetName = casePath.substring(casePath.lastIndexOf("/") + 1,casePath.length() - FileUtil.getExtensionName(casePath).length());
+		this.casesetName = casePath.substring(casePath.lastIndexOf("/") + 1,casePath.length() - (FileUtil.getExtensionName(casePath).length()+1));
 		this.sheetName=sheetName;
 	}
 

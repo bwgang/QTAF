@@ -46,6 +46,21 @@ public class XmlUtil {
 	}
 
 	/**
+	 * 判断字符串是否为xml格式
+	 * @param str
+	 * @return boolean xml可解析则返回true
+	 */
+	public static boolean isXmlText(String str) {
+		try {
+			@SuppressWarnings("unused")
+			Document doc = DocumentHelper.parseText(str);
+			doc=null;
+			return true;
+		} catch (DocumentException e) {
+		}
+		return false;
+	}
+	/**
 	 * 标签属性解析
 	 * 
 	 * @param e

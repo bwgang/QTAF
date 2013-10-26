@@ -2,16 +2,13 @@ package cn.baiweigang.qtaf.ift;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.Properties;
-
 import org.apache.commons.io.FileUtils;
-
-import cn.baiweigang.qtaf.dispatch.DispatchConf;
-import cn.baiweigang.qtaf.toolkit.TkConf;
-import cn.baiweigang.qtaf.toolkit.util.FileUtil;
-
 
 /**
  * 接口全局配置文件
@@ -43,15 +40,15 @@ public class IftConf{
 	 * 默认生成的java文件存放目录
 	 */
 	public static String JavaPath = IftPath+"javaCase/";
-	/**
-	 * 默认的testng的xml文件输出目录
-	 */
-	public static  String SuitesXmlFilePath = getSuiteFolder();
+	
+	public static String PackageName = "cn.baiweigang.qtaf.ift.testcase";
 
 	/**
 	 * 默认的模板文件
 	 */
 	public static String TemplatePath = IftPath +"template/Template.ftl";	
+	
+	public static String ReportPath=IftPath+"report/";
 	/**
 	 * 默认的配置文件
 	 */
@@ -70,6 +67,7 @@ public class IftConf{
 		 * 代理端口
 		 */
 		public static int PROXY_PORT = Integer.parseInt(getPropValue("ProxyPort","8888"));
+		
        
 	//结果比对参数
 		/**
@@ -141,33 +139,30 @@ public class IftConf{
 	 * 删除默认临时目录
 	 */
 	public static void delTmpPath() {
-		// 清空java文件生成目录
-		FileUtil.delAllFile(JavaPath);
+		try {
+			// 清空java文件生成目录
+			FileUtils.deleteDirectory(new File(JavaPath));
+		} catch (IOException e) {
+//			e.printStackTrace();
+		}
 	}
 	
 
 
 	/**
 	 * 如果配置文件不存在，写入
-	 * @return boolean
+	 * @return boolean 已存在或创建失败时返回false  创建成功返回true
 	 */
 	public static boolean writeConf() {
 		//相应配置文件如果不存在，则创建
-		try {
-			if (!new File(IftConf.ConfFile).exists()) {
-				FileUtils.copyFile(new File(IftConf.class.getResource("IftConf.properties").getFile()), 
-						new File(IftConf.ConfFile));
-			}
-			if (!new File(IftConf.TemplatePath).exists()) {
-				FileUtils.copyFile(new File(IftConf.class.getResource("Template.ftl").getFile()), 
-					new File(IftConf.TemplatePath));
-			}
-			
-			return true;
-		} catch (IOException e) {
-			System.out.print(e.getMessage());
-			return false;
+		boolean flag =false; 
+		if (!new File(ConfFile).exists()){
+			flag = copyFile(IftConf.class.getResourceAsStream("/IftConf.properties"),new File(ConfFile));
 		}
+		if (!new File(TemplatePath).exists()){
+			flag = copyFile(IftConf.class.getResourceAsStream("/Template.ftl"),new File(TemplatePath));
+		}
+		return flag;
 	}
 
 	/**
@@ -180,30 +175,25 @@ public class IftConf{
 		if (IftConf.JarFile.length()>0) {
 			return true;//JarFile已设置
 		}
-		
-		if (null!=args && args.length>0) {//设置JarFile，同时写入文件
-			IftConf.JarFile=args[0];
-			FileUtil.writeString(args[0], IftConf.IftPath+"JarFile", "UTF-8");
-		}else{
-			if (FileUtil.isEmeyxist(IftConf.IftPath+"JarFile")) {//已存在则读取
-				IftConf.JarFile=FileUtil.readToString(IftConf.IftPath+"JarFile", "UTF-8");
+		try {
+			if (null!=args && args.length>0) {//设置JarFile，同时写入文件
+				JarFile=args[0];
+				FileUtils.writeStringToFile(new File(IftConf.IftPath+"JarFile"), JarFile, "UTF-8");
 			}else{
-				System.out.print("在eclipse中，第一次需要以maven方式执行");
-				return false;
+				if (new File(IftPath+"JarFile").exists()) {//已存在则读取
+					FileUtils.readFileToString(new File(IftPath+"JarFile"), "UTF-8");
+					IftConf.JarFile=FileUtils.readFileToString(new File(IftPath+"JarFile"), "UTF-8");
+				}else{
+					System.out.print("在eclipse中，第一次需要以maven方式执行");
+					return false;
+				}
 			}
+		} catch (IOException e) {
+//			e.printStackTrace();
+			return false;
 		}
 		return true;
 	}
-	
-	/**
-	 * 检查相关配置，不存在则创建
-	 */
-	public static void checkConf() {
-		TkConf.writeConf();
-		DispatchConf.writeConf();
-		IftConf.writeConf();
-	}
-	
 	
 	
 	/**
@@ -267,8 +257,7 @@ public class IftConf{
 		Properties prop = new Properties();
 		try {
 			//配置文件不存在则创建
-			if (!new File(ConfFile).exists() || !new File(TemplatePath).exists()
-					)IftConf.writeConf();
+			IftConf.writeConf();
 			FileInputStream file = new FileInputStream(ConfFile);
 			prop.load(new InputStreamReader(file,"UTF-8"));
 			file.close();
@@ -278,8 +267,24 @@ public class IftConf{
 		return prop;
 	}
 	
-	private static String getSuiteFolder() {
-		return DispatchConf.SuitsXmlPath;
-	}
-	
+	private static boolean copyFile(InputStream from, File to) {
+		try {
+			if (! to.getParentFile().exists()) {
+			      to.getParentFile().mkdirs();
+			 }
+			OutputStream os = new FileOutputStream(to);
+			 byte[] buffer = new byte[65536];
+			 int count = from.read(buffer);
+			 while (count > 0) {
+			      os.write(buffer, 0, count);
+			      count = from.read(buffer);
+			 }
+			 os.close();
+			 return true;
+		} catch (IOException e) {
+//			e.printStackTrace();
+			return false;
+		}
+	    
+ }
 }

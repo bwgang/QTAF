@@ -14,6 +14,7 @@ import cn.baiweigang.qtaf.dispatch.report.TngCount;
 import cn.baiweigang.qtaf.dispatch.testcase.ICase;
 import cn.baiweigang.qtaf.toolkit.util.CommUtils;
 import cn.baiweigang.qtaf.toolkit.util.FileUtil;
+import cn.baiweigang.qtaf.toolkit.util.LogUtil;
 
 /**
  * 执行testng，
@@ -21,7 +22,7 @@ import cn.baiweigang.qtaf.toolkit.util.FileUtil;
  *
  */
 public class TestngRun {
-	
+	private static LogUtil log=LogUtil.getLogger(TestngRun.class);//日志记录
 	private TestNG tng;//运行TestNG
 	private TestListenerAdapter listener;//运行的监听器
 
@@ -48,6 +49,7 @@ public class TestngRun {
 	 */
 	public void setRunInfo(TestRunInfo runInfo) {
 		this.runInfo=runInfo;
+		log.info(this.runInfo.getTaskName()+"配置任务信息成功");
 		for (ICase icase : this.runInfo.getCaseList()) {
 			addXmlFileList(icase.getCaseList());
 		}
@@ -64,6 +66,8 @@ public class TestngRun {
 			return false;
 		}
 		//运行相关参数配置
+		//检查xlst文件，不存在则创建
+		DispatchConf.writeConf();
 		tng.setOutputDirectory(getTestNgOut());
 		
 		try {

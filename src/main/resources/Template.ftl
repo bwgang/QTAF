@@ -127,7 +127,7 @@ public class ${javaInfo.javaFileName}  {
 		//记录到TestNG日志
 		TestngLog.Log("所有用例执行完毕");
 		TestngLog.Log("共验证检查点数为："+compareResultList.size());
-		
+		TestngLog.Log("生成Excel测试报告："+excelReportFilePath+excelReportName+".xlsx"+" 的sheet表--"+excelReportSheetName);
 		 //此测试套执行完毕记入TestNG日志
 		infoTmp=Thread.currentThread().getStackTrace()[1].getClassName();
 		infoTmp=infoTmp.substring(infoTmp.lastIndexOf(".")+1, infoTmp.length());

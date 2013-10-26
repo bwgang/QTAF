@@ -1,13 +1,13 @@
 package cn.baiweigang.qtaf.ift.testcase.autocreate;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
+import cn.baiweigang.qtaf.dispatch.testcase.CreateXmlFile;
 import cn.baiweigang.qtaf.dispatch.testcase.SuperCase;
 import cn.baiweigang.qtaf.ift.IftConf;
-import cn.baiweigang.qtaf.toolkit.util.CommUtils;
+import cn.baiweigang.qtaf.ift.testcase.format.FormatCase;
+import cn.baiweigang.qtaf.toolkit.util.CompilerUtil;
+import cn.baiweigang.qtaf.toolkit.util.FileUtil;
 import cn.baiweigang.qtaf.toolkit.util.LogUtil;
 import cn.baiweigang.qtaf.toolkit.util.StringUtil;
 
@@ -23,40 +23,27 @@ public class IftDataFileCase extends SuperCase{
 	//任务名称
 	private String taskName;//测试任务名称
 	//根据用例数据文件，创建java、xml文件相关配置信息
-	private String javaCase;//生成的java文件存储目录
-	private String times;// 获取当前时间戳
 	private String allReportPath ;// html、excel测试报告存储的上级目录
-	private String htmlReportPath ;// excel格式测试报告存储的目录
-	private String excelReportPath ;// excel格式测试报告存储的目录
-	private String reportExcelName ;// excel格式测试报告名称
-	private String xmlFilePath ;// 生成xml文件的路径
-	private String xmlFileName ;// 生成xml文件的名称
-	private String packageInfo;//生成java文件的包名
-
-	private TestngXmlSuite xmlSuite;//用例自动生成用到的测试套
-	private List<Map<String, Object>> testCaseList;//用例集列表
+	private String excelReportName;//excel格式测试报告的名称
+	
+	private CreateJavaFile createJavaFile;//生成java文件
+	private CreateXmlFile createXmlFile;//生成xml文件
 	
 	/**
 	 * 构造函数
 	 */
 	public   IftDataFileCase() {
 		super();
-		xmlFilePath = IftConf.SuitesXmlFilePath;
-		javaCase = IftConf.JavaPath;
-		
-		xmlSuite=new TestngXmlSuite();
-		testCaseList=new ArrayList<Map<String, Object>>();
-		
-		times = CommUtils.getNowTime()+"_"+CommUtils.getRandomStr(5);// 获取当前时间戳+5位随机串
-		allReportPath = IftConf.IftPath + "report/" + times;// 此次测试报告存储路径
-		excelReportPath = allReportPath + "/excel";// excel格式测试报告存储的目录
-		htmlReportPath = allReportPath + "/html";
-		packageInfo="ift.testcases";
-		
-		reportExcelName = "未命名的Excel测试报告" + CommUtils.getRandomStr(5);// 默认的Excel格式测试报告名称
-		xmlFileName = "未命名的XML文件" + CommUtils.getRandomStr(5);// 默认的生成xml文件的名称
+		createJavaFile = new CreateJavaFile();
+		createXmlFile = new CreateXmlFile();
+		setIftTaskName("未命名测试任务");
+		excelReportName="未命名接口测试";
 	}
 
+	public List<String> getCaseList() {
+		createXmlFile();
+		return this.xmlPathNameList;
+	}
 	/**
 	 * 添加用例
 	 * @param casePath 用例路径 必填
@@ -67,21 +54,47 @@ public class IftDataFileCase extends SuperCase{
 	 */
 	public void addCase(String casePath, String sheetName, String caseName,
 			Class<?> cls,String method) {
-		String template = IftConf.TemplatePath;
-		if (StringUtil.IsNullOrEmpty(casePath) || StringUtil.IsNullOrEmpty(caseName)
-				|| StringUtil.IsNullOrEmpty(template)) {
+		if (StringUtil.IsNullOrEmpty(casePath) || StringUtil.IsNullOrEmpty(caseName)) {
 			return;
 		}//任一项空值或长度小于1时，不做处理
+		JavaCaseInfo javaCaseInfo = new JavaCaseInfo();
+		//读取用例
+		FormatCase formatcase=new FormatCase();
+		formatcase.FormatCaseFromObj(casePath,sheetName);
+		//存储用例实体列表信息
+		javaCaseInfo.setAllCase(formatcase.getTestCase());
+		//获取测试集名称作为输出的测试报告名称
+		this.excelReportName=formatcase.getCasesetName();
+		//存储javaCaseInfo其余信息
+		javaCaseInfo.setPackageName(IftConf.PackageName);
+		javaCaseInfo.setJavaFileName(caseName.replace(".", "_"));
+		javaCaseInfo.setJavaSavePath(IftConf.JavaPath);
+		javaCaseInfo.setCaseDataPathName(casePath);
+		javaCaseInfo.setCaseDataSheetName(sheetName);
+		javaCaseInfo.setExcelReportSheetName(sheetName);
+		javaCaseInfo.setExcelReportName(this.excelReportName);
+		javaCaseInfo.setExcelReportPath(getReportPath());
+		javaCaseInfo.setCls(cls);
+		javaCaseInfo.setMethod(method);
+		//创建java文件 失败则返回
+		if (!createJavaFile.creatJavaSrcFile(javaCaseInfo)){
+			return;
+		}
+		//编译java文件为class 失败则返回
+		if(!CompilerUtil.dynamicCompiler(javaCaseInfo.getJavaSavePath()+javaCaseInfo.getJavaFileName()+".java", 
+				IftConf.DistPath, IftConf.LibPath,IftConf.JarFile)){
+			return;
+		}
+		//添加到xmlSuite	
+		try {
+			createXmlFile.addJavaCase(caseName.replace(".", "_"), 
+					Class.forName(javaCaseInfo.getPackageName()+"."+javaCaseInfo.getJavaFileName()));
+			log.info("添加测试集："+javaCaseInfo.getJavaFileName()+"成功");
+		} catch (ClassNotFoundException e) {
+			log.error("添加测试集："+javaCaseInfo.getJavaFileName()+"失败");
+			log.error(e.getMessage());
+		}
 		
-		Map<String, Object> casemap = new TreeMap<String, Object>();
-		casemap.put("javaname",caseName.replace(".", "_"));
-		casemap.put("casepath", casePath);
-		casemap.put("sheetName", sheetName);
-		casemap.put("template", template);
-		casemap.put("casename", caseName);
-		casemap.put("class", cls);
-		casemap.put("method", method);
-		testCaseList.add(casemap);	
 	}
 	
 	/**
@@ -94,132 +107,59 @@ public class IftDataFileCase extends SuperCase{
 	public void addCase(String casePath, String caseName,Class<?> cls,String method) {
 		addCase(casePath,"TestCase",caseName,cls,method);
 	}
-	
-	
-	private void setReportExcelName(String reportExcelName) {
-		if (null==reportExcelName || reportExcelName.length()<1)return;
-		this.reportExcelName = reportExcelName;
-	}
-
-	private void setXmlFileName(String xmlFileName) {
-		if (null==xmlFileName || xmlFileName.length()<1)return;
-		this.xmlFileName = xmlFileName;
-	}
 
 	/**
-	 * 设置任务名称
+	 * 设置任务名称 
 	 * @param setTaskName
 	 */
 	public void setIftTaskName(String setTaskName) {
-		setTaskName(setTaskName);
-		setReportExcelName(taskName);
-		setXmlFileName(taskName);
-		this.allReportPath = IftConf.IftPath + "report/" +taskName+"/"+ times;// 此次测试报告存储路径
-		this.excelReportPath = this.allReportPath + "/excel";// excel格式测试报告存储的目录
-		this.htmlReportPath = this.allReportPath + "/html";
-	}
-
-	/**
-	 * 设置Excel报告输出路径
-	 * @param excelReportPath
-	 */
-	public void setExcelReportPath(String excelReportPath) {
-		if (StringUtil.IsNullOrEmpty(excelReportPath)) return;
-		this.excelReportPath=excelReportPath;
+		this.taskName =setTaskName;
+		this.createXmlFile.setSuiteName(this.taskName);
+		setReportPath(IftConf.ReportPath+this.taskName+"/");// 测试报告存储路径
+		this.excelReportName = this.taskName;
+		
 	}
 	
+	
 	/**
-	 * 创建java、xml文件 更新xmlPathNameList列表
-	 * @return boolean 设置成功返回true
+	 * 如果路径无效 则测试报告默认保存在 [qtaf/ift/report/任务名称 ]目录下
+	 * @param reportPath
 	 */
-	public boolean updateXmlFileList() {
-		//创建java、xml文件
-		if (createJavaAndXmlFile()) {
-			xmlPathNameList.add(this.xmlSuite.getXmlFilePath()+this.xmlSuite.getXmlName());
-			return true;
-		}else{
-			log.error("生成java或xml文件失败，请检查日志记录");
-			return false;
+	public void setReportPath(String reportPath){
+		if (FileUtil.createDictory(reportPath)) {
+			this.allReportPath=reportPath;
+			//清空指定的测试报告目录
+			FileUtil.delFolder(getReportPath());
 		}
 	}
-	
+	public String getReportPath(){
+		return this.allReportPath;
+	}
 	public String getExcelReportPath() {
-		return this.excelReportPath+"/"+this.reportExcelName+".xlsx";
+		return getReportPath()+this.excelReportName+".xlsx";
 	}
 	public String getHtmlReportPath() {
-		return this.htmlReportPath;
-	}
-	private boolean createJavaAndXmlFile() {
-		boolean flag = false;
-		try {
-			for (int i = 0; i < testCaseList.size(); i++) {
-				TestCaseSet iftCaseSet = new TestCaseSet();
-				TestngXmlTest iftXmlTest = new TestngXmlTest();
-				
-				//设置用例数据文件位置
-				flag = iftCaseSet.setCasedatapath(testCaseList.get(i).get("casepath").toString());
-				if (!flag) continue;
-				iftCaseSet.setCasedatasheetName(testCaseList.get(i).get("sheetName").toString());
-				
-				//设置测试用例模板的位置
-				flag=iftCaseSet.setCasetemplatepath(testCaseList.get(i).get("template").toString());
-				if (!flag) continue;
-				iftCaseSet.setCls((Class<?>) testCaseList.get(i).get("class"));
-				iftCaseSet.setMethod(testCaseList.get(i).get("method").toString());
-				//设置java文件保存目录
-				flag=iftCaseSet.setJavasavepath(this.javaCase);
-				if (!flag) continue;
-				
-				//从用例数据库文件中读取信息
-				if (!iftCaseSet.readCaseInfo() || !iftCaseSet.isConfigOk()) {
-					log.info("此用例集读取失败！请检查日志");
-					continue;
-				}
-				
-				//TestCaseSet的其它配置信息
-				flag = iftCaseSet.setPackagename(this.packageInfo);//固定的java文件包名
-				if (!flag) continue;
-				
-				flag = iftCaseSet.setCasename(testCaseList.get(i).get("javaname").toString());//设置生成的用例名
-				if (!flag) continue;
-				
-				flag = iftCaseSet.setReportpath(excelReportPath);//设置Excel报告存储目录
-				if (!flag) continue;
-				
-				flag = iftCaseSet.setReportexcelname(reportExcelName);//Excel报告的文件名
-				if (!flag) continue;
-				
-				flag = iftCaseSet.setReportsheetname(testCaseList.get(i).get("javaname").toString());//Excel文件的sheet名称
-				if (!flag) continue;
-				
-				flag = iftXmlTest.setTestCaseSet(iftCaseSet);
-				if (!flag) continue;
-				
-				flag =  iftXmlTest.setXmltestname(testCaseList.get(i).get("javaname").toString());//对应的测试集名称
-				if (!flag) continue;
-				
-				flag = xmlSuite.addXmlTest(iftXmlTest);
-				if (!flag) continue;
-			}
-			
-			flag = xmlSuite.setXmlFilePath(xmlFilePath);
-			flag = xmlSuite.setXmlName(xmlFileName);
-			flag = xmlSuite.updateTestToXmlSuite();
-			flag = xmlSuite.createXmlFile();
-		} catch (Exception e) {
-			log.error("创建测试套失败！");
-			log.error(e.getMessage());
-		}
-		return flag;
+		return this.allReportPath+"html";
 	}
 
 	public String getTaskName() {
 		return taskName;
 	}
 
-	private void setTaskName(String taskName) {
-		this.taskName = taskName;
+	/**
+	 * 创建java、xml文件 更新xmlPathNameList列表
+	 * @return boolean 设置成功返回true
+	 */
+	private boolean createXmlFile() {
+		//创建java、xml文件
+		String xmlFilePath = createXmlFile.getXmlFilePath();
+		if (FileUtil.isEmeyxist(xmlFilePath)) {
+			xmlPathNameList.add(xmlFilePath);
+			log.info("添加xml文件成功："+xmlFilePath);
+			return true;
+		}else{
+			log.error("添加xml文件失败："+xmlFilePath);
+			return false;
+		}
 	}
-
-
 }

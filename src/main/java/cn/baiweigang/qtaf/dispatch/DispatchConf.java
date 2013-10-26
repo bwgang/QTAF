@@ -1,14 +1,14 @@
 package cn.baiweigang.qtaf.dispatch;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
-
-import cn.baiweigang.qtaf.toolkit.util.CommUtils;
-import cn.baiweigang.qtaf.toolkit.util.FileUtil;
 
 
 /**
@@ -37,7 +37,7 @@ public class DispatchConf {
 	/**
 	 * html测试报告默认输出目录
 	 */
-	public static String HtmlReportOutPath = RootPath+"qtaf/dispatch/report/"+CommUtils.getStrRandNum(5)+"/";
+	public static String HtmlReportOutPath = RootPath+"qtaf/dispatch/report/"+System.currentTimeMillis()+"/";
 	/**
 	 * html测试报告默认标题
 	 */
@@ -53,14 +53,7 @@ public class DispatchConf {
 	 */
 	public static boolean writeConf() {
 		if (!new File(DispatchConf.TestNGXsltFile).exists()) {
-			try {
-				FileUtils.copyFile(new File(DispatchConf.class.getResource("testng-results.xsl").getFile()), new File(DispatchConf.TestNGXsltFile));
-				return true;
-			} catch (IOException e) {
-//				e.printStackTrace();
-				System.out.print(e.getMessage());
-				return false;
-			}
+			return copyFile(DispatchConf.class.getResourceAsStream("/testng-results.xsl"),new File(TestNGXsltFile));
 		}
 		return false;
 	}
@@ -69,10 +62,15 @@ public class DispatchConf {
 	 * 删除默认临时目录
 	 */
 	public static void delTmpPath() {
-		// 清空xml文件生成目录
-		FileUtil.delAllFile(DispatchConf.SuitsXmlPath);
-		// TestNG输出目录
-		FileUtil.delAllFile(DispatchConf.TestNgOutPath);
+		try {
+			// 清空xml文件生成目录
+			FileUtils.deleteDirectory(new File(SuitsXmlPath));
+			// TestNG输出目录
+			FileUtils.deleteDirectory(new File(TestNgOutPath));
+		} catch (IOException e) {
+//			e.printStackTrace();
+		}
+		
 	}
 	
 	private static String getClassPath() {
@@ -109,5 +107,24 @@ public class DispatchConf {
 		return prop;
 	}
 	
-	
+	private static boolean copyFile(InputStream from, File to) {
+			try {
+				if (! to.getParentFile().exists()) {
+				      to.getParentFile().mkdirs();
+				 }
+				OutputStream os = new FileOutputStream(to);
+				 byte[] buffer = new byte[65536];
+				 int count = from.read(buffer);
+				 while (count > 0) {
+				      os.write(buffer, 0, count);
+				      count = from.read(buffer);
+				 }
+				 os.close();
+				 return true;
+			} catch (IOException e) {
+//				e.printStackTrace();
+				return false;
+			}
+		    
+	 }
 }

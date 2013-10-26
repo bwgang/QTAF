@@ -1,6 +1,5 @@
 package cn.baiweigang.qtaf.toolkit.util;
 
-import java.io.File;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -73,10 +72,7 @@ public class LogUtil {
 	 */
 	private  void configLogProperties(){
 		try {
-			if (!new File(TkConf.Log4jConf).exists()) {//配置文件不存在时，写入
-				TkConf.writeConf();//写配置文件
-			}
-			
+			TkConf.writeConf();
 			PropertyConfigurator.configure(TkConf.Log4jConf);
 		} catch (Exception e) {
 //			e.printStackTrace();

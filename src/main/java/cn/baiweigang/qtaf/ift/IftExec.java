@@ -25,17 +25,15 @@ public class IftExec {
 	private List<ICase> caseList;
 	private IftDataFileCase dataCase;
 	public IftExec(){
+		
 		//清空临时目录
 		DispatchConf.delTmpPath();
 		IftConf.delTmpPath();
-		
-		//检查相关配置，不存在则创建
-		IftConf.checkConf();
-		 exec = new ExecTask();
-		 runInfo = new TestRunInfo();
-		 caseList = new ArrayList<>();//用例列表
-		 dataCase = new IftDataFileCase();
-		 dataCase.setIftTaskName("接口测试");		
+		exec = new ExecTask();
+		runInfo = new TestRunInfo();
+		caseList = new ArrayList<>();//用例列表
+		dataCase = new IftDataFileCase();
+		dataCase.setIftTaskName("接口测试");		
 	}
 	
 	/**
@@ -56,7 +54,6 @@ public class IftExec {
 	 * @return TestReport
 	 */
 	public TestReport run(){
-		dataCase.updateXmlFileList();
 		caseList.add(dataCase);
 		//设置运行配置信息
 		runInfo.setTaskName(dataCase.getTaskName());//任务名称
