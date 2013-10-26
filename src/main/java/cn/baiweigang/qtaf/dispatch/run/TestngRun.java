@@ -22,7 +22,7 @@ import cn.baiweigang.qtaf.toolkit.util.LogUtil;
  *
  */
 public class TestngRun {
-	private static LogUtil log=LogUtil.getLogger(TestngRun.class);//日志记录
+	private LogUtil log=LogUtil.getLogger(TestngRun.class);//日志记录
 	private TestNG tng;//运行TestNG
 	private TestListenerAdapter listener;//运行的监听器
 
@@ -63,6 +63,7 @@ public class TestngRun {
 		if (getXmlFileList().size()<1) {
 			this.testReport.setResNo(-6000);
 			this.testReport.setResMsg("Xml文件列表为空");
+			log.error(getTaskName()+" :Xml文件列表为空");
 			return false;
 		}
 		//运行相关参数配置
@@ -77,20 +78,21 @@ public class TestngRun {
 //			e.printStackTrace();
 			this.testReport.setResNo(-7000);
 			this.testReport.setResMsg("执行用例异常： "+e.getMessage());
+			log.error(getTaskName()+" :执行用例异常--"+e.getMessage());
 			return false;
 		}
 		//记录测试报告摘要
 		createTestReport();
 		//输出html测试报告
-		
 		if (!createHtmlReport()) {
 			this.testReport.setResNo(1);
 			this.testReport.setResMsg("任务执行成功，转换Html格式报告出错");
+			log.info(getTaskName()+" :任务执行成功，转换Html格式报告出错");
 		}else{
 			this.testReport.setResNo(0);
 			this.testReport.setResMsg("任务执行成功");
+			log.info(getTaskName()+" :任务执行成功");
 		}
-		
 		return true;
 	}
 
@@ -106,6 +108,8 @@ public class TestngRun {
 	private String getTestNgOut(){
 		String out= this.runInfo.getTestng_OutPut();
 		if (out == null || out.length()<1) {
+			log.info("设置TestNG输出目录失败："+this.runInfo.getTestng_OutPut());
+			log.info("使用默认路径："+DispatchConf.TestNgOutPath);
 			return DispatchConf.TestNgOutPath;//默认的TestNG输出目录
 		}
 		if (!out.endsWith("/")) {
@@ -116,13 +120,18 @@ public class TestngRun {
 	
 	private String getTaskName() {
 		if (this.runInfo.getTaskName() == null || this.runInfo.getTaskName().length()<1) {
-			return "未命名测试任务"+CommUtils.getRandomStr(5);//默认的TestNG输出目录
+			String taskName = "未命名测试任务"+CommUtils.getRandomStr(5);
+			log.info("设置任务名失败："+this.runInfo.getTaskName());
+			log.info("使用默认任务名："+taskName);
+			return taskName;//默认的TestNG输出目录
 		}
 		return this.runInfo.getTaskName();
 	}
 	
 	private String getHtmlReportOut(){
 		if (this.runInfo.getHtmlReportOutPath() == null || this.runInfo.getHtmlReportOutPath().length()<1) {
+			log.info("设置Html输出目录失败："+this.runInfo.getHtmlReportOutPath());
+			log.info("使用默认Html输出目录："+DispatchConf.HtmlReportOutPath);
 			return DispatchConf.HtmlReportOutPath;//默认的html报告输出目录
 		}
 		return this.runInfo.getHtmlReportOutPath();
@@ -130,6 +139,8 @@ public class TestngRun {
 	
 	private String getHtmlReportTitle(){
 		if (null == this.runInfo.getHtmlReportTitle() || this.runInfo.getHtmlReportTitle().length()<1) {
+			log.info("设置Html报告标题失败："+this.runInfo.getHtmlReportTitle());
+			log.info("使用默认Html报告标题："+DispatchConf.HtmlReportTitle);
 			return  DispatchConf.HtmlReportTitle;
 		}
 		return this.runInfo.getHtmlReportTitle();
@@ -140,7 +151,10 @@ public class TestngRun {
 	}
 
 	private void addXmlFileList(List<String> xmlFileList) {
-		if (null==xmlFileList) return;
+		if (null==xmlFileList) {
+			log.error("添加的Xml文件列表为null，添加失败");
+			return;
+		}
 		for (String xmlFile : xmlFileList) {
 			addXmlFile(xmlFile);
 		}
@@ -148,24 +162,30 @@ public class TestngRun {
 	
 	private boolean addXmlFile(String xmlPathName){
 		if (null==xmlPathName){
+			log.error("添加的xml文件为null，添加失败");
 			return false;
 		}
 		if (!FileUtil.getExtensionName(xmlPathName).equals("xml")) xmlPathName=xmlPathName+".xml";
 		
-		if (FileUtil.isEmeyxist(xmlPathName)) {
+		if (FileUtil.isExist(xmlPathName)) {
+			log.info("执行队列添加xml文件成功："+xmlPathName);
 			this.xmlFileList.add(xmlPathName);
 			return true;
 		}else{
+			log.error("添加的xml文件不存在："+xmlPathName);
 			return false;
 		}
 	}
 
 
 	private boolean createHtmlReport() {
-		boolean res=false;
-		res = ExportReportHtml.createHtmlReport(getTestNgOut()+"testng-results.xml", getHtmlReportOut(),getHtmlReportTitle());
-		if (res) this.testReport .setHtmlReport(getHtmlReportOut());
-		return res;
+		if (ExportReportHtml.createHtmlReport(getTestNgOut()+"testng-results.xml", 
+				getHtmlReportOut(),getHtmlReportTitle())) {
+			
+			this.testReport .setHtmlReport(getHtmlReportOut());
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -173,6 +193,7 @@ public class TestngRun {
 	 * @param listener
 	 */
 	private void createTestReport() {
+		log.info("从TestNG监听器中获取任务执行的用例信息");
 		ArrayList<TngCount> testCountList=new ArrayList<TngCount>();;
 		TngCount tngCount=new TngCount();
 		tngCount.setName(getTaskName());
@@ -194,6 +215,4 @@ public class TestngRun {
 		this.testReport .setTaskName(getTaskName());
 		this.testReport .setTngTestCountList(testCountList);
 	}
-
-	
 }

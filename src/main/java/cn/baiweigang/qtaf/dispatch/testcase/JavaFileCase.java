@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.baiweigang.qtaf.toolkit.util.CommUtils;
+import cn.baiweigang.qtaf.toolkit.util.LogUtil;
 
 /**
  * .java文件类型的测试用例
@@ -11,6 +12,7 @@ import cn.baiweigang.qtaf.toolkit.util.CommUtils;
  *
  */
 public class JavaFileCase extends SuperCase{
+	private LogUtil log=LogUtil.getLogger(JavaFileCase.class);//日志记录
 	private CreateXmlFile createXmlFile;
 	/**
 	 * 构造函数
@@ -37,7 +39,10 @@ public class JavaFileCase extends SuperCase{
 	 * @param cls
 	 */
 	public void addCase(Class<?> cls){
-		if (null==cls) return ;
+		if (null==cls) {
+			log.error("添加的java用例类为null");
+			return ;
+		}
 		String caseName=cls.getSimpleName();
 		addCase(caseName, cls);
 	}
@@ -47,9 +52,14 @@ public class JavaFileCase extends SuperCase{
 	 * @param cls
 	 */
 	public void addCase(String caseName,Class<?> cls) {
-		if (null==cls ) return;
+		if (null==cls ) {
+			log.error("添加的java用例类为null");
+			return;
+		}
 		if (null==caseName || caseName.length()<1) {
-			caseName="未命名测试用例"+CommUtils.getRandomStr(5);
+			log.info("设置的用例名为空");
+			caseName="未命名测试集"+CommUtils.getRandomStr(5);
+			log.info("使用默认名称："+caseName);
 		}
 		createXmlFile.addJavaCase(caseName, cls);
 	}

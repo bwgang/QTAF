@@ -37,14 +37,13 @@ public class CompilerUtil {
     	DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();  
         boolean compilerResult = compiler("UTF-8",getClassPath(libPath,distPath,jarFile),javaFilePath, distPath, diagnostics);   
         if (compilerResult) {
-//        	log.info("编译："+javaFilePath+" 文件或目录成功，输出目录为："+distPath);
+        	log.info("动态编译成功："+javaFilePath+"  输出目录为："+distPath);
         }else{
-        	log.info("编译失败");
+        	log.error("动态编译失败："+javaFilePath);
         	for (@SuppressWarnings("rawtypes") Diagnostic diagnostic : diagnostics.getDiagnostics()) {   
         		log.error(diagnostic.getMessage(null));  
             } 
         }
-        
         return compilerResult;
     }
     
@@ -61,10 +60,8 @@ public class CompilerUtil {
     private static  boolean compiler(String encoding,String jars,String filePath, String distDir, DiagnosticCollector<JavaFileObject> diagnostics){    
         // 获取编译器实例   
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();   
-
         // 获取标准文件管理器实例   
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);   
-          
         //编译文件
         if (StringUtil.IsNullOrEmpty(filePath)) {   
         	log.info("待编译的文件或目录不存在");
@@ -72,24 +69,20 @@ public class CompilerUtil {
         } 
         //输出目录
         if (!FileUtil.createDictory(distDir)) {   
-        	log.info("输出目录创建失败");
+        	log.error("输出目录创建失败");
             return false;   
         } 
-
         // 得到filePath目录下的所有java源文件   
         File sourceFile = new File(filePath);   
         List<File> sourceFileList = new ArrayList<File>();   
         sourceFileList = getSourceFiles(sourceFile);   
-
         // 没有java文件，直接返回   
         if (sourceFileList.size() == 0) {   
-        	log.info(filePath + "目录下查找不到任何java文件");
+        	log.error(filePath + "目录下查找不到任何java文件");
             return false;   
         }   
-            
         // 获取要编译的编译单元   
         Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(sourceFileList);   
-
         //编译选项，在编译java文件时，编译程序会自动的去寻找java文件引用的其他的java源文件或者class。 -classpath选项就是定义class文件的查找目录。  
         Iterable<String> options = Arrays.asList("-encoding",encoding,"-classpath",jars,"-d", distDir);   
         CompilationTask compilationTask = compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits);   
@@ -123,7 +116,7 @@ public class CompilerUtil {
                 sourceFileList.add(sourceFile);   
             }   
         }else{
-        	log.info("目录或文件不存在: "+sourceFile);
+        	log.error("目录或文件不存在: "+sourceFile);
         }
         return sourceFileList;
     }   
@@ -145,10 +138,10 @@ public class CompilerUtil {
     }   
     
     private static String getClassPath(String libPath,String classPath,String jarFile){
-    	if (FileUtil.isEmeyxist(classPath)) {
+    	if (FileUtil.isExist(classPath)) {
 			return getJarFiles(libPath,jarFile)+classPath;
 		}else{
-			log.info("classPath不存在："+classPath);
+			log.error("classPath不存在："+classPath);
 			return getJarFiles(libPath,jarFile);
 		}
     }

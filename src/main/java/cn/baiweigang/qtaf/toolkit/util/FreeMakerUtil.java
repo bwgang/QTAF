@@ -30,7 +30,7 @@ public class FreeMakerUtil {
 	 */
 	public boolean CreateJavaFile(String templateFilePath,Map<String, Object> data,String javaFilePath) {
 		
-		if (!FileUtil.isEmeyxist(templateFilePath)) {
+		if (!FileUtil.isExist(templateFilePath)) {
 			log.info("模板文件不存在："+templateFilePath);
 			return false;
 		}

@@ -1,6 +1,7 @@
 package cn.baiweigang.qtaf.dispatch.run;
 
 import cn.baiweigang.qtaf.dispatch.report.TestReport;
+import cn.baiweigang.qtaf.toolkit.util.LogUtil;
 
 /**
  * 说明：封装用例执行 单例模式
@@ -9,6 +10,7 @@ import cn.baiweigang.qtaf.dispatch.report.TestReport;
  * 
  */
 public class TestngRunSingle {
+	private LogUtil log=LogUtil.getLogger(TestngRunSingle.class);//日志记录
 	private static TestngRunSingle single;
 	private static boolean Flag;//是否运行任务标识，为true时有任务在运行，false时无任务运行
 	private TestRunInfo runInfo ;//任务名称
@@ -25,6 +27,7 @@ public class TestngRunSingle {
 	 * 运行前初始化相关信息
 	 */
 	private void init(){
+		log.info("TestNG执行实例创建");
 		runInfo=new TestRunInfo();
 		testReport=new TestReport();
 	}
@@ -79,19 +82,12 @@ public class TestngRunSingle {
 	 * @return  boolean
 	 */
 	private boolean doTask() {
-		boolean res=false;
-		try {
-			// 测试TestngRun
-			TestngRun testngRun = new TestngRun();
-			testngRun.setRunInfo(runInfo);
-			res=testngRun.run();
-			testReport = testngRun.getTestReport();
-			testngRun = null;
-		} catch (Exception e) {
-			testReport.setResNo(-8000);
-			testReport.setResMsg("TestNG运行出错:"+e.getMessage());
-		}
-		return res;
+		log.info(this.runInfo.getTaskName()+" 开始执行");
+		TestngRun testngRun = new TestngRun();
+		testngRun.setRunInfo(runInfo);
+		boolean result = testngRun.run();
+		testReport = testngRun.getTestReport();
+		testngRun = null;
+		return result;
 	}
-
 }

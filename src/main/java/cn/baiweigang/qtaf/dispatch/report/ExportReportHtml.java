@@ -31,10 +31,14 @@ public class ExportReportHtml {
 	 * @return boolean 创建成功返回true
 	 */
 	public static boolean createHtmlReport(String tngOutFilePath,String htmlReportPath,String htmlReportTitle) {
-		log.debug("生成Html报告输入参数："+tngOutFilePath+"  "+htmlReportPath+" "+""+htmlReportTitle);
-		
-		if (!FileUtil.isEmeyxist(tngOutFilePath) ) return false;
-		if (!FileUtil.createDictory(htmlReportPath)) return false;
+		if (!FileUtil.isExist(tngOutFilePath) ) {
+			log.error("生成Html报告出错-testng输出的xml文件不存在："+tngOutFilePath);
+			return false;
+		}
+		if (!FileUtil.createDictory(htmlReportPath)){
+			log.error("生成Html报告出错-输出目录创建失败："+htmlReportPath);
+			return false;
+		}
 		 try {
 			 Source xml = new javax.xml.transform.stream.StreamSource(tngOutFilePath);
 			 Source xsl = new javax.xml.transform.stream.StreamSource(DispatchConf.TestNGXsltFile);
@@ -51,7 +55,7 @@ public class ExportReportHtml {
 			  log.info("生成Html测试报告成功："+htmlReportPath+"/index.html");
 			  return true;
 		} catch (Exception e) {
-			log.error("生成Html报告出错："+e.getMessage());
+			log.error("生成Html报告出错-xml转换异常："+e.getMessage());
 			return false;
 		}
 	}

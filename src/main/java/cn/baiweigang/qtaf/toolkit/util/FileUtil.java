@@ -378,9 +378,9 @@ public class FileUtil {
 	/**
 	 * 判断文件或文件夹是否存在
 	 * @param path
-	 * @return boolean
+	 * @return boolean 存在返回true 
 	 */
-	public static boolean isEmeyxist(String path){
+	public static boolean isExist(String path){
 		return new File(path).exists();
 	}
 	
@@ -414,7 +414,7 @@ public class FileUtil {
 	 * @return String
 	 */
 	public static String getParentPath(String absolutePath) {
-		if (!isEmeyxist(absolutePath)) {
+		if (!isExist(absolutePath)) {
 			log.info("文件不存在:"+absolutePath);
 			return null;
 		}
@@ -428,7 +428,7 @@ public class FileUtil {
 	 * @return String
 	 */
 	public static String getFileName(String absolutePath) {
-		if (!isEmeyxist(absolutePath)) {
+		if (!isExist(absolutePath)) {
 			log.info("文件不存在:"+absolutePath);
 			return null;
 		}

@@ -15,12 +15,12 @@ import cn.baiweigang.qtaf.toolkit.util.LogUtil;
 
 
 /**
- * 根据java文件输出xml文件
+ * 根据java文件输出Xml文件
  * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/>
  *
  */
 public class CreateXmlFile {
-	private static LogUtil log=LogUtil.getLogger(CreateXmlFile.class);//日志记录
+	private LogUtil log=LogUtil.getLogger(CreateXmlFile.class);//日志记录
 	
 	private XmlSuite suite;
 	private String xmlFileFolder;
@@ -59,9 +59,14 @@ public class CreateXmlFile {
 	 * @param cls 类
 	 */
 	public void addJavaCase(String caseName,Class<?> cls) {
-		if (null==cls ) return;
+		if (null==cls ) {
+			log.error("添加的java类为null，添加失败");
+			return;
+		}
 		if (null==caseName || caseName.length()<1) {
+			log.info("指定的测试集为空："+caseName);
 			String nameTmp="未命名测试集"+CommUtils.getRandomStr(5);
+			log.info("使用默认测试集名称："+nameTmp);
 			addClassToXmlTest(cls.getName(), nameTmp);
 			return;
 		}
@@ -73,7 +78,12 @@ public class CreateXmlFile {
 	 * @param suiteName
 	 */
 	public void setSuiteName(String suiteName) {
-		if (null!=suiteName && suiteName.length()>0) this.suiteName = suiteName;
+		if (null!=suiteName && suiteName.length()>0) {
+			this.suiteName = suiteName;
+		}else{
+			log.info("设置的测试套件名称为空");
+			log.info("使用默认测试套名称："+this.suiteName);
+		}
 		suite.setName(this.suiteName);
 	}
 	
@@ -81,7 +91,6 @@ public class CreateXmlFile {
 		this.xmlFileFolder = xmlFileFolder;
 	}
 	private void addClassToXmlTest(String pkgAndClsName,String testName) {
-		if (null==pkgAndClsName || null==testName) return;
 		XmlTest xmltest=new XmlTest();
 		XmlClass classe=new XmlClass(pkgAndClsName);
 		xmltest.setName(testName);
@@ -90,7 +99,10 @@ public class CreateXmlFile {
 	}
 
 	private void addTest(XmlTest test){
-		if (null==test) return;
+		if (null==test){
+			log.error("测试集为null,添加失败");
+			return;
+		}
 		suite.addTest(test);
 	}
 	
@@ -107,10 +119,13 @@ public class CreateXmlFile {
 			}
 			arr.add(xx[i]);
 		}
-		if (FileUtil.writeString(arr, getXmlFileFolder()+getSuiteName()+".xml", "UTF-8")){
-			return getXmlFileFolder()+getSuiteName()+".xml";
+		String xmlName = getXmlFileFolder()+getSuiteName()+".xml";
+		if (FileUtil.writeString(arr, xmlName, "UTF-8")){
+			log.info("生成Xml文件成功："+xmlName);
+			return xmlName;
 		}else {
-			return "";
+			log.error("生成Xml文件失败："+xmlName);
+			return null;
 		}
 	}
 

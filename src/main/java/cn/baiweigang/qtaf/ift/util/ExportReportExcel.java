@@ -127,7 +127,7 @@ public class ExportReportExcel {
 			ExcelUtil excel = new ExcelUtil();	
 			String pathName=excelreportpath+"/"+excelName+".xlsx";
 			
-			if (!FileUtil.isEmeyxist(pathName)) {//不存在时，新建空白工作簿
+			if (!FileUtil.isExist(pathName)) {//不存在时，新建空白工作簿
 				excel.createBlankExcel2007(pathName);
 			}
 			

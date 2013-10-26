@@ -153,7 +153,7 @@ public class IftDataFileCase extends SuperCase{
 	private boolean createXmlFile() {
 		//创建java、xml文件
 		String xmlFilePath = createXmlFile.getXmlFilePath();
-		if (FileUtil.isEmeyxist(xmlFilePath)) {
+		if (FileUtil.isExist(xmlFilePath)) {
 			xmlPathNameList.add(xmlFilePath);
 			log.info("添加xml文件成功："+xmlFilePath);
 			return true;

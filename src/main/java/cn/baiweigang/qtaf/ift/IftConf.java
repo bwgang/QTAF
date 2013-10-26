@@ -41,6 +41,9 @@ public class IftConf{
 	 */
 	public static String JavaPath = IftPath+"javaCase/";
 	
+	/**
+	 * 默认生成java文件时的包名
+	 */
 	public static String PackageName = "cn.baiweigang.qtaf.ift.testcase";
 
 	/**
@@ -48,6 +51,9 @@ public class IftConf{
 	 */
 	public static String TemplatePath = IftPath +"template/Template.ftl";	
 	
+	/**
+	 * 默认测试报告输出路径
+	 */
 	public static String ReportPath=IftPath+"report/";
 	/**
 	 * 默认的配置文件
