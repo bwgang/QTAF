@@ -78,11 +78,6 @@ public class CompareResult {
 	 * @return boolean 如果map1∩map2等于map1或者map2，则返回true，否则返回false
 	 */
 	private boolean compareMap(Map<String, String> expMap,Map<String, String> actMap) {
-//		if (expMap.size()<1  || expMap.size() > actMap.size()) {// 预期结果map大于实际结果，不再比对直接返回false
-//			setClearActres("未找到&实际结果为："+MyString.getStrFromMap(actMap));
-//			return false;
-//		}
-//		
 		List<Integer> listFlag = new LinkedList<Integer>();
 		String record = "";// 记录在实际结果中查找到的结果，记录格式为key=value&key=value.....
 
@@ -99,15 +94,13 @@ public class CompareResult {
 				String actValue = entryAct.getValue();
 				if (actKey.equals(expKey)) {//在实际结果中找到对应的key-value
 					// 记录每个键值的比对结果
-					if (MyCompareStr(expValue, actValue)) {
+					if (CompareStr(expValue, actValue)) {
 						listFlag.add(1);
 					} else {
 						listFlag.add(0);
 					}
 					// 记录在实际结果中找到的记录
 					record += actKey + "=" + actValue + "&";
-//					actMap.remove(actKey);//从实际结果map表中移除已比对过的key-value（提高比对效率）
-					//--谁修改的？不能移除，见下140行 还会用到actMap这个map表的，现在比对还不是瓶颈，后续再优化此比对逻辑
 					flag=true;
 					break;//比对完毕，结束实际结果map表遍历
 				}				
@@ -153,7 +146,7 @@ public class CompareResult {
 	 * @param actValue
 	 * @return boolean
 	 */
-	private boolean MyCompareStr(String expValue, String actValue) {
+	private boolean CompareStr(String expValue, String actValue) {
 		//预期结果与实际结果任一为null，返回false
 		if (null==actValue || null==expValue) return false;
 		
@@ -173,7 +166,7 @@ public class CompareResult {
 		}
 		
 		//仅1个预期结果值
-		if (!actValue.equals(expValue)) {
+		if (!actValue.equalsIgnoreCase(expValue)) {
 				return  false;
 			} else {
 				return  true;

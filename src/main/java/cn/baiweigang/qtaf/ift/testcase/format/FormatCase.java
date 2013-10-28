@@ -7,12 +7,15 @@ import java.util.List;
 import cn.baiweigang.qtaf.ift.IftConf;
 import cn.baiweigang.qtaf.ift.testcase.IftTestCase;
 import cn.baiweigang.qtaf.toolkit.util.FileUtil;
+import cn.baiweigang.qtaf.toolkit.util.LogUtil;
 
 /**
  * 功能说明：格式化测试用例数据， 目前只支持读取excel格式数据，XML、数据库等后续扩展
  * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/>
  */
 public class FormatCase {
+
+	private static LogUtil log=LogUtil.getLogger(FormatCase.class);//日志记录
 
 	private List<LinkedHashMap<String, String>> arrCase;
 	private List<IftTestCase> testCase;

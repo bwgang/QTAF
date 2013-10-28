@@ -18,10 +18,7 @@ import cn.baiweigang.qtaf.toolkit.util.LogUtil;
 import cn.baiweigang.qtaf.toolkit.util.StringUtil;
 
 /**
- * 说明：用例执行的公共处理类，执行粒度是一个TestCase实例 即Excel用例文件中的一条用例，或Mysql数据库中的一条用例
- * 执行后，返回的信息为map表，目前存储get请求的url串或post请求的form
- * 
- * 注意：当不满足新加入项目需要时，创建一子类，重写其中的方法，不允许在此类中修改
+ * 说明：用例执行的公共处理类，执行粒度是一个IftTestCase 即Excel用例文件中的一条用例，或Mysql数据库中的一条用例
  * 
  * @author @<a href='http://weibo.com/bwgang'>bwgang</a>(bwgang@163.com)<br/> 2013-01-10
  */
@@ -57,7 +54,7 @@ public class CasesUtils {
 	/**
 	 * http请求执行类
 	 */
-	protected HttpUtil sendRequestCore;
+	protected HttpUtil httpUtil;
 	
 	/**
 	 * 无参构造函数 说明：创建httpclient连接初始化
@@ -70,9 +67,11 @@ public class CasesUtils {
 		this.urlParaMap = new LinkedHashMap<String, String>();
 		this.formParaMap = new LinkedHashMap<String, String>();
 		if (IftConf.ProxyEnable.equals("Y")) {
-			sendRequestCore = new HttpUtil(IftConf.ProxyIp,IftConf.PROXY_PORT);
+			log.info("已设置使用代理："+IftConf.ProxyIp+":"+IftConf.PROXY_PORT);
+			httpUtil = new HttpUtil(IftConf.ProxyIp,IftConf.PROXY_PORT);
 		} else {
-			sendRequestCore = new HttpUtil();
+			log.info("未设置代理");
+			httpUtil = new HttpUtil();
 		}
 	}
 
@@ -85,43 +84,39 @@ public class CasesUtils {
 	public ResponseInfo execResquest(IftTestCase testCase) {
 		ResponseInfo resInfo=new ResponseInfo();
 		// 设置发起请求时使用的编码
-		this.sendRequestCore.setCharset(testCase.getEnCoding());
-		boolean flag = false;
+		log.info("发起请求使用的编码为："+testCase.getEnCoding());
+		this.httpUtil.setCharset(testCase.getEnCoding());
 		// 获取发起请求的http地址
-		flag = this.updateHttpUrl(testCase);
-		if (!flag) {
-			log.info("发起http请求时，获取http地址失败");
+		if (!updateHttpUrl(testCase)) {
+			log.error("发起http请求时，获取http地址失败");
 			resInfo.setErrMsgInfo("发起http请求时，获取http地址失败");
 			return resInfo;
 		}
 		// 获取发起请求的url参数信息
-		flag = this.updateUrlPara(testCase);
-		if (!flag) {
-			log.info("发起http请求时，获取url参数信息失败");
+		if (!updateUrlPara(testCase)) {
+			log.error("发起http请求时，获取url参数信息失败");
 			resInfo.setErrMsgInfo("发起http请求时，获取url参数信息失败");
 			return resInfo;
 		}
 		// 获取发起请求的post参数信息
-		flag = updateFormParaMap(testCase);
-		if (!flag) {
-			log.info("发起http请求时，获取post参数信息失败");
+		if (!updateFormParaMap(testCase)) {
+			log.error("发起http请求时，获取post参数信息失败");
 			resInfo.setErrMsgInfo("发起http请求时，获取post参数信息失败");
 			return resInfo;
 		}
 		// 获取发起请求的headers信息
-		flag = updateHeadersMap(testCase);
-		if (!flag) {
-			log.info("发起http请求时，获取headers信息失败");
+		if (!updateHeadersMap(testCase)) {
+			log.error("发起http请求时，获取headers信息失败");
 			resInfo.setErrMsgInfo("发起http请求时，获取headers信息失败");
 			return resInfo;
 		}
 		try {
 			// 发起请求
-			if (testCase.getHttpMethod().toLowerCase().equals("get")) {
-				resInfo= sendRequestCore.get(headersMap, httpUrl + getUrl);
+			if (testCase.getHttpMethod().equalsIgnoreCase("get")) {
+				resInfo= httpUtil.get(headersMap, httpUrl + getUrl);
 				resInfo.setHttpUrl(httpUrl + getUrl);
-			} else if (testCase.getHttpMethod().toLowerCase().equals("post")) {
-				resInfo= sendRequestCore.post(headersMap, httpUrl+getUrl, postUrl);
+			} else if (testCase.getHttpMethod().equalsIgnoreCase("post")) {
+				resInfo= httpUtil.post(headersMap, httpUrl+getUrl, postUrl);
 				resInfo.setHttpUrl("post请求的url信息：" + httpUrl + postUrl);
 			} else {// 待扩展
 				
@@ -187,7 +182,7 @@ public class CasesUtils {
 	 * 关闭httpclient连接
 	 */
 	public void closeConn() {
-		this.sendRequestCore.close();
+		this.httpUtil.close();
 	}
 
 	/**
@@ -201,18 +196,10 @@ public class CasesUtils {
 			log.error("用例请求的http地址为空，请检查");
 			return false;
 		}
-		String secondurl = "";
-		try {
-			secondurl = testCase.getCaseMap().get("secondurl");
-		} catch (Exception e) {
-			secondurl = "";
-		}
+		String 	secondurl = testCase.getCaseMap().get("secondurl");
 		if (null != secondurl && !secondurl.equals("")) {
-			if (secondurl.equals("rand"))
-				secondurl = CommUtils.getRandomStr(5);
-			/*if (!secondurl.matches("[0-9a-zA-Z.]*"))
-				secondurl = CommUtils.urlEncode(secondurl,testCase.getEnCoding());*/
-			httpUrlTmp += secondurl;
+			if (secondurl.equals("rand"))secondurl = CommUtils.getRandomStr(5);
+		httpUrlTmp += secondurl;
 		}
 		this.httpUrl = httpUrlTmp;
 		return true;
@@ -471,17 +458,17 @@ public class CasesUtils {
 			String key = entity.getKey().toString();
 			String value = entity.getValue().toString();
 			// 针对参数值特殊标识rand的处理，随机生成长度为10个字符串
-			if (value.toLowerCase().equals("rand")) {
+			if (value.toLowerCase().equalsIgnoreCase("rand")) {
 				value = CommUtils.getRandomStr(randNum);
 				caseMap.put(key, value);
 			}
 			// 针对参数值特殊标识timestamp的处理，获取Unix格式时间戳
-			if (value.toLowerCase().equals("timestamp")) {
+			if (value.toLowerCase().equalsIgnoreCase("timestamp")) {
 				value = CommUtils.getTimestamp();
 				caseMap.put(key, value);
 			}
 			// 参数值标识为date时，日期字符串格式20120626092109 年月日时分秒
-			if (value.toLowerCase().equals("date")) {
+			if (value.toLowerCase().equalsIgnoreCase("date")) {
 				value = CommUtils.getStrRandNum(3);
 				caseMap.put(key, value);
 			}
@@ -543,10 +530,10 @@ public class CasesUtils {
 	public ResponseInfo ExecPostResquest(TreeMap<String, String> header,String http, String posturl) {
 		ResponseInfo resInfo=new ResponseInfo();
 		// 设置发起请求时使用的编码
-		this.sendRequestCore.setCharset("UTF-8");
+		this.httpUtil.setCharset("UTF-8");
 		try {
 			// 发起请求
-			resInfo= sendRequestCore.post(header, http, posturl);
+			resInfo= httpUtil.post(header, http, posturl);
 			resInfo.setHttpUrl("post请求的url信息：" + http + "  post请求的body信息为-" + posturl);
 		} catch (Exception e) {
 			log.error("发送http请求失败，请检查");
@@ -566,10 +553,10 @@ public class CasesUtils {
 	public ResponseInfo ExecGetResquest(TreeMap<String, String> header,String gethttpurl) {
 		ResponseInfo resInfo=new ResponseInfo();
 		// 设置发起请求时使用的编码
-		this.sendRequestCore.setCharset("UTF-8");
+		this.httpUtil.setCharset("UTF-8");
 		try {
 			// 发起请求
-			resInfo= sendRequestCore.get(header, gethttpurl);
+			resInfo= httpUtil.get(header, gethttpurl);
 			resInfo.setHttpUrl(gethttpurl);
 		} catch (Exception e) {
 			log.error("发送http请求" + gethttpurl + "失败，请检查");

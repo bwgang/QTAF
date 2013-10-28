@@ -64,7 +64,7 @@ public class IftDataFileCase extends SuperCase{
 		//存储用例实体列表信息
 		javaCaseInfo.setAllCase(formatcase.getTestCase());
 		//获取测试集名称作为输出的测试报告名称
-		this.excelReportName=formatcase.getCasesetName();
+		this.excelReportName="测试报告_"+formatcase.getCasesetName();
 		//存储javaCaseInfo其余信息
 		javaCaseInfo.setPackageName(IftConf.PackageName);
 		javaCaseInfo.setJavaFileName(caseName.replace(".", "_"));
