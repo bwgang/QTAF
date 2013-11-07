@@ -27,7 +27,6 @@ public class Entry3 {
 		IftConf.delTmpPath();
 		
 		//检查相关配置，不存在则创建
-		IftConf.checkConf();
 		
 		
 		//依赖的jar文件路径信息必须设置 否则不执行
@@ -46,7 +45,6 @@ public class Entry3 {
 		//Excel文件  sheet表名 执行用例的类  类中的方法  
 		dataCase.addCase(IftConf.RootPath+"demo.xlsx","Post","PayDemo",DemoCasesUtils.class,"DemoMethod1");
 		dataCase.addCase(IftConf.RootPath+"demo.xlsx","Get","PayDemo2",DemoCasesUtils.class,"DemoMethod2");
-		dataCase.updateXmlFileList();
 		
 		caseList.add(dataCase);
 		

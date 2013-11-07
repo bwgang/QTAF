@@ -4,7 +4,7 @@
 
   <groupId>cn.baiweigang</groupId>
   <artifactId>qtaf.example</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.2.0</version>
   <packaging>jar</packaging>
 
   <name>qtaf.example</name>
@@ -69,14 +69,14 @@
 		<dependency>
 			<groupId>cn.baiweigang</groupId>
 			<artifactId>qtaf</artifactId>
-			<version>1.0.0</version>
+			<version>1.2.0</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>cn.baiweigang</groupId>
 			<artifactId>qtaf</artifactId>
-			<version>1.0.0</version>
+			<version>1.2.0</version>
 			<type>java-source</type>
 			<scope>compile</scope>
 		</dependency>
