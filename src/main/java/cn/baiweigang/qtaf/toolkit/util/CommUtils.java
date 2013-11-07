@@ -359,7 +359,31 @@ public class CommUtils {
 		return getNowTime()+getRandNum(num);
 	}
 
+	/**
+	 * 获取当前被执行的行号
+	 * @return int
+	 */
+	public static int getLineNum(){
+		return Thread.currentThread().getStackTrace()[2].getLineNumber();
+	}
 	
+	/**
+	 * 获取当前执行的方法名
+	 * @return String
+	 */
+	public static String getMethodName(){
+		return Thread.currentThread().getStackTrace()[2].getMethodName();
+	}
+	
+	/**
+	 * 获取当前执行的类名  不包括包名
+	 * @return String
+	 */
+	public static String getClassSimpleName(){
+		String classNameTmp=Thread.currentThread().getStackTrace()[2].getClassName();
+		classNameTmp=classNameTmp.substring(classNameTmp.lastIndexOf(".")+1, classNameTmp.length());
+		return classNameTmp;
+	}
 	
 	private static byte[] getBytesFromFile(String filepath) throws IOException {
 		File file = new File(filepath);
@@ -420,4 +444,7 @@ public class CommUtils {
 		}
 		return hs.toLowerCase();
 	}
+
+	
+
 }
